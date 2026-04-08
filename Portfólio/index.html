@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Portfólio de Gabriel Mendes, Cientista de Dados com experiência em Python, SQL, Machine Learning e Visualização de Dados." />
+  <meta name="author" content="Gabriel Mendes" />
+  <meta name="keywords"
+    content="Gabriel Mendes, Cientista de Dados, Data Science, Python, Machine Learning, SQL, Portfólio" />
+  <title>Portfólio | Gabriel Mendes</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <!-- Modal de imagem -->
+  <div class="image-modal" id="image-modal">
+    <img src="" alt="Imagem ampliada do projeto" />
+  </div>
+
+  <!-- Cabeçalho -->
+  <header class="header">
+    <a href="#home" class="logo" aria-label="Ir para seção inicial">
+      Gabriel <span>Mendes</span>
+    </a>
+    <div id="menu-icon" class="menu-icon" aria-label="Abrir menu">
+      <i class="bx bx-menu"></i>
+    </div>
+    <nav class="navbar">
+      <a href="#home">Home</a>
+      <a href="#about">Sobre</a>
+      <a href="#projects">Projetos</a>
+      <a href="#contact">Contato</a>
+    </nav>
+  </header>
+
+  <!-- Seção Home -->
+  <section class="home" id="home">
+    <div class="home-content">
+      <h1><span>Gabriel Mendes</span></h1>
+      <h3><span>Cientista de Dados</span></h3>
+      <p>
+        Cientista de Dados com experiência em análise, modelagem e visualização de dados, 
+        utilizando estatística e machine learning para identificar padrões, 
+        gerar insights e impulsionar resultados de negócio.
+      </p>
+      <div class="social-icons">
+        <a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer"
+          aria-label="Link para GitHub">
+          <i class="bx bxl-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer"
+          aria-label="Link para LinkedIn">
+          <i class="bx bxl-linkedin"></i>
+        </a>
+        <a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer"
+          aria-label="Link para WhatsApp">
+          <i class="bx bxl-whatsapp"></i>
+        </a>
+      </div>
+      <div class="btn-group">
+        <a href="#projects" class="btn-view">
+          <i class="bx bx-folder"></i> Ver Projetos
+        </a>
+        <a href="curriculo/Gabriel_Mendes_Alexandrino.pdf" download="CurriculoGabrielMendes" class="btn-download"
+          aria-label="Baixar Currículo">
+          <i class="bx bx-download"></i> Download CV
+        </a>
+      </div>
+    </div>
+
+    <div class="home-img">
+      <img src="photo/WhatsApp Image 2024-12-03 at 9.36.39 AM.png" alt="Foto de Gabriel Mendes" loading="lazy" />
+    </div>
+  </section>
+
+  <!-- Seção Sobre -->
+  <section class="about" id="about">
+    <div class="about-content">
+      <h2>Quem sou eu?</h2>
+      <p>
+        Sou formado em <strong>Análise e Desenvolvimento de Sistemas</strong> pelo IPOG e atualmente
+        cursando <strong>Pós-graduação em Ciência de Dados</strong> também pelo IPOG. Com um background
+        em desenvolvimento de software, trago uma perspectiva diferenciada para ciência de dados —
+        combinando raciocínio lógico, habilidades de programação e uma paixão por extrair insights
+        a partir de dados.
+      </p>
+      <p>
+        Minha trajetória iniciou no desenvolvimento full stack e ao longo do tempo fui me
+        especializando em análise de dados, machine learning e inteligência artificial.
+        Trabalho com Python, SQL, bibliotecas como Pandas, NumPy, Scikit-learn e ferramentas de
+        visualização de dados. Meu objetivo é ajudar empresas e equipes a tomar decisões mais
+        inteligentes baseadas em dados.
+      </p>
+    </div>
+  </section>
+
+  <!-- Seção Projetos -->
+  <section class="projects" id="projects">
+    <div class="section-title">
+      <h2>Meus Projetos</h2>
+      <p>
+        Conheça alguns dos projetos que desenvolvi na área de ciência de dados,
+        machine learning e análise de dados.
+      </p>
+    </div>
+
+    <!-- Filtros -->
+    <div class="project-filters">
+      <button class="active" data-filter="all">Todos</button>
+      <button data-filter="ml">Machine Learning</button>
+      <button data-filter="analise">Análise de Dados</button>
+<!--      <button data-filter="web">Web/Desenvolvimento</button> -->
+    </div>
+
+    <div class="project-list" id="project-list">
+      <!-- Os projetos são gerados dinamicamente em scripts.js -->
+    </div>
+  </section>
+
+  <!-- Seção Contato -->
+  <section class="contact" id="contact">
+    <h2 class="section-title">Entre em contato comigo :)</h2>
+    <p>
+      Caso queira entrar em contato, envie uma mensagem através dos contatos abaixo.
+    </p>
+    <form id="contact-form" class="contact-form" autocomplete="off">
+      <input type="text" id="honeypot" name="honeypot" style="display: none" />
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input type="text" id="name" name="user_name" placeholder="Seu Nome" required maxlength="50" />
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="user_email" placeholder="Seu E-mail" required
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" maxlength="50" />
+      </div>
+      <div class="form-group">
+        <label for="message">Mensagem</label>
+        <textarea id="message" name="message" placeholder="Sua Mensagem" rows="5" maxlength="300"
+          required></textarea>
+      </div>
+      <button type="submit" class="submit-btn" aria-label="Enviar Mensagem">
+        Enviar
+      </button>
+    </form>
+    <div id="form-message" class="form-message"></div>
+
+    <div class="contact-links">
+      <a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer">
+        <i class="bx bxl-github"></i> GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer">
+        <i class="bx bxl-linkedin"></i> LinkedIn
+      </a>
+      <a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer">
+        <i class="bx bxl-whatsapp"></i> WhatsApp
+      </a>
+    </div>
+    <div class="email-display">
+      <p>
+        Meu e-mail:
+        <span id="user-email">gabrielalexandrino2004@gmail.com</span>
+        <button id="copy-email" class="copy-btn" aria-label="Copiar e-mail">
+          Copiar
+        </button>
+      </p>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+
+</html>
