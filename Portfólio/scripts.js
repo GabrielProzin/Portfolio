@@ -17,15 +17,26 @@ const POPUP_TIMEOUT = 2000;
 // ============================================================
 
 const projects = [
+
   {
-    title: "Clone TabNews",
-    description: `Projeto que recria as funcionalidades do <a href="https://tabnews.com.br" target="_blank" rel="noopener noreferrer" class="tabnews-link">TabNews</a>, com publicação de conteúdo, autenticação e gerenciamento de permissões. Foi um marco na minha trajetória em desenvolvimento.`,
-    image: "ImgProjeto/CloneTabNews.png",
-    tags: ["React", "JavaScript", "API Rest"],
-    category: "web",
-    github: "https://github.com/GabrielProzin/clone-tabnews",
-    live: "https://prowulf.com.br",
+    title: "Dashboard Analítico do Mercado de Ações com Narrativa Inteligente",
+    description: "Projeto analisando o mercado de ações direto da NASDAQ em um período específico de uma das maiores empresas do mundo, como IBM, Microsoft e Tesla.",
+    image: "ImgProjeto\DashboardAnaliticoMercadoAcoes.png",
+    tags: ["Power BI, Time Intelligence"],
+    category: "analise",
+    github: "https://github.com/GabrielProzin/Projetos-Power-BI",
+    live: "",
   },
+
+  // {
+  //   title: "Clone TabNews",
+  //   description: `Projeto que recria as funcionalidades do <a href="https://tabnews.com.br" target="_blank" rel="noopener noreferrer" class="tabnews-link">TabNews</a>, com publicação de conteúdo, autenticação e gerenciamento de permissões. Foi um marco na minha trajetória em desenvolvimento.`,
+  //   image: "ImgProjeto/CloneTabNews.png",
+  //   tags: ["React", "JavaScript", "API Rest"],
+  //   category: "web",
+  //   github: "https://github.com/GabrielProzin/clone-tabnews",
+  //   live: "https://prowulf.com.br",
+  // },
   {
     title: "Imersão Back-End",
     description: "Servidores robustos com Node.js, Express e MongoDB, com rotas, middleware e integração com IA para análise de imagens, além de autenticação JWT. Projeto que fortaleceu minha base em back-end para sistemas de dados.",
