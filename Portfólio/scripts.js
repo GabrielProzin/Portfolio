@@ -20,9 +20,9 @@ const projects = [
 
   {
     title: "Dashboard Analítico do Mercado de Ações com Narrativa Inteligente",
-    description: "Projeto analisando o mercado de ações direto da NASDAQ em um período específico de uma das maiores empresas do mundo, como IBM, Microsoft e Tesla.",
+    description: "Projeto de análise do mercado de ações utilizando dados reais da NASDAQ, com foco em exploração de tendências, variações temporais e comportamento de ativos ao longo do tempo.",
     image: "ImgProjeto/DashboardAnaliticoMercadoAcoes.png",
-    tags: ["Power BI", "Time Intelligence"],
+    tags: ["Power BI", "Time Intelligence", "Data Analysis"],
     category: "analise",
     github: "https://github.com/GabrielProzin/Projetos-Power-BI",
     live: "",
