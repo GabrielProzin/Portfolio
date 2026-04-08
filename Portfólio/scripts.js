@@ -4,8 +4,8 @@
 
 const EMAIL_JS_CONFIG = {
   publicKey: "s7eWkxR-sAUpWSHJh",
-  serviceId: "service_9zcbv3j",
-  templateId: "template_s3dukvq",
+  serviceId: "service_ghp9z7o",
+  templateId: "service_ghp9z7o",
 };
 
 const POPUP_TIMEOUT = 2000;
@@ -318,10 +318,11 @@ if (contactForm) {
       messageEl.textContent = "Mensagem enviada com sucesso!";
       messageEl.className = "form-message success";
       contactForm.reset();
-    } catch {
-      messageEl.textContent = "Erro ao enviar. Tente novamente.";
-      messageEl.className = "form-message error";
-    }
+    } catch (error) {
+  console.error("Erro EmailJS:", error);
+  messageEl.textContent = `Erro ao enviar: ${error?.text || error?.message || "Tente novamente."}`;
+  messageEl.className = "form-message error";
+}
   });
 }
 
