@@ -116,19 +116,24 @@ if (isDesktop) {
     { passive: false }
   );
 
-  window.addEventListener("keydown", (e) => {
-    const keys = ["ArrowDown", "PageDown", "Space", " "];
-    const keysUp = ["ArrowUp", "PageUp"];
-    if (keys.includes(e.key)) {
-      e.preventDefault();
-      if (isScrolling) return;
-      doScroll(true);
-    } else if (keysUp.includes(e.key)) {
-      e.preventDefault();
-      if (isScrolling) return;
-      doScroll(false);
-    }
-  });
+window.addEventListener("keydown", (e) => {
+  const tag = e.target.tagName.toLowerCase();
+
+  if (tag === "input" || tag === "textarea") return;
+
+  const keys = ["ArrowDown", "PageDown", "Space", " "];
+  const keysUp = ["ArrowUp", "PageUp"];
+
+  if (keys.includes(e.key)) {
+    e.preventDefault();
+    if (isScrolling) return;
+    doScroll(true);
+  } else if (keysUp.includes(e.key)) {
+    e.preventDefault();
+    if (isScrolling) return;
+    doScroll(false);
+  }
+});
 }
 
 function doScroll(goingDown) {
