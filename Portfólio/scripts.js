@@ -19,7 +19,7 @@ const POPUP_TIMEOUT = 2000;
 const projects = [
 
   {
-    title: "Dashboard Analítico do Mercado de Ações com Narrativa Inteligente",
+    title: "Dashboard de Mercado de Ações",
     description: "Projeto de análise do mercado de ações utilizando dados reais da NASDAQ, com foco em exploração de tendências, variações temporais e comportamento de ativos ao longo do tempo.",
     image: "ImgProjeto/DashboardAnaliticoMercadoAcoes.png",
     tags: ["Power BI", "Time Intelligence", "Data Analysis"],
