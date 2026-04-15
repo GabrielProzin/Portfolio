@@ -31,7 +31,7 @@ const projects = [
   title: "Detecção de Fraudes",
    description: `Criação de modelos preditivos para identificação de fraudes em transações de cartão de crédito, utilizando Logistic Regression e Random Forest, com análise exploratória e visualização de resultados em Power BI.`,
    image: "ImgProjeto/ML-BI.png",
-   tags: ["Machine Learning", "Python", "Power BI"],
+   tags: ["Machine Learning", "Scikit-Learn", "Python", "Power BI"],
    category: ["ml", "analise"],
    github: "https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi",
    live: "",
@@ -210,12 +210,12 @@ const filterLabels = {
 
 function renderProjects(filter = "all") {
   const filtered = filter === "all"
-    ? projects
-    : projects.filter((p) => 
-  Array.isArray(p.category) 
-    ? p.category.includes(filter) 
-    : p.category === filter
-);
+  ? projects
+  : projects.filter((p) =>
+      Array.isArray(p.category)
+        ? p.category.includes(filter)
+        : p.category === filter
+    );
 
   projectList.innerHTML = "";
 
@@ -245,14 +245,18 @@ function renderProjects(filter = "all") {
       linksHtml += `<a href="${project.live}" target="_blank" rel="noopener noreferrer"><i class="bx bx-link"></i> Ver Online</a>`;
     }
 
-    const categoryLabel = filterLabels[project.category] || project.category;
+const categoryBadges = Array.isArray(project.category)
+  ? project.category.map(c => `<span class="category-badge">${filterLabels[c] || c}</span>`).join("")
+  : `<span class="category-badge">${filterLabels[project.category] || project.category}</span>`;
 
     card.innerHTML = `
       <img src="${project.image}" alt="${project.title}" class="project-thumbnail" loading="lazy" />
       <div class="project-details">
         <div style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
           <h3>${project.title}</h3>
-          <span style="font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 6px; background: rgba(100,255,218,0.08); color: var(--text-muted); border: 1px solid rgba(100,255,218,0.1);">${categoryLabel}</span>
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+  ${categoryBadges}
+</div>
         </div>
         <p>${project.description}</p>
         <ul class="tech-list">${techTags}</ul>
