@@ -32,7 +32,7 @@ const projects = [
    description: `Criação de modelos preditivos para identificação de fraudes em transações de cartão de crédito, utilizando Logistic Regression e Random Forest, com análise exploratória e visualização de resultados em Power BI.`,
    image: "ImgProjeto/ML-BI.png",
    tags: ["Machine Learning", "Python", "Power BI"],
-   category: ["ml", "web"],
+   category: ["ml", "analise"],
    github: "https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi",
    live: "",
   },
@@ -211,7 +211,11 @@ const filterLabels = {
 function renderProjects(filter = "all") {
   const filtered = filter === "all"
     ? projects
-    : projects.filter((p) => p.category === filter);
+    : projects.filter((p) => 
+  Array.isArray(p.category) 
+    ? p.category.includes(filter) 
+    : p.category === filter
+);
 
   projectList.innerHTML = "";
 
