@@ -204,8 +204,8 @@ const projectList = document.getElementById("project-list");
 
 const filterLabels = {
   ml: "Machine Learning",
-  analise: "Análise de Dados"
-//  web: "Web/Desenvolvimento",
+  analise: "Análise de Dados",
+  web: "Web/Desenvolvimento"
 };
 
 function renderProjects(filter = "all") {
