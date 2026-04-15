@@ -27,16 +27,15 @@ const projects = [
     github: "https://github.com/GabrielProzin/Projetos-Power-BI",
     live: "",
   },
-
-  // {
-  //   title: "Clone TabNews",
-  //   description: `Projeto que recria as funcionalidades do <a href="https://tabnews.com.br" target="_blank" rel="noopener noreferrer" class="tabnews-link">TabNews</a>, com publicação de conteúdo, autenticação e gerenciamento de permissões. Foi um marco na minha trajetória em desenvolvimento.`,
-  //   image: "ImgProjeto/CloneTabNews.png",
-  //   tags: ["React", "JavaScript", "API Rest"],
-  //   category: "web",
-  //   github: "https://github.com/GabrielProzin/clone-tabnews",
-  //   live: "https://prowulf.com.br",
-  // },
+  {
+  title: "Detecção de Fraudes",
+   description: `Criação de modelos preditivos para identificação de fraudes em transações de cartão de crédito, utilizando Logistic Regression e Random Forest, com análise exploratória e visualização de resultados em Power BI.`,
+   image: "ImgProjeto/ML-BI.png",
+   tags: ["Machine Learning", "Python", "Power BI"],
+   category: ["ml", "web"],
+   github: "https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi",
+   live: "",
+  },
   {
     title: "Imersão Back-End",
     description: "Servidores robustos com Node.js, Express e MongoDB, com rotas, middleware e integração com IA para análise de imagens, além de autenticação JWT. Projeto que fortaleceu minha base em back-end para sistemas de dados.",
