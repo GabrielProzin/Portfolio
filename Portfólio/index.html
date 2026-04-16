@@ -12,6 +12,8 @@
   <title>Portfólio | Gabriel Mendes</title>
 
   <!-- Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="styles.css" />
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 
@@ -22,7 +24,8 @@
 
 <body>
   <!-- Modal de imagem -->
-  <div class="image-modal" id="image-modal">
+  <div class="image-modal" id="image-modal" role="dialog" aria-modal="true" aria-hidden="true"
+    aria-label="Visualização ampliada da imagem do projeto">
     <img src="" alt="Imagem ampliada do projeto" />
   </div>
 
@@ -31,10 +34,11 @@
     <a href="#home" class="logo" aria-label="Ir para seção inicial">
       Gabriel <span>Mendes</span>
     </a>
-    <div id="menu-icon" class="menu-icon" aria-label="Abrir menu">
+    <button id="menu-icon" class="menu-icon" type="button" aria-label="Abrir menu" aria-expanded="false"
+      aria-controls="primary-navigation">
       <i class="bx bx-menu"></i>
-    </div>
-    <nav class="navbar">
+    </button>
+    <nav class="navbar" id="primary-navigation" aria-label="Navegação principal">
       <a href="#home">Home</a>
       <a href="#about">Sobre</a>
       <a href="#projects">Projetos</a>
@@ -48,9 +52,9 @@
       <h1><span>Gabriel Mendes</span></h1>
       <h3><span>Cientista de Dados</span></h3>
       <p>
-        Cientista de Dados com experiência em análise, modelagem e visualização de dados, 
-        utilizando estatística e machine learning para identificar padrões, 
-        gerar insights e impulsionar resultados de negócio.
+        Transformo dados em análises, modelos e dashboards que apoiam decisões de negócio.
+        Atuo com Python, SQL, Power BI e machine learning para organizar informação,
+        encontrar padrões e gerar entregas objetivas.
       </p>
       <div class="social-icons">
         <a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer"
@@ -78,7 +82,8 @@
     </div>
 
     <div class="home-img">
-      <img src="photo/WhatsApp Image 2024-12-03 at 9.36.39 AM.png" alt="Foto de Gabriel Mendes" loading="lazy" />
+      <img src="photo/WhatsApp Image 2024-12-03 at 9.36.39 AM.png" alt="Foto de Gabriel Mendes" width="300"
+        height="300" fetchpriority="high" decoding="async" />
     </div>
   </section>
 
@@ -88,17 +93,15 @@
       <h2>Quem sou eu?</h2>
       <p>
         Sou formado em <strong>Análise e Desenvolvimento de Sistemas</strong> pelo IPOG e atualmente
-        cursando <strong>Pós-graduação em Ciência de Dados</strong> também pelo IPOG. Com um background
-        em desenvolvimento de software, trago uma perspectiva diferenciada para ciência de dados —
-        combinando raciocínio lógico, habilidades de programação e uma paixão por extrair insights
-        a partir de dados.
+        curso <strong>Pós-graduação em Ciência de Dados</strong>. Minha base em desenvolvimento de software
+        me ajuda a trabalhar dados com visão mais prática: entender o problema, estruturar a informação,
+        automatizar etapas e entregar algo que seja realmente útil para o negócio.
       </p>
       <p>
-        Minha trajetória iniciou no desenvolvimento full stack e ao longo do tempo fui me
-        especializando em análise de dados, machine learning e inteligência artificial.
-        Trabalho com Python, SQL, bibliotecas como Pandas, NumPy, Scikit-learn e ferramentas de
-        visualização de dados. Meu objetivo é ajudar empresas e equipes a tomar decisões mais
-        inteligentes baseadas em dados.
+        Tenho experiência com Python, SQL, Pandas, NumPy, Scikit-learn e Power BI, atuando em
+        análise exploratória, tratamento de dados, construção de dashboards e modelos preditivos.
+        Busco oportunidades em que eu possa usar dados para reduzir incerteza, apoiar decisões e
+        construir soluções escaláveis.
       </p>
     </div>
   </section>
@@ -108,8 +111,8 @@
     <div class="section-title">
       <h2>Meus Projetos</h2>
       <p>
-        Conheça alguns dos projetos que desenvolvi na área de ciência de dados,
-        machine learning e análise de dados.
+        Alguns projetos em que trabalhei com análise de dados, visualização e machine learning,
+        sempre com foco em problema, abordagem e aplicação prática.
       </p>
     </div>
 
@@ -133,7 +136,8 @@
       Caso queira entrar em contato, envie uma mensagem através dos contatos abaixo.
     </p>
     <form id="contact-form" class="contact-form" autocomplete="off">
-      <input type="text" id="honeypot" name="honeypot" style="display: none" />
+      <input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true"
+        class="honeypot" />
       <div class="form-group">
         <label for="name">Nome</label>
         <input type="text" id="name" name="user_name" placeholder="Seu Nome" required maxlength="50" />
@@ -152,7 +156,7 @@
         Enviar
       </button>
     </form>
-    <div id="form-message" class="form-message"></div>
+    <div id="form-message" class="form-message" aria-live="polite"></div>
 
     <div class="contact-links">
       <a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer">

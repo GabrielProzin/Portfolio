@@ -1,5 +1,5 @@
 // ============================================================
-// CONFIGURAÇÕES
+// CONFIGURACOES
 // ============================================================
 
 const EMAIL_JS_CONFIG = {
@@ -9,18 +9,18 @@ const EMAIL_JS_CONFIG = {
 };
 
 const POPUP_TIMEOUT = 2000;
+const GENERIC_FORM_ERROR =
+  "Não foi possível enviar a mensagem agora. Tente novamente em alguns minutos ou use os links de contato.";
 
 // ============================================================
-// PROJETOS — adicione/remova projetos aqui para atualizar
-//
-// category: "ml" | "analise" | "web"
+// PROJETOS
 // ============================================================
 
 const projects = [
-
   {
     title: "Dashboard de Mercado de Ações",
-    description: "Projeto de análise do mercado de ações utilizando dados reais da NASDAQ, com foco em exploração de tendências, variações temporais e comportamento de ativos ao longo do tempo.",
+    description:
+      "Problema: organizar dados do mercado acionário para facilitar comparações e leitura de tendências. Abordagem: tratei e estruturei bases reais da NASDAQ e construí dashboards no Power BI com foco em análise temporal e comparação entre ativos. Resultado: uma visualização clara para apoiar a exploração dos dados e a tomada de decisão.",
     image: "ImgProjeto/DashboardAnaliticoMercadoAcoes.png",
     tags: ["Power BI", "Time Intelligence", "Data Analysis"],
     category: "analise",
@@ -28,55 +28,96 @@ const projects = [
     live: "",
   },
   {
-  title: "Detecção de Fraudes",
-   description: `Criação de modelos preditivos para identificação de fraudes em transações de cartão de crédito, utilizando Logistic Regression e Random Forest, com análise exploratória e visualização de resultados em Power BI.`,
-   image: "ImgProjeto/ML-BI.png",
-   tags: ["Machine Learning", "Scikit-Learn", "Python", "Power BI"],
-   category: ["ml", "analise"],
-   github: "https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi",
-   live: "",
+    title: "Detecção de Fraudes",
+    description:
+      "Problema: identificar transações com maior risco de fraude em cartões de crédito. Abordagem: realizei análise exploratória, preparação dos dados e comparação entre modelos como Logistic Regression e Random Forest, com apoio visual em Power BI. Resultado: uma base analítica que ajuda a interpretar padrões de fraude e avaliar o desempenho dos modelos.",
+    image: "ImgProjeto/ML-BI.png",
+    tags: ["Machine Learning", "Scikit-Learn", "Python", "Power BI"],
+    category: ["ml", "analise"],
+    github: "https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi",
+    live: "",
   },
-/*   {
-    title: "Imersão Back-End",
-    description: "Servidores robustos com Node.js, Express e MongoDB, com rotas, middleware e integração com IA para análise de imagens, além de autenticação JWT. Projeto que fortaleceu minha base em back-end para sistemas de dados.",
+  /* {
+    title: "Imersao Back-End",
+    description:
+      "Servidores robustos com Node.js, Express e MongoDB, com rotas, middleware e integracao com IA para analise de imagens, alem de autenticacao JWT.",
     image: "ImgProjeto/imagem_2024-12-03_110024271.png",
     tags: ["Node.js", "Express", "MongoDB"],
     category: "web",
     github: "https://github.com/GabrielProzin/ImersaoBackEnd",
     live: "",
   }, */
-  // ======================================================
-  // Adicione novos projetos de Ciência de Dados abaixo.
-  // Exemplo:
-  // {
-  //   title: "Previsão de Churn",
-  //   description: "Modelo de ML para prever churn de clientes usando Random Forest.",
-  //   image: "ImgProjeto/churn.png",
-  //   tags: ["Python", "Scikit-learn", "Random Forest"],
-  //   category: "ml",
-  //   github: "https://github.com/...",
-  //   live: "",
-  // },
-  // ======================================================
 ];
 
 // ============================================================
-// SCROLL SNAP ANIMADO (Desktop) — transição suave entre seções
+// SCROLL SNAP ANIMADO (Desktop)
 // ============================================================
 
 const sections = document.querySelectorAll("section");
 let isDesktop = window.innerWidth > 992;
 let isScrolling = false;
 let currentSection = 0;
-let scrollTimeout;
 
-// Inicializa o índice da seção visível
+function getHeaderOffset() {
+  const header = document.querySelector(".header");
+  return header ? header.offsetHeight + 16 : 80;
+}
+
+function getDocumentTop(element) {
+  return element.getBoundingClientRect().top + window.scrollY;
+}
+
+function getSectionTargetY(section) {
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  const targetY = getDocumentTop(section) - getHeaderOffset();
+  return Math.max(0, Math.min(targetY, maxScroll));
+}
+
+function getAnchorTargetY(targetSection) {
+  if (targetSection?.id === "projects" && projectList) {
+    const sectionTopY = getSectionTargetY(targetSection);
+    const titleBlock = targetSection.querySelector(".section-title");
+    const cards = Array.from(projectList.querySelectorAll(".project-item"));
+
+    if (!titleBlock || cards.length === 0) {
+      return sectionTopY;
+    }
+
+    const firstRowTop = getDocumentTop(cards[0]);
+    const firstRowCards = cards.filter(
+      (card) => Math.abs(getDocumentTop(card) - firstRowTop) < 8
+    );
+
+    const firstRowBottom = Math.max(
+      ...firstRowCards.map((card) => getDocumentTop(card) + card.offsetHeight)
+    );
+    const viewportBottomTarget =
+      firstRowBottom - window.innerHeight + 24;
+    const extraOffset = window.innerHeight * -0.02;
+
+    return Math.max(sectionTopY, viewportBottomTarget) + extraOffset;
+  }
+
+  if (targetSection?.id === "contact") {
+    return getSectionTargetY(targetSection) + window.innerHeight * 0.08;
+  }
+
+  return getSectionTargetY(targetSection);
+}
+
+function getWheelTargetY(section) {
+  return getAnchorTargetY(section);
+}
+
 function updateCurrentSection() {
-  const scrollY = window.scrollY + window.innerHeight / 2;
+  const scrollY = window.scrollY + getHeaderOffset() + window.innerHeight / 3;
   sections.forEach((section, i) => {
+    const sectionTop = getDocumentTop(section);
+    const sectionBottom = sectionTop + section.offsetHeight;
+
     if (
-      scrollY >= section.offsetTop &&
-      scrollY < section.offsetTop + section.offsetHeight
+      scrollY >= sectionTop &&
+      scrollY < sectionBottom
     ) {
       currentSection = i;
     }
@@ -86,7 +127,6 @@ function updateCurrentSection() {
 window.addEventListener("scroll", updateCurrentSection);
 window.addEventListener("load", updateCurrentSection);
 
-// Easing ease-out
 function easeOutCubic(t) {
   return 1 - Math.pow(1 - t, 3);
 }
@@ -126,78 +166,99 @@ if (isDesktop) {
     { passive: false }
   );
 
-window.addEventListener("keydown", (e) => {
-  const tag = e.target.tagName.toLowerCase();
+  window.addEventListener("keydown", (e) => {
+    const tag = e.target.tagName.toLowerCase();
 
-  if (tag === "input" || tag === "textarea") return;
+    if (tag === "input" || tag === "textarea") return;
 
-  const keys = ["ArrowDown", "PageDown", "Space", " "];
-  const keysUp = ["ArrowUp", "PageUp"];
+    const keys = ["ArrowDown", "PageDown", "Space", " "];
+    const keysUp = ["ArrowUp", "PageUp"];
 
-  if (keys.includes(e.key)) {
-    e.preventDefault();
-    if (isScrolling) return;
-    doScroll(true);
-  } else if (keysUp.includes(e.key)) {
-    e.preventDefault();
-    if (isScrolling) return;
-    doScroll(false);
-  }
-});
+    if (keys.includes(e.key)) {
+      e.preventDefault();
+      if (isScrolling) return;
+      doScroll(true);
+    } else if (keysUp.includes(e.key)) {
+      e.preventDefault();
+      if (isScrolling) return;
+      doScroll(false);
+    }
+  });
 }
 
 function doScroll(goingDown) {
   const nextIndex = goingDown
     ? Math.min(currentSection + 1, sections.length - 1)
     : Math.max(currentSection - 1, 0);
+
   if (nextIndex === currentSection) return;
+
   isScrolling = true;
   currentSection = nextIndex;
-  smoothScrollTo(sections[nextIndex].offsetTop, 700);
+  smoothScrollTo(getWheelTargetY(sections[nextIndex]), 700);
 }
 
-// Responsivo: recria o listener ou remove conforme o tamanho
 window.addEventListener("resize", () => {
   const wasDesktop = isDesktop;
   isDesktop = window.innerWidth > 992;
   updateCurrentSection();
 
-  // Se mudou de mobile para desktop, recarrega para aplicar o wheel
   if (wasDesktop !== isDesktop) {
     location.reload();
   }
 });
 
 // ============================================================
-// INICIALIZAÇÃO
+// INICIALIZACAO
 // ============================================================
 
 emailjs.init(EMAIL_JS_CONFIG.publicKey);
 
-// Menu mobile
 const menuIcon = document.getElementById("menu-icon");
 const navbar = document.querySelector(".navbar");
+const imageModal = document.getElementById("image-modal");
+const modalImage = imageModal?.querySelector("img");
+let lastFocusedElement = null;
+
+function setMenuState(isOpen) {
+  navbar.classList.toggle("active", isOpen);
+  menuIcon.setAttribute("aria-expanded", String(isOpen));
+}
 
 if (menuIcon) {
   menuIcon.addEventListener("click", () => {
-    navbar.classList.toggle("active");
+    const isOpen = !navbar.classList.contains("active");
+    setMenuState(isOpen);
   });
 }
 
-// Rolagem suave
-document.querySelectorAll(".navbar a").forEach((link) => {
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
-    document.querySelector(link.getAttribute("href")).scrollIntoView({
-      behavior: "smooth",
-    });
-    navbar.classList.remove("active");
-    menuIcon.classList.remove("active");
+    const targetSection = document.querySelector(link.getAttribute("href"));
+    if (!targetSection) return;
+
+    if (isScrolling) {
+      isScrolling = false;
+    }
+
+    smoothScrollTo(getAnchorTargetY(targetSection), 700);
+
+    if (link.closest(".navbar")) {
+      setMenuState(false);
+    }
   });
 });
 
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && navbar.classList.contains("active")) {
+    setMenuState(false);
+    menuIcon.focus();
+  }
+});
+
 // ============================================================
-// RENDERIZAÇÃO DE PROJETOS
+// RENDERIZACAO DE PROJETOS
 // ============================================================
 
 const projectList = document.getElementById("project-list");
@@ -205,17 +266,18 @@ const projectList = document.getElementById("project-list");
 const filterLabels = {
   ml: "Machine Learning",
   analise: "Análise de Dados",
-  web: "Web/Desenvolvimento"
+  web: "Web/Desenvolvimento",
 };
 
 function renderProjects(filter = "all") {
-  const filtered = filter === "all"
-  ? projects
-  : projects.filter((p) =>
-      Array.isArray(p.category)
-        ? p.category.includes(filter)
-        : p.category === filter
-    );
+  const filtered =
+    filter === "all"
+      ? projects
+      : projects.filter((p) =>
+          Array.isArray(p.category)
+            ? p.category.includes(filter)
+            : p.category === filter
+        );
 
   projectList.innerHTML = "";
 
@@ -245,18 +307,20 @@ function renderProjects(filter = "all") {
       linksHtml += `<a href="${project.live}" target="_blank" rel="noopener noreferrer"><i class="bx bx-link"></i> Ver Online</a>`;
     }
 
-const categoryBadges = Array.isArray(project.category)
-  ? project.category.map(c => `<span class="category-badge">${filterLabels[c] || c}</span>`).join("")
-  : `<span class="category-badge">${filterLabels[project.category] || project.category}</span>`;
+    const categoryBadges = Array.isArray(project.category)
+      ? project.category
+          .map((c) => `<span class="category-badge">${filterLabels[c] || c}</span>`)
+          .join("")
+      : `<span class="category-badge">${filterLabels[project.category] || project.category}</span>`;
 
     card.innerHTML = `
       <img src="${project.image}" alt="${project.title}" class="project-thumbnail" loading="lazy" />
       <div class="project-details">
-        <div style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
+        <div class="project-header">
           <h3>${project.title}</h3>
-          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-  ${categoryBadges}
-</div>
+          <div class="project-badges">
+            ${categoryBadges}
+          </div>
         </div>
         <p>${project.description}</p>
         <ul class="tech-list">${techTags}</ul>
@@ -270,10 +334,11 @@ const categoryBadges = Array.isArray(project.category)
 
 renderProjects();
 
-// Filtros
 document.querySelectorAll(".project-filters button").forEach((btn) => {
   btn.addEventListener("click", () => {
-    document.querySelector(".project-filters button.active").classList.remove("active");
+    document
+      .querySelector(".project-filters button.active")
+      .classList.remove("active");
     btn.classList.add("active");
     renderProjects(btn.dataset.filter);
   });
@@ -283,45 +348,92 @@ document.querySelectorAll(".project-filters button").forEach((btn) => {
 // MODAL DE IMAGEM
 // ============================================================
 
-const imageModal = document.getElementById("image-modal");
+function openImageModal(src, alt) {
+  if (!imageModal || !modalImage) return;
+
+  lastFocusedElement = document.activeElement;
+  modalImage.src = src;
+  modalImage.alt = alt || "Imagem ampliada do projeto";
+  imageModal.classList.add("show");
+  imageModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeImageModal() {
+  if (!imageModal || !modalImage || !imageModal.classList.contains("show")) {
+    return;
+  }
+
+  imageModal.classList.remove("show");
+  imageModal.setAttribute("aria-hidden", "true");
+  modalImage.src = "";
+  document.body.classList.remove("modal-open");
+  lastFocusedElement?.focus?.();
+}
 
 document.addEventListener("click", (e) => {
   if (e.target.matches(".project-thumbnail")) {
-    imageModal.querySelector("img").src = e.target.src;
-    imageModal.classList.add("show");
+    openImageModal(e.target.src, e.target.alt);
   }
+
   if (e.target === imageModal) {
-    imageModal.classList.remove("show");
+    closeImageModal();
   }
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") imageModal.classList.remove("show");
+  if (e.key === "Escape") {
+    closeImageModal();
+  }
 });
 
 // ============================================================
-// FORMULÁRIO DE CONTATO
+// FORMULARIO DE CONTATO
 // ============================================================
 
 const contactForm = document.getElementById("contact-form");
+
 if (contactForm) {
   contactForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const messageEl = document.getElementById("form-message");
     const nameField = document.getElementById("name");
     const emailField = document.getElementById("email");
     const messageField = document.getElementById("message");
+    const honeypotField = document.getElementById("honeypot");
 
     const name = nameField.value.trim();
     const email = emailField.value.trim();
     const msg = messageField.value.trim();
+    const honeypot = honeypotField.value.trim();
 
-    [nameField, emailField, messageField].forEach((f) => f.classList.remove("error"));
+    [nameField, emailField, messageField].forEach((f) =>
+      f.classList.remove("error")
+    );
+
+    if (honeypot) {
+      messageEl.textContent = "Envio bloqueado.";
+      messageEl.className = "form-message error";
+      return;
+    }
 
     let hasError = false;
-    if (!name || name.length < 2 || name.length > 50) { nameField.classList.add("error"); hasError = true; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { emailField.classList.add("error"); hasError = true; }
-    if (!msg || msg.length < 10 || msg.length > 300) { messageField.classList.add("error"); hasError = true; }
+
+    if (!name || name.length < 2 || name.length > 50) {
+      nameField.classList.add("error");
+      hasError = true;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailField.classList.add("error");
+      hasError = true;
+    }
+
+    if (!msg || msg.length < 10 || msg.length > 300) {
+      messageField.classList.add("error");
+      hasError = true;
+    }
 
     if (hasError) {
       messageEl.textContent = "Preencha os campos corretamente.";
@@ -338,14 +450,15 @@ if (contactForm) {
         reply_to: email,
         message: msg,
       });
+
       messageEl.textContent = "Mensagem enviada com sucesso!";
       messageEl.className = "form-message success";
       contactForm.reset();
     } catch (error) {
-  console.error("Erro EmailJS:", error);
-  messageEl.textContent = `Erro ao enviar: ${error?.text || error?.message || "Tente novamente."}`;
-  messageEl.className = "form-message error";
-}
+      console.error("Erro EmailJS:", error);
+      messageEl.textContent = GENERIC_FORM_ERROR;
+      messageEl.className = "form-message error";
+    }
   });
 }
 
@@ -358,7 +471,8 @@ const emailText = document.getElementById("user-email");
 
 if (copyEmailBtn) {
   copyEmailBtn.addEventListener("click", () => {
-    navigator.clipboard.writeText(emailText.textContent)
+    navigator.clipboard
+      .writeText(emailText.textContent)
       .then(() => showCopiedPopup("Copiado!"))
       .catch(console.error);
   });
@@ -369,7 +483,9 @@ function showCopiedPopup(text) {
   popup.textContent = text;
   popup.className = "copied-popup";
   copyEmailBtn.parentElement.appendChild(popup);
+
   requestAnimationFrame(() => popup.classList.add("show"));
+
   setTimeout(() => {
     popup.classList.remove("show");
     setTimeout(() => popup.remove(), 300);
