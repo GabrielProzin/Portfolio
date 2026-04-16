@@ -36,7 +36,7 @@ const projects = [
    github: "https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi",
    live: "",
   },
-  {
+/*   {
     title: "Imersão Back-End",
     description: "Servidores robustos com Node.js, Express e MongoDB, com rotas, middleware e integração com IA para análise de imagens, além de autenticação JWT. Projeto que fortaleceu minha base em back-end para sistemas de dados.",
     image: "ImgProjeto/imagem_2024-12-03_110024271.png",
@@ -44,7 +44,7 @@ const projects = [
     category: "web",
     github: "https://github.com/GabrielProzin/ImersaoBackEnd",
     live: "",
-  },
+  }, */
   // ======================================================
   // Adicione novos projetos de Ciência de Dados abaixo.
   // Exemplo:
