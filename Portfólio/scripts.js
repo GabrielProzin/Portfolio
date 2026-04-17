@@ -17,6 +17,16 @@ const GENERIC_FORM_ERROR =
 // ============================================================
 
 const projects = [
+    {
+    title: "Detecção de Fraudes",
+    description:
+      "Problema: identificar transações com maior risco de fraude em cartões de crédito. Abordagem: realizei análise exploratória, preparação dos dados e comparação entre modelos como Logistic Regression e Random Forest, com apoio visual em Power BI. Resultado: uma base analítica que ajuda a interpretar padrões de fraude e avaliar o desempenho dos modelos.",
+    image: "ImgProjeto/ML-BI.png",
+    tags: ["Machine Learning", "Scikit-Learn", "Python", "Power BI"],
+    category: ["ml", "analise"],
+    github: "https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi",
+    live: "",
+  },
   {
     title: "Dashboard de Mercado de Ações",
     description:
@@ -25,16 +35,6 @@ const projects = [
     tags: ["Power BI", "Time Intelligence", "Data Analysis"],
     category: "analise",
     github: "https://github.com/GabrielProzin/Projetos-Power-BI",
-    live: "",
-  },
-  {
-    title: "Detecção de Fraudes",
-    description:
-      "Problema: identificar transações com maior risco de fraude em cartões de crédito. Abordagem: realizei análise exploratória, preparação dos dados e comparação entre modelos como Logistic Regression e Random Forest, com apoio visual em Power BI. Resultado: uma base analítica que ajuda a interpretar padrões de fraude e avaliar o desempenho dos modelos.",
-    image: "ImgProjeto/ML-BI.png",
-    tags: ["Machine Learning", "Scikit-Learn", "Python", "Power BI"],
-    category: ["ml", "analise"],
-    github: "https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi",
     live: "",
   },
   /* {
