@@ -228,28 +228,6 @@ document.fonts?.ready.then(updateActiveFromScroll);
 updateActiveFromScroll();
 
 // ============================================================
-// PIPELINE (revela uma vez ao entrar na tela)
-// ============================================================
-
-const pipeline = document.getElementById("pipeline");
-if (pipeline && "IntersectionObserver" in window) {
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          pipeline.classList.add("is-visible");
-          io.disconnect();
-        }
-      });
-    },
-    { threshold: 0.35 }
-  );
-  io.observe(pipeline);
-} else {
-  pipeline?.classList.add("is-visible");
-}
-
-// ============================================================
 // MODAL DE IMAGEM (modo foco)
 // ============================================================
 

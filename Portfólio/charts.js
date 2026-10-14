@@ -237,7 +237,7 @@
     const ease = "cubic-bezier(0.22, 0.61, 0.36, 1)";
     const stagger = 26;
 
-    gGrid.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, easing: "linear" });
+    gGrid.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: 450, easing: "linear", fill: "backwards" });
 
     dots.forEach((dot, i) => {
       dot.style.transformBox = "fill-box";
@@ -247,11 +247,11 @@
           { opacity: 0, transform: "translateY(-14px) scale(0.4)" },
           { opacity: 1, transform: "none" },
         ],
-        { duration: 420, delay: 200 + i * stagger, easing: ease, fill: "backwards" }
+        { duration: 420, delay: 650 + i * stagger, easing: ease, fill: "backwards" }
       );
     });
 
-    const tStart = 200 + N * stagger;
+    const tStart = 650 + N * stagger;
     const len = trendPath.getTotalLength();
     trendPath.style.strokeDasharray = `${len}`;
     trendPath.animate(
