@@ -48,12 +48,12 @@
 
       // barras "ao vivo": a altura de cada barra sobe e desce a partir da base
       vec3 a = aA;
-      a.y = mix(a.y, -0.8 + (a.y + 0.8) * (1.0 + 0.16 * sin(uTime * 1.3 + aA.x * 5.0)), uWaveA);
+      a.y = mix(a.y, -0.8 + (a.y + 0.8) * (1.0 + 0.16 * sin(uTime * 1.0 + aA.x * 5.0)), uWaveA);
       a = mix(a, rotX(rotY(a, ang), 0.35), uRotA);
       a = mix(a, rotY(a, sway), uSwayA);
 
       vec3 b = aB;
-      b.y = mix(b.y, -0.8 + (b.y + 0.8) * (1.0 + 0.16 * sin(uTime * 1.3 + aB.x * 5.0)), uWaveB);
+      b.y = mix(b.y, -0.8 + (b.y + 0.8) * (1.0 + 0.16 * sin(uTime * 1.0 + aB.x * 5.0)), uWaveB);
       b = mix(b, rotX(rotY(b, ang), 0.35), uRotB);
       b = mix(b, rotY(b, sway), uSwayB);
 
@@ -383,7 +383,7 @@
         // posição de um ponto numa cena, com os movimentos contínuos dela
         const place = (S, pos, k, out) => {
           let x = pos[k], y = pos[k + 1], z = pos[k + 2];
-          if (S.wave) y = -0.8 + (y + 0.8) * (1 + 0.16 * Math.sin(st.time * 1.3 + x * 5));
+          if (S.wave) y = -0.8 + (y + 0.8) * (1 + 0.16 * Math.sin(st.time * 1.0 + x * 5));
           if (S.rot) {
             const rx = cy * x + sy * z, rz = -sy * x + cy * z;
             const ry = cx * y - sx * rz;

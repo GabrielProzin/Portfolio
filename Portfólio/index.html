@@ -61,6 +61,16 @@
       </svg>
       Gabriel Mendes
     </a>
+    <nav class="nav" aria-label="Seções do portfólio">
+      <div class="nav__track page-tabs__list" id="page-tabs">
+        <span class="nav__pill page-tabs__indicator" aria-hidden="true"></span>
+        <a href="#home" class="page-tab" aria-current="page">Visão geral</a>
+        <a href="#experience" class="page-tab">Experiência</a>
+        <a href="#projects" class="page-tab">Projetos</a>
+        <a href="#about" class="page-tab">Sobre</a>
+        <a href="#contact" class="page-tab">Contato</a>
+      </div>
+    </nav>
     <div class="header__actions">
       <button type="button" class="icon-btn" id="motion-toggle" aria-pressed="false" title="Pausar animações"
         aria-label="Pausar animações">
@@ -117,22 +127,18 @@
         </ul>
         <dl class="kpis intro-step" style="--d: 7">
           <div class="kpi">
-          <dt>unidades na base</dt>
-          <dd><span data-count="3.5" data-decimals="1">3,5</span> mil+</dd>
-        </div>
+            <dt>unidades na base de dados</dt>
+            <dd><span data-count="3.5" data-decimals="1">3,5</span> mil+</dd>
+          </div>
           <div class="kpi">
-          <dt>alunos ativos</dt>
-          <dd><span data-count="2.1" data-decimals="1">2,1</span> mi</dd>
-        </div>
+            <dt>redes de clientes</dt>
+            <dd><span data-count="400">400</span></dd>
+          </div>
           <div class="kpi">
-          <dt>clientes no pipeline</dt>
-          <dd><span data-count="18">18</span></dd>
-        </div>
-          <div class="kpi">
-          <dt>painéis migrados ao Power BI</dt>
-          <dd><span data-count="20">20</span>+</dd>
-        </div>
-      </dl>
+            <dt>alunos ativos</dt>
+            <dd><span data-count="2.1" data-decimals="1">2,1</span> mi</dd>
+          </div>
+        </dl>
       </div>
 
     </section>
@@ -171,8 +177,57 @@
           <p class="job__role">Cientista de Dados, <span>Pacto Soluções</span></p>
           <p class="job__period"><time datetime="2026-05">mai/2026</time> a <time datetime="2026-10">out/2026</time></p>
         </div>
+        <p class="job__summary">
+          Ciclo de dados de ponta a ponta numa plataforma de gestão para academias: da ingestão e
+          orquestração de pipelines à modelagem e aos dashboards de KPIs usados pelo negócio.
+        </p>
       </header>
 
+      <div class="cases">
+        <article class="case tile spot" data-reveal style="--c: var(--s-obs)">
+          <p class="case__stat"><span class="case__num"><span data-count="18">18</span></span><span
+              class="case__unit">clientes no mesmo pipeline</span></p>
+          <h3 class="case__title">Pipelines de dados multi-cliente</h3>
+          <p class="case__text">
+            ETL em Python orquestrado no Apache Airflow, levando dados das APIs do Zendesk e do Jira ao
+            BigQuery. Uma configuração centralizada faz o mesmo código atender 18 clientes.
+          </p>
+          <ul class="case__tags"><li>Python</li><li>Airflow</li><li>BigQuery</li></ul>
+        </article>
+
+        <article class="case tile spot" data-reveal style="--c: var(--s-violet)">
+          <p class="case__stat"><span class="case__num"><span data-count="20">20</span>+</span><span
+              class="case__unit">painéis de KPIs migrados</span></p>
+          <h3 class="case__title">Migração do Looker Studio ao Power BI</h3>
+          <p class="case__text">
+            Ativos, churn, cancelamentos, faturamento e inadimplência, com cada número conciliado contra a
+            fonte, por unidade e no consolidado.
+          </p>
+          <ul class="case__tags"><li>Power BI</li><li>DAX</li><li>Looker Studio</li></ul>
+        </article>
+
+        <article class="case tile spot" data-reveal style="--c: var(--s-trend)">
+          <p class="case__stat"><span class="case__num"><span data-count="404">404</span> mil</span><span
+              class="case__unit">linhas de histórico diário modelado</span></p>
+          <h3 class="case__title">Modelagem e qualidade de dados</h3>
+          <p class="case__text">
+            Histórico diário de 444 dias da situação de cada aluno. Encontrei e corrigi um bug que inflava a
+            contagem de tickets em dezenas de milhares, reprocessando o histórico validado contra a origem.
+          </p>
+          <ul class="case__tags"><li>SQL</li><li>DAX</li><li>Causa raiz</li></ul>
+        </article>
+
+        <article class="case tile spot" data-reveal style="--c: var(--s-fcst)">
+          <p class="case__stat"><span class="case__num"><span data-count="300">300</span>+</span><span
+              class="case__unit">testes automatizados</span></p>
+          <h3 class="case__title">Protótipo de módulo de NPS</h3>
+          <p class="case__text">
+            Projetei, dirigi e validei um protótipo full-stack, do levantamento de requisitos ao login com
+            Google: back-end em Java/Spring com PostgreSQL e front-end em React.
+          </p>
+          <ul class="case__tags"><li>Java</li><li>Spring</li><li>React</li><li>PostgreSQL</li></ul>
+        </article>
+      </div>
 
       <figure class="tile arch spot" id="arch" data-reveal aria-labelledby="arch-title">
         <figcaption class="tile__head">
@@ -359,23 +414,6 @@
     </section>
   </main>
 
-  <!-- Abas de página, como em um relatório de BI -->
-  <nav class="page-tabs" aria-label="Páginas do portfólio">
-    <div class="page-tabs__list" id="page-tabs">
-      <a href="#home" class="page-tab" aria-current="page">Visão geral</a>
-      <a href="#experience" class="page-tab">Experiência</a>
-      <a href="#projects" class="page-tab">Projetos</a>
-      <a href="#about" class="page-tab">Sobre</a>
-      <a href="#contact" class="page-tab">Contato</a>
-      <span class="page-tabs__indicator" aria-hidden="true"></span>
-    </div>
-    <div class="hud" aria-hidden="true">
-      <span class="hud__bar"><i></i></span>
-      <span class="hud__index">01</span>
-      <span class="hud__label">dados brutos</span>
-      <span class="hud__metric"></span>
-    </div>
-  </nav>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>

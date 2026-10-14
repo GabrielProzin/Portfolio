@@ -179,6 +179,7 @@ const tabIndicator = document.querySelector(".page-tabs__indicator");
 const pagePos = document.getElementById("page-pos");
 const pages = tabs.map((t) => document.querySelector(t.getAttribute("href")));
 
+let lastTabIndex = -1;
 function setActiveTab(index) {
   tabs.forEach((tab, i) => {
     if (i === index) tab.setAttribute("aria-current", "page");
@@ -189,6 +190,12 @@ function setActiveTab(index) {
     tabIndicator.style.setProperty("--x", `${tab.offsetLeft}px`);
     tabIndicator.style.setProperty("--w", `${tab.offsetWidth}px`);
   }
+  // no celular a navegação rola de lado: mantém a aba ativa visível
+  const navEl = tab?.closest(".nav");
+  if (navEl && index !== lastTabIndex && navEl.scrollWidth > navEl.clientWidth) {
+    navEl.scrollTo({ left: tab.offsetLeft - navEl.clientWidth / 2 + tab.offsetWidth / 2, behavior: "smooth" });
+  }
+  lastTabIndex = index;
   if (pagePos) pagePos.textContent = `Página ${index + 1} de ${tabs.length}`; // opcional
 }
 
