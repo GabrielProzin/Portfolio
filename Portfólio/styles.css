@@ -1987,7 +1987,7 @@ html:not(.js) .kpi::after {
     --tabs-h: 56px;
   }
 
-  .header__actions .icon-btn {
+  .header__actions a.icon-btn {
     display: none;
   }
 
@@ -2047,32 +2047,37 @@ html:not(.js) .kpi::after {
   }
 }
 
-/* ==================== MOVIMENTO REDUZIDO ==================== */
-@media (prefers-reduced-motion: reduce) {
-  .ticker {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
+/* ==================== ANIMAÇÕES PAUSADAS (botão no topo) ==================== */
+html.motion-off {
+  scroll-behavior: auto;
+}
 
-  .ticker__track,
-  .js .ticker__track {
-    width: auto;
-    flex-wrap: wrap;
-    justify-content: center;
-    animation: none;
-  }
+html.motion-off .ticker {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
 
-  html {
-    scroll-behavior: auto;
-  }
+html.motion-off .ticker__track {
+  width: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: none;
+}
 
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    transition-delay: 0s !important;
-    animation-duration: 0.01ms !important;
-  }
+html.motion-off *,
+html.motion-off *::before,
+html.motion-off *::after {
+  transition-duration: 0.01ms !important;
+  transition-delay: 0s !important;
+  animation-duration: 0.01ms !important;
+}
+
+html.motion-off.js .char,
+html.motion-off.js .intro-step,
+html.motion-off.js [data-reveal],
+html.motion-off.js [data-reveal] .chips li {
+  opacity: 1;
+  transform: none;
 }
 
 /* ==================== ALTO CONTRASTE ==================== */

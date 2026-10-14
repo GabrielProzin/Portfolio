@@ -9,7 +9,7 @@
 // ============================================================
 
 (function () {
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion = document.documentElement.classList.contains("motion-off");
 
   // ============================================================
   // FLUXO DE DADOS

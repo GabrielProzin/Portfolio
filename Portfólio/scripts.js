@@ -13,8 +13,24 @@ const POPUP_TIMEOUT = 2000;
 const GENERIC_FORM_ERROR =
   "Não foi possível enviar a mensagem agora. Tente novamente em alguns minutos ou use os links de contato.";
 
-const prefersReducedMotion = () =>
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const prefersReducedMotion = () => document.documentElement.classList.contains("motion-off");
+
+// Botão para pausar/retomar todas as animações (fica salvo no navegador)
+const motionToggle = document.getElementById("motion-toggle");
+if (motionToggle) {
+  const off = prefersReducedMotion();
+  motionToggle.setAttribute("aria-pressed", String(off));
+  const label = off ? "Retomar animações" : "Pausar animações";
+  motionToggle.setAttribute("aria-label", label);
+  motionToggle.title = label;
+  motionToggle.querySelector("i").className = off ? "bx bx-play-circle" : "bx bx-pause-circle";
+  motionToggle.addEventListener("click", () => {
+    try {
+      localStorage.setItem("motion", off ? "on" : "off");
+    } catch (e) {}
+    location.reload();
+  });
+}
 
 // ============================================================
 // PROJETOS

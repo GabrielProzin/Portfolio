@@ -6,7 +6,7 @@
 
 (function () {
   const root = document.documentElement;
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion = document.documentElement.classList.contains("motion-off");
 
   // ---------------- Nome letra a letra ----------------
   if (!reduceMotion) {

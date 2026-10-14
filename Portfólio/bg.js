@@ -1,33 +1,112 @@
 // ============================================================
-// FUNDO ANIMADO — milhares de "registros" em WebGL que viram
-// gráficos diferentes conforme a página rola:
+// FUNDO ANIMADO — milhares de "registros" que viram gráficos
+// diferentes conforme a página rola:
 //   1. dados brutos (nuvem 3D)   2. agregação (barras)
 //   3. machine learning (clusters)   4. tendência (série)
 //   5. conexão (esfera de rede)
 //
-// Desempenho: todas as formas ficam pré-calculadas na GPU; a
-// cada quadro só mudam alguns uniforms. O loop para quando a aba
-// não está visível. Sem WebGL, o site segue normal sem o fundo.
+// Usa WebGL (placa de vídeo) quando disponível. Sem WebGL — por
+// exemplo, com a aceleração de hardware desligada no navegador —
+// cai num renderizador 2D mais leve com a mesma animação.
+// O loop para quando a aba não está visível.
 // ============================================================
 
 (function () {
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const motionOff = document.documentElement.classList.contains("motion-off");
   const sections = Array.from(document.querySelectorAll("[data-scene]"));
   if (!sections.length) return;
 
-  const canvas = document.createElement("canvas");
-  canvas.className = "bg-canvas";
-  canvas.setAttribute("aria-hidden", "true");
-  document.body.prepend(canvas);
-
-  const gl = canvas.getContext("webgl", { antialias: false, alpha: true, premultipliedAlpha: false });
-  if (!gl) {
-    canvas.remove();
-    return;
+  function makeCanvas() {
+    const c = document.createElement("canvas");
+    c.className = "bg-canvas";
+    c.setAttribute("aria-hidden", "true");
+    document.body.prepend(c);
+    return c;
   }
 
+  // ---------------- Escolha do renderizador ----------------
+  const vs = `
+    attribute vec3 aA; attribute vec3 aB;
+    attribute vec3 aCA; attribute vec3 aCB;
+    attribute vec2 aSeed;
+    uniform float uMix, uTime, uAspect, uScale, uSize, uRotA, uRotB, uJitA, uJitB;
+    uniform vec2 uOffset, uMouse;
+    varying vec3 vColor; varying float vAlpha;
+
+    vec3 rotY(vec3 p, float a) { float c = cos(a), s = sin(a); return vec3(c*p.x + s*p.z, p.y, -s*p.x + c*p.z); }
+    vec3 rotX(vec3 p, float a) { float c = cos(a), s = sin(a); return vec3(p.x, c*p.y - s*p.z, s*p.y + c*p.z); }
+
+    void main() {
+      // cada ponto começa a transição num instante diferente (efeito orgânico)
+      float d = aSeed.x * 0.45;
+      float t = clamp((uMix - d) / (1.0 - 0.45), 0.0, 1.0);
+      t = t * t * (3.0 - 2.0 * t);
+
+      float ang = uTime * 0.18;
+      vec3 a = mix(aA, rotX(rotY(aA, ang), 0.35), uRotA);
+      vec3 b = mix(aB, rotX(rotY(aB, ang), 0.35), uRotB);
+      vec3 p = mix(a, b, t);
+
+      // no meio da transição os pontos fazem um arco
+      float arc = sin(3.14159 * t);
+      float th = aSeed.y * 6.2831;
+      p.xy += vec2(cos(th), sin(th)) * arc * 0.22;
+
+      // respiração leve
+      float jit = mix(uJitA, uJitB, t);
+      p.x += sin(uTime * 0.7 + aSeed.y * 40.0) * 0.006 * jit;
+      p.y += cos(uTime * 0.6 + aSeed.y * 31.0) * 0.006 * jit;
+
+      float persp = 1.0 / (1.0 + p.z * 0.45);
+      vec2 xy = p.xy * uScale * persp + uOffset + uMouse * (0.02 + 0.03 * (p.z + 1.0));
+      gl_Position = vec4(xy.x / uAspect, xy.y, 0.0, 1.0);
+      gl_PointSize = uSize * persp * (0.75 + aSeed.y * 0.5);
+
+      vColor = mix(aCA, aCB, t);
+      vAlpha = clamp(0.55 + (0.5 - p.z * 0.6), 0.25, 1.0);
+    }
+  `;
+  const fs = `
+    precision mediump float;
+    uniform float uAlpha;
+    varying vec3 vColor; varying float vAlpha;
+    void main() {
+      float r = length(gl_PointCoord - 0.5);
+      float a = smoothstep(0.5, 0.05, r);
+      gl_FragColor = vec4(vColor * 1.25, a * vAlpha * uAlpha);
+    }
+  `;
+
+  function tryWebGL() {
+    const canvas = makeCanvas();
+    try {
+      const gl =
+        canvas.getContext("webgl", { antialias: false, alpha: true, premultipliedAlpha: false }) ||
+        canvas.getContext("experimental-webgl");
+      if (!gl) throw new Error("WebGL indisponível");
+      const compile = (type, src) => {
+        const sh = gl.createShader(type);
+        gl.shaderSource(sh, src);
+        gl.compileShader(sh);
+        if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh));
+        return sh;
+      };
+      const prog = gl.createProgram();
+      gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+      return { canvas, gl, prog };
+    } catch (err) {
+      console.info("Fundo animado: usando renderizador 2D.", err.message || err);
+      canvas.remove();
+      return null;
+    }
+  }
+
+  const glSetup = tryWebGL();
   const small = window.innerWidth < 760;
-  const N = small ? 2600 : 5200;
+  const N = glSetup ? (small ? 2600 : 5200) : small ? 1500 : 2800;
 
   // ---------------- Utilidades ----------------
   let seed = 7;
@@ -155,161 +234,213 @@
     { data: sphere, rot: 1, jitter: 0.3, label: "conexão", metric: () => "vamos conversar" },
   ].slice(0, sections.length);
 
-  // ---------------- Shaders ----------------
-  const vs = `
-    attribute vec3 aA; attribute vec3 aB;
-    attribute vec3 aCA; attribute vec3 aCB;
-    attribute vec2 aSeed;
-    uniform float uMix, uTime, uAspect, uScale, uSize, uRotA, uRotB, uJitA, uJitB;
-    uniform vec2 uOffset, uMouse;
-    varying vec3 vColor; varying float vAlpha;
-
-    vec3 rotY(vec3 p, float a) { float c = cos(a), s = sin(a); return vec3(c*p.x + s*p.z, p.y, -s*p.x + c*p.z); }
-    vec3 rotX(vec3 p, float a) { float c = cos(a), s = sin(a); return vec3(p.x, c*p.y - s*p.z, s*p.y + c*p.z); }
-
-    void main() {
-      // cada ponto começa a transição num instante diferente (efeito orgânico)
-      float d = aSeed.x * 0.45;
-      float t = clamp((uMix - d) / (1.0 - 0.45), 0.0, 1.0);
-      t = t * t * (3.0 - 2.0 * t);
-
-      float ang = uTime * 0.18;
-      vec3 a = mix(aA, rotX(rotY(aA, ang), 0.35), uRotA);
-      vec3 b = mix(aB, rotX(rotY(aB, ang), 0.35), uRotB);
-      vec3 p = mix(a, b, t);
-
-      // no meio da transição os pontos fazem um arco
-      float arc = sin(3.14159 * t);
-      float th = aSeed.y * 6.2831;
-      p.xy += vec2(cos(th), sin(th)) * arc * 0.22;
-
-      // respiração leve
-      float jit = mix(uJitA, uJitB, t);
-      p.x += sin(uTime * 0.7 + aSeed.y * 40.0) * 0.006 * jit;
-      p.y += cos(uTime * 0.6 + aSeed.y * 31.0) * 0.006 * jit;
-
-      float persp = 1.0 / (1.0 + p.z * 0.45);
-      vec2 xy = p.xy * uScale * persp + uOffset + uMouse * (0.02 + 0.03 * (p.z + 1.0));
-      gl_Position = vec4(xy.x / uAspect, xy.y, 0.0, 1.0);
-      gl_PointSize = uSize * persp * (0.75 + aSeed.y * 0.5);
-
-      vColor = mix(aCA, aCB, t);
-      vAlpha = clamp(0.55 + (0.5 - p.z * 0.6), 0.25, 1.0);
-    }
-  `;
-  const fs = `
-    precision mediump float;
-    uniform float uAlpha;
-    varying vec3 vColor; varying float vAlpha;
-    void main() {
-      float r = length(gl_PointCoord - 0.5);
-      float a = smoothstep(0.5, 0.05, r);
-      gl_FragColor = vec4(vColor * 1.25, a * vAlpha * uAlpha);
-    }
-  `;
-
-  function compile(type, src) {
-    const s = gl.createShader(type);
-    gl.shaderSource(s, src);
-    gl.compileShader(s);
-    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
-    return s;
-  }
-
-  let prog;
-  try {
-    prog = gl.createProgram();
-    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
-    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
-  } catch (err) {
-    console.warn("Fundo animado desativado:", err);
-    canvas.remove();
-    return;
-  }
-  gl.useProgram(prog);
-
-  const attr = (name) => gl.getAttribLocation(prog, name);
-  const uni = (name) => gl.getUniformLocation(prog, name);
-  const loc = {
-    aA: attr("aA"), aB: attr("aB"), aCA: attr("aCA"), aCB: attr("aCB"), aSeed: attr("aSeed"),
-    uMix: uni("uMix"), uTime: uni("uTime"), uAspect: uni("uAspect"), uScale: uni("uScale"),
-    uSize: uni("uSize"), uRotA: uni("uRotA"), uRotB: uni("uRotB"), uJitA: uni("uJitA"),
-    uJitB: uni("uJitB"), uOffset: uni("uOffset"), uMouse: uni("uMouse"), uAlpha: uni("uAlpha"),
-  };
-
-  const buffer = (data) => {
-    const b = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, b);
-    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
-    return b;
-  };
-
-  // tudo na GPU de uma vez; trocar de cena é só apontar para outro buffer
-  SCENES.forEach((s) => {
-    s.posBuf = buffer(s.data.pos);
-    s.colBuf = buffer(s.data.col);
-  });
+  // ---------------- Sementes por ponto ----------------
   const seeds = new Float32Array(N * 2);
   for (let i = 0; i < N; i++) {
     seeds[i * 2] = rand();
     seeds[i * 2 + 1] = rand();
   }
-  const seedBuf = buffer(seeds);
 
-  function bindAttr(location, buf, size) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.enableVertexAttribArray(location);
-    gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
+  // ============================================================
+  // Renderizador WebGL
+  // ============================================================
+  function createGLRenderer({ canvas, gl, prog }) {
+    gl.useProgram(prog);
+    const attr = (name) => gl.getAttribLocation(prog, name);
+    const uni = (name) => gl.getUniformLocation(prog, name);
+    const loc = {
+      aA: attr("aA"), aB: attr("aB"), aCA: attr("aCA"), aCB: attr("aCB"), aSeed: attr("aSeed"),
+      uMix: uni("uMix"), uTime: uni("uTime"), uAspect: uni("uAspect"), uScale: uni("uScale"),
+      uSize: uni("uSize"), uRotA: uni("uRotA"), uRotB: uni("uRotB"), uJitA: uni("uJitA"),
+      uJitB: uni("uJitB"), uOffset: uni("uOffset"), uMouse: uni("uMouse"), uAlpha: uni("uAlpha"),
+    };
+    const buffer = (data) => {
+      const b = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, b);
+      gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+      return b;
+    };
+    // tudo na GPU de uma vez; trocar de cena é só apontar para outro buffer
+    SCENES.forEach((sc) => {
+      sc.posBuf = buffer(sc.data.pos);
+      sc.colBuf = buffer(sc.data.col);
+    });
+    const bindAttr = (location, buf, size) => {
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.enableVertexAttribArray(location);
+      gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
+    };
+    bindAttr(loc.aSeed, buffer(seeds), 2);
+
+    let boundPair = "";
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE); // aditivo: áreas densas brilham
+    gl.clearColor(0, 0, 0, 0);
+
+    return {
+      canvas,
+      maxDpr: 1.25,
+      resize(v) {
+        canvas.width = Math.round(v.W * v.dpr);
+        canvas.height = Math.round(v.H * v.dpr);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.uniform1f(loc.uAspect, v.aspect);
+        gl.uniform1f(loc.uScale, v.scale);
+        gl.uniform2f(loc.uOffset, v.offX, v.offY);
+        gl.uniform1f(loc.uSize, v.size * v.dpr);
+      },
+      draw(st) {
+        const key = `${st.i}-${st.j}`;
+        if (key !== boundPair) {
+          boundPair = key;
+          const A = SCENES[st.i];
+          const B = SCENES[st.j];
+          bindAttr(loc.aA, A.posBuf, 3);
+          bindAttr(loc.aB, B.posBuf, 3);
+          bindAttr(loc.aCA, A.colBuf, 3);
+          bindAttr(loc.aCB, B.colBuf, 3);
+          gl.uniform1f(loc.uRotA, A.rot);
+          gl.uniform1f(loc.uRotB, B.rot);
+          gl.uniform1f(loc.uJitA, A.jitter);
+          gl.uniform1f(loc.uJitB, B.jitter);
+        }
+        gl.uniform1f(loc.uMix, st.mix);
+        gl.uniform1f(loc.uTime, st.time);
+        gl.uniform2f(loc.uMouse, st.mx, st.my);
+        gl.uniform1f(loc.uAlpha, st.alpha);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.POINTS, 0, N);
+      },
+    };
   }
-  bindAttr(loc.aSeed, seedBuf, 2);
 
-  let boundPair = "";
-  function bindPair(i, j) {
-    const key = `${i}-${j}`;
-    if (key === boundPair) return;
-    boundPair = key;
-    bindAttr(loc.aA, SCENES[i].posBuf, 3);
-    bindAttr(loc.aB, SCENES[j].posBuf, 3);
-    bindAttr(loc.aCA, SCENES[i].colBuf, 3);
-    bindAttr(loc.aCB, SCENES[j].colBuf, 3);
-    gl.uniform1f(loc.uRotA, SCENES[i].rot);
-    gl.uniform1f(loc.uRotB, SCENES[j].rot);
-    gl.uniform1f(loc.uJitA, SCENES[i].jitter);
-    gl.uniform1f(loc.uJitB, SCENES[j].jitter);
+  // ============================================================
+  // Renderizador 2D (sem placa de vídeo)
+  // Mesma matemática do shader, em JS. Desenha num buffer de pixels
+  // em meia resolução; o navegador amplia e suaviza os pontos.
+  // ============================================================
+  function create2DRenderer() {
+    const canvas = makeCanvas();
+    const ctx = canvas.getContext("2d");
+    const RES = 0.5;
+    let img = null;
+    let data = null;
+    let w = 0;
+    let h = 0;
+    let v = null;
+
+    return {
+      canvas,
+      maxDpr: 1,
+      resize(view) {
+        v = view;
+        w = Math.max(1, Math.round(view.W * RES));
+        h = Math.max(1, Math.round(view.H * RES));
+        canvas.width = w;
+        canvas.height = h;
+        img = ctx.createImageData(w, h);
+        data = img.data;
+      },
+      draw(st) {
+        if (!v) return;
+        data.fill(0);
+        const A = SCENES[st.i];
+        const B = SCENES[st.j];
+        const pa = A.data.pos, pb = B.data.pos, ca = A.data.col, cb = B.data.col;
+        const ang = st.time * 0.18;
+        const cy = Math.cos(ang), sy = Math.sin(ang);
+        const cx = Math.cos(0.35), sx = Math.sin(0.35);
+        const sizeBase = v.size * RES;
+
+        for (let n = 0; n < N; n++) {
+          const s0 = seeds[n * 2], s1 = seeds[n * 2 + 1];
+          let t = (st.mix - s0 * 0.45) / 0.55;
+          t = t < 0 ? 0 : t > 1 ? 1 : t;
+          t = t * t * (3 - 2 * t);
+
+          const k = n * 3;
+          let ax = pa[k], ay = pa[k + 1], az = pa[k + 2];
+          if (A.rot) {
+            const rx = cy * ax + sy * az, rz = -sy * ax + cy * az;
+            const ry = cx * ay - sx * rz;
+            az = sx * ay + cx * rz; ax = rx; ay = ry;
+          }
+          let bx = pb[k], by = pb[k + 1], bz = pb[k + 2];
+          if (B.rot) {
+            const rx = cy * bx + sy * bz, rz = -sy * bx + cy * bz;
+            const ry = cx * by - sx * rz;
+            bz = sx * by + cx * rz; bx = rx; by = ry;
+          }
+          let px = ax + (bx - ax) * t;
+          let py = ay + (by - ay) * t;
+          const pz = az + (bz - az) * t;
+
+          const arc = Math.sin(Math.PI * t);
+          const th = s1 * 6.2831;
+          px += Math.cos(th) * arc * 0.22;
+          py += Math.sin(th) * arc * 0.22;
+          const jit = A.jitter + (B.jitter - A.jitter) * t;
+          px += Math.sin(st.time * 0.7 + s1 * 40) * 0.006 * jit;
+          py += Math.cos(st.time * 0.6 + s1 * 31) * 0.006 * jit;
+
+          const persp = 1 / (1 + pz * 0.45);
+          const m = 0.02 + 0.03 * (pz + 1);
+          const X = ((px * v.scale * persp + v.offX + st.mx * m) / v.aspect) * 0.5 + 0.5;
+          const Y = 0.5 - (py * v.scale * persp + v.offY + st.my * m) * 0.5;
+          const xi = (X * w) | 0;
+          const yi = (Y * h) | 0;
+          if (xi < 1 || yi < 1 || xi >= w - 1 || yi >= h - 1) continue;
+
+          let a = 0.55 + (0.5 - pz * 0.6);
+          a = (a < 0.25 ? 0.25 : a > 1 ? 1 : a) * st.alpha;
+          const r = Math.min(255, (ca[k] + (cb[k] - ca[k]) * t) * 320);
+          const g = Math.min(255, (ca[k + 1] + (cb[k + 1] - ca[k + 1]) * t) * 320);
+          const b = Math.min(255, (ca[k + 2] + (cb[k + 2] - ca[k + 2]) * t) * 320);
+
+          // ponto de 1 ou 2 px (em meia resolução) com borda suave
+          const big = sizeBase * persp * (0.75 + s1 * 0.5) > 1.6;
+          const rad = big ? 1 : 0;
+          for (let oy = -rad; oy <= rad; oy++) {
+            for (let ox = -rad; ox <= rad; ox++) {
+              const edge = ox !== 0 && oy !== 0 ? 0.35 : ox !== 0 || oy !== 0 ? 0.6 : 1;
+              const idx = ((yi + oy) * w + (xi + ox)) * 4;
+              if (data[idx] < r) data[idx] = r;
+              if (data[idx + 1] < g) data[idx + 1] = g;
+              if (data[idx + 2] < b) data[idx + 2] = b;
+              data[idx + 3] += a * edge * 200;
+            }
+          }
+        }
+        ctx.putImageData(img, 0, 0);
+      },
+    };
   }
 
-  gl.enable(gl.BLEND);
-  gl.blendFunc(gl.SRC_ALPHA, gl.ONE); // aditivo: áreas densas brilham
-  gl.clearColor(0, 0, 0, 0);
+  const renderer = glSetup ? createGLRenderer(glSetup) : create2DRenderer();
+  const canvas = renderer.canvas;
 
   // ---------------- Tamanho e layout ----------------
   let W = 0;
   let H = 0;
   let baseAlpha = 1;
   let focus = 1; // 1 quando uma cena está no centro da tela
-  let dpr = 1;
-  let aspect = 1;
 
   function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     W = window.innerWidth;
     H = window.innerHeight;
-    canvas.width = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-    gl.viewport(0, 0, canvas.width, canvas.height);
-    aspect = W / H;
-
+    const aspect = W / H;
     const wide = W >= 1000;
-    // no desktop o gráfico fica à direita; no celular, centralizado e mais discreto
-    const scale = wide ? 0.62 : Math.min(0.7, aspect * 0.85);
-    const offsetX = wide ? aspect * 0.42 : 0;
-    gl.uniform1f(loc.uAspect, aspect);
-    gl.uniform1f(loc.uScale, scale);
-    // no celular o gráfico fica na metade de baixo, abaixo dos títulos
-    gl.uniform2f(loc.uOffset, offsetX, wide ? -0.02 : -0.38);
-    gl.uniform1f(loc.uSize, (wide ? 4.2 : 3.4) * dpr);
+    // no desktop o gráfico fica à direita; no celular, na metade de baixo, abaixo dos títulos
+    renderer.resize({
+      W,
+      H,
+      aspect,
+      dpr: Math.min(window.devicePixelRatio || 1, renderer.maxDpr),
+      scale: wide ? 0.62 : Math.min(0.7, aspect * 0.85),
+      offX: wide ? aspect * 0.42 : 0,
+      offY: wide ? -0.02 : -0.38,
+      size: wide ? 4.2 : 3.4,
+    });
     baseAlpha = wide ? 1 : 0.7;
     measure();
   }
@@ -344,7 +475,7 @@
   // texto que "embaralha" números antes de assentar
   function scramble(el, text) {
     if (!el) return;
-    if (reduceMotion) {
+    if (motionOff) {
       el.textContent = text;
       return;
     }
@@ -377,7 +508,7 @@
 
   // ---------------- Mouse (parallax) ----------------
   const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
-  if (window.matchMedia("(pointer: fine)").matches && !reduceMotion) {
+  if (window.matchMedia("(pointer: fine)").matches && !motionOff) {
     window.addEventListener(
       "pointermove",
       (e) => {
@@ -421,22 +552,23 @@
     const i = Math.min(SCENES.length - 1, Math.floor(progress));
     const j = Math.min(SCENES.length - 1, i + 1);
     const frac = progress - i;
-    // a forma fica "pronta" enquanto a seção está no centro
     // a forma se mantém durante o conteúdo e se transforma quando a próxima "pausa" chega
     const k = Math.min(1, Math.max(0, (frac - 0.4) / 0.5));
     const e = k * k * (3 - 2 * k);
-    bindPair(i, j);
-    gl.uniform1f(loc.uMix, i === j ? 0 : e);
-    gl.uniform1f(loc.uTime, time);
-    gl.uniform2f(loc.uMouse, mouse.x, mouse.y);
-    gl.uniform1f(loc.uAlpha, baseAlpha * (0.35 + 0.65 * focus));
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.drawArrays(gl.POINTS, 0, N);
+    renderer.draw({
+      i,
+      j,
+      mix: i === j ? 0 : e,
+      time,
+      mx: mouse.x,
+      my: mouse.y,
+      alpha: baseAlpha * (0.35 + 0.65 * focus),
+    });
     updateHud(progress);
   }
 
   function start() {
-    if (raf || reduceMotion) return;
+    if (raf || motionOff) return;
     last = performance.now();
     raf = requestAnimationFrame(frame);
   }
@@ -453,7 +585,7 @@
   document.fonts?.ready.then(measure);
   if ("ResizeObserver" in window) new ResizeObserver(measure).observe(document.body);
 
-  if (reduceMotion) {
+  if (motionOff) {
     // sem animação contínua: redesenha só quando rola
     const still = () => {
       progress = targetProgress();
