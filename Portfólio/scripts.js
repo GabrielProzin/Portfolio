@@ -2,6 +2,8 @@
 // CONFIGURACOES
 // ============================================================
 
+document.documentElement.classList.add("js");
+
 const EMAIL_JS_CONFIG = {
   publicKey: "s7eWkxR-sAUpWSHJh",
   serviceId: "service_ghp9z7o",
@@ -12,15 +14,21 @@ const POPUP_TIMEOUT = 2000;
 const GENERIC_FORM_ERROR =
   "Não foi possível enviar a mensagem agora. Tente novamente em alguns minutos ou use os links de contato.";
 
+const prefersReducedMotion = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 // ============================================================
 // PROJETOS
 // ============================================================
 
 const projects = [
-    {
+  {
     title: "Detecção de Fraudes",
-    description:
-      "Problema: identificar transações com maior risco de fraude em cartões de crédito. Abordagem: realizei análise exploratória, preparação dos dados e comparação entre modelos como Logistic Regression e Random Forest, com apoio visual em Power BI. Resultado: uma base analítica que ajuda a interpretar padrões de fraude e avaliar o desempenho dos modelos.",
+    problem: "Identificar transações com maior risco de fraude em cartões de crédito.",
+    approach:
+      "Análise exploratória, preparação dos dados e comparação entre Logistic Regression e Random Forest, com apoio visual em Power BI.",
+    result:
+      "Uma base analítica que ajuda a interpretar padrões de fraude e avaliar o desempenho dos modelos.",
     image: "ImgProjeto/ML-BI.png",
     tags: ["Machine Learning", "Scikit-Learn", "Python", "Power BI"],
     category: ["ml", "analise"],
@@ -29,8 +37,10 @@ const projects = [
   },
   {
     title: "Dashboard de Mercado de Ações",
-    description:
-      "Problema: organizar dados do mercado acionário para facilitar comparações e leitura de tendências. Abordagem: tratei e estruturei bases reais da NASDAQ e construí dashboards no Power BI com foco em análise temporal e comparação entre ativos. Resultado: uma visualização clara para apoiar a exploração dos dados e a tomada de decisão.",
+    problem: "Organizar dados do mercado acionário para facilitar comparações e leitura de tendências.",
+    approach:
+      "Tratamento e estruturação de bases reais da NASDAQ e dashboards no Power BI com foco em análise temporal e comparação entre ativos.",
+    result: "Uma visualização clara para apoiar a exploração dos dados e a tomada de decisão.",
     image: "ImgProjeto/DashboardAnaliticoMercadoAcoes.png",
     tags: ["Power BI", "Time Intelligence", "Data Analysis"],
     category: "analise",
@@ -38,9 +48,10 @@ const projects = [
     live: "",
   },
   /* {
-    title: "Imersao Back-End",
-    description:
-      "Servidores robustos com Node.js, Express e MongoDB, com rotas, middleware e integracao com IA para analise de imagens, alem de autenticacao JWT.",
+    title: "Imersão Back-End",
+    problem: "Construir uma API completa do zero.",
+    approach: "Node.js, Express e MongoDB, com rotas, middlewares, autenticação JWT e integração com IA para análise de imagens.",
+    result: "Um servidor robusto pronto para receber um front-end.",
     image: "ImgProjeto/imagem_2024-12-03_110024271.png",
     tags: ["Node.js", "Express", "MongoDB"],
     category: "web",
@@ -49,286 +60,102 @@ const projects = [
   }, */
 ];
 
-// ============================================================
-// SCROLL SNAP ANIMADO (Desktop)
-// ============================================================
-
-const sections = document.querySelectorAll("section");
-let isDesktop = window.innerWidth > 992;
-let isScrolling = false;
-let currentSection = 0;
-
-function getHeaderOffset() {
-  const header = document.querySelector(".header");
-  return header ? header.offsetHeight + 16 : 80;
-}
-
-function getDocumentTop(element) {
-  return element.getBoundingClientRect().top + window.scrollY;
-}
-
-function getSectionTargetY(section) {
-  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-  const targetY = getDocumentTop(section) - getHeaderOffset();
-  return Math.max(0, Math.min(targetY, maxScroll));
-}
-
-function getAnchorTargetY(targetSection) {
-  if (targetSection?.id === "projects" && projectList) {
-    const sectionTopY = getSectionTargetY(targetSection);
-    const titleBlock = targetSection.querySelector(".section-title");
-    const cards = Array.from(projectList.querySelectorAll(".project-item"));
-
-    if (!titleBlock || cards.length === 0) {
-      return sectionTopY;
-    }
-
-    const firstRowTop = getDocumentTop(cards[0]);
-    const firstRowCards = cards.filter(
-      (card) => Math.abs(getDocumentTop(card) - firstRowTop) < 8
-    );
-
-    const firstRowBottom = Math.max(
-      ...firstRowCards.map((card) => getDocumentTop(card) + card.offsetHeight)
-    );
-    const viewportBottomTarget =
-      firstRowBottom - window.innerHeight + 24;
-    const extraOffset = window.innerHeight * -0.02;
-
-    return Math.max(sectionTopY, viewportBottomTarget) + extraOffset;
-  }
-
-  if (targetSection?.id === "contact") {
-    return getSectionTargetY(targetSection) + window.innerHeight * 0.08;
-  }
-
-  return getSectionTargetY(targetSection);
-}
-
-function getWheelTargetY(section) {
-  return getAnchorTargetY(section);
-}
-
-function updateCurrentSection() {
-  const scrollY = window.scrollY + getHeaderOffset() + window.innerHeight / 3;
-  sections.forEach((section, i) => {
-    const sectionTop = getDocumentTop(section);
-    const sectionBottom = sectionTop + section.offsetHeight;
-
-    if (
-      scrollY >= sectionTop &&
-      scrollY < sectionBottom
-    ) {
-      currentSection = i;
-    }
-  });
-}
-
-window.addEventListener("scroll", updateCurrentSection);
-window.addEventListener("load", updateCurrentSection);
-
-function easeOutCubic(t) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-function smoothScrollTo(targetY, duration = 700, callback) {
-  const startY = window.scrollY;
-  const diff = targetY - startY;
-  let startTime = null;
-
-  function step(currentTime) {
-    if (!startTime) startTime = currentTime;
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased = easeOutCubic(progress);
-
-    window.scrollTo(0, startY + diff * eased);
-
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    } else {
-      isScrolling = false;
-      if (callback) callback();
-    }
-  }
-
-  requestAnimationFrame(step);
-}
-
-if (isDesktop) {
-  window.addEventListener(
-    "wheel",
-    (e) => {
-      e.preventDefault();
-      if (isScrolling) return;
-      doScroll(e.deltaY > 0);
-    },
-    { passive: false }
-  );
-
-  window.addEventListener("keydown", (e) => {
-    const tag = e.target.tagName.toLowerCase();
-
-    if (tag === "input" || tag === "textarea") return;
-
-    const keys = ["ArrowDown", "PageDown", "Space", " "];
-    const keysUp = ["ArrowUp", "PageUp"];
-
-    if (keys.includes(e.key)) {
-      e.preventDefault();
-      if (isScrolling) return;
-      doScroll(true);
-    } else if (keysUp.includes(e.key)) {
-      e.preventDefault();
-      if (isScrolling) return;
-      doScroll(false);
-    }
-  });
-}
-
-function doScroll(goingDown) {
-  const nextIndex = goingDown
-    ? Math.min(currentSection + 1, sections.length - 1)
-    : Math.max(currentSection - 1, 0);
-
-  if (nextIndex === currentSection) return;
-
-  isScrolling = true;
-  currentSection = nextIndex;
-  smoothScrollTo(getWheelTargetY(sections[nextIndex]), 700);
-}
-
-window.addEventListener("resize", () => {
-  const wasDesktop = isDesktop;
-  isDesktop = window.innerWidth > 992;
-  updateCurrentSection();
-
-  if (wasDesktop !== isDesktop) {
-    location.reload();
-  }
-});
-
-// ============================================================
-// INICIALIZACAO
-// ============================================================
-
-emailjs.init(EMAIL_JS_CONFIG.publicKey);
-
-const menuIcon = document.getElementById("menu-icon");
-const navbar = document.querySelector(".navbar");
-const imageModal = document.getElementById("image-modal");
-const modalImage = imageModal?.querySelector("img");
-let lastFocusedElement = null;
-
-function setMenuState(isOpen) {
-  navbar.classList.toggle("active", isOpen);
-  menuIcon.setAttribute("aria-expanded", String(isOpen));
-}
-
-if (menuIcon) {
-  menuIcon.addEventListener("click", () => {
-    const isOpen = !navbar.classList.contains("active");
-    setMenuState(isOpen);
-  });
-}
-
-document.querySelectorAll('a[href^="#"]').forEach((link) => {
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    const targetSection = document.querySelector(link.getAttribute("href"));
-    if (!targetSection) return;
-
-    if (isScrolling) {
-      isScrolling = false;
-    }
-
-    smoothScrollTo(getAnchorTargetY(targetSection), 700);
-
-    if (link.closest(".navbar")) {
-      setMenuState(false);
-    }
-  });
-});
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && navbar.classList.contains("active")) {
-    setMenuState(false);
-    menuIcon.focus();
-  }
-});
-
-// ============================================================
-// RENDERIZACAO DE PROJETOS
-// ============================================================
-
-const projectList = document.getElementById("project-list");
-
 const filterLabels = {
   ml: "Machine Learning",
   analise: "Análise de Dados",
   web: "Web/Desenvolvimento",
 };
 
+// cor fixa por categoria (a cor segue a entidade, não a posição)
+const filterColors = {
+  ml: "var(--s-trend)",
+  analise: "var(--s-obs)",
+  web: "var(--s-fcst)",
+};
+
+const projectList = document.getElementById("project-list");
+const projectCount = document.getElementById("project-count");
+
+const asArray = (v) => (Array.isArray(v) ? v : [v]);
+
 function renderProjects(filter = "all") {
   const filtered =
-    filter === "all"
-      ? projects
-      : projects.filter((p) =>
-          Array.isArray(p.category)
-            ? p.category.includes(filter)
-            : p.category === filter
-        );
+    filter === "all" ? projects : projects.filter((p) => asArray(p.category).includes(filter));
 
   projectList.innerHTML = "";
+  projectCount.textContent =
+    filtered.length === 1 ? "1 projeto" : `${filtered.length} projetos`;
 
   if (filtered.length === 0) {
     projectList.innerHTML = `
-      <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
-        <i class="bx bx-bar-chart-alt-2" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
-        <p style="font-size: 1.1rem;">Nenhum projeto nesta categoria ainda!</p>
-        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Novos projetos serão adicionados em breve.</p>
+      <div class="empty-state">
+        <i class="bx bx-bar-chart-alt-2" aria-hidden="true"></i>
+        <p>Nenhum projeto nesta categoria por enquanto.</p>
+        <p>Selecione "Todos" para ver os projetos publicados.</p>
       </div>
     `;
     return;
   }
 
-  filtered.forEach((project) => {
+  filtered.forEach((project, i) => {
     const card = document.createElement("article");
-    card.className = "project-item";
-    card.dataset.category = project.category;
+    card.className = "tile project-item";
 
     const techTags = project.tags.map((t) => `<li>${t}</li>`).join("");
 
+    const badges = asArray(project.category)
+      .map(
+        (c) =>
+          `<span class="category-badge" style="--badge: ${filterColors[c] || "var(--muted)"}">${filterLabels[c] || c}</span>`
+      )
+      .join("");
+
     let linksHtml = "";
     if (project.github) {
-      linksHtml += `<a href="${project.github}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github"></i> Ver no GitHub</a>`;
+      linksHtml += `<a class="btn btn--ghost btn--sm" href="${project.github}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github"></i> Ver no GitHub</a>`;
     }
     if (project.live) {
-      linksHtml += `<a href="${project.live}" target="_blank" rel="noopener noreferrer"><i class="bx bx-link"></i> Ver Online</a>`;
+      linksHtml += `<a class="btn btn--ghost btn--sm" href="${project.live}" target="_blank" rel="noopener noreferrer"><i class="bx bx-link-external"></i> Ver online</a>`;
     }
 
-    const categoryBadges = Array.isArray(project.category)
-      ? project.category
-          .map((c) => `<span class="category-badge">${filterLabels[c] || c}</span>`)
-          .join("")
-      : `<span class="category-badge">${filterLabels[project.category] || project.category}</span>`;
-
     card.innerHTML = `
-      <img src="${project.image}" alt="${project.title}" class="project-thumbnail" loading="lazy" />
-      <div class="project-details">
-        <div class="project-header">
-          <h3>${project.title}</h3>
-          <div class="project-badges">
-            ${categoryBadges}
-          </div>
+      <div class="tile__head">
+        <div>
+          <h3 class="tile__title">${project.title}</h3>
+          <div class="project-badges">${badges}</div>
         </div>
-        <p>${project.description}</p>
-        <ul class="tech-list">${techTags}</ul>
+        <div class="tile__actions">
+          <button type="button" class="icon-btn focus-btn" title="Modo foco" aria-label="Ampliar imagem de ${project.title}">
+            <i class="bx bx-expand-alt"></i>
+          </button>
+        </div>
+      </div>
+      <div class="project-media">
+        <img src="${project.image}" alt="Captura do projeto ${project.title}" class="project-thumbnail" loading="lazy" />
+      </div>
+      <div class="project-body">
+        <dl class="psr">
+          <div><dt>Problema</dt><dd>${project.problem}</dd></div>
+          <div><dt>Abordagem</dt><dd>${project.approach}</dd></div>
+          <div><dt>Resultado</dt><dd>${project.result}</dd></div>
+        </dl>
+        <ul class="tech-list" aria-label="Tecnologias">${techTags}</ul>
         <div class="project-links">${linksHtml}</div>
       </div>
     `;
 
     projectList.appendChild(card);
+
+    // transição que mostra o que mudou ao filtrar
+    if (!prefersReducedMotion() && card.animate) {
+      card.animate(
+        [
+          { opacity: 0, transform: "translateY(10px)" },
+          { opacity: 1, transform: "none" },
+        ],
+        { duration: 320, delay: i * 70, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "backwards" }
+      );
+    }
   });
 }
 
@@ -336,27 +163,113 @@ renderProjects();
 
 document.querySelectorAll(".project-filters button").forEach((btn) => {
   btn.addEventListener("click", () => {
-    document
-      .querySelector(".project-filters button.active")
-      .classList.remove("active");
+    const current = document.querySelector(".project-filters button.active");
+    if (current === btn) return;
+    current.classList.remove("active");
+    current.setAttribute("aria-pressed", "false");
     btn.classList.add("active");
+    btn.setAttribute("aria-pressed", "true");
     renderProjects(btn.dataset.filter);
   });
 });
 
 // ============================================================
-// MODAL DE IMAGEM
+// ABAS DE PÁGINA (acompanham a rolagem)
 // ============================================================
 
-function openImageModal(src, alt) {
+const tabs = Array.from(document.querySelectorAll(".page-tab"));
+const tabIndicator = document.querySelector(".page-tabs__indicator");
+const pagePos = document.getElementById("page-pos");
+const pages = tabs.map((t) => document.querySelector(t.getAttribute("href")));
+
+function setActiveTab(index) {
+  tabs.forEach((tab, i) => {
+    if (i === index) tab.setAttribute("aria-current", "page");
+    else tab.removeAttribute("aria-current");
+  });
+  const tab = tabs[index];
+  if (tab && tabIndicator) {
+    tabIndicator.style.setProperty("--x", `${tab.offsetLeft}px`);
+    tabIndicator.style.setProperty("--w", `${tab.offsetWidth}px`);
+  }
+  if (pagePos) pagePos.textContent = `Página ${index + 1} de ${tabs.length}`;
+}
+
+function updateActiveFromScroll() {
+  // a página ativa é a que cruza a linha a 40% da altura da tela
+  const line = window.innerHeight * 0.4;
+  let active = 0;
+  pages.forEach((page, i) => {
+    if (page && page.getBoundingClientRect().top <= line) active = i;
+  });
+  // no fim da página, a última aba fica ativa
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+    active = pages.length - 1;
+  }
+  setActiveTab(active);
+}
+
+let scrollTicking = false;
+window.addEventListener(
+  "scroll",
+  () => {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(() => {
+      updateActiveFromScroll();
+      scrollTicking = false;
+    });
+  },
+  { passive: true }
+);
+window.addEventListener("resize", updateActiveFromScroll);
+window.addEventListener("load", updateActiveFromScroll);
+document.fonts?.ready.then(updateActiveFromScroll);
+updateActiveFromScroll();
+
+// ============================================================
+// PIPELINE (revela uma vez ao entrar na tela)
+// ============================================================
+
+const pipeline = document.getElementById("pipeline");
+if (pipeline && "IntersectionObserver" in window) {
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          pipeline.classList.add("is-visible");
+          io.disconnect();
+        }
+      });
+    },
+    { threshold: 0.35 }
+  );
+  io.observe(pipeline);
+} else {
+  pipeline?.classList.add("is-visible");
+}
+
+// ============================================================
+// MODAL DE IMAGEM (modo foco)
+// ============================================================
+
+const imageModal = document.getElementById("image-modal");
+const modalImage = imageModal?.querySelector("img");
+const modalTitle = document.getElementById("image-modal-title");
+const modalClose = document.getElementById("image-modal-close");
+let lastFocusedElement = null;
+
+function openImageModal(src, alt, title) {
   if (!imageModal || !modalImage) return;
 
   lastFocusedElement = document.activeElement;
   modalImage.src = src;
   modalImage.alt = alt || "Imagem ampliada do projeto";
+  if (modalTitle) modalTitle.textContent = title || "Projeto";
   imageModal.classList.add("show");
   imageModal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
+  modalClose?.focus();
 }
 
 function closeImageModal() {
@@ -366,17 +279,21 @@ function closeImageModal() {
 
   imageModal.classList.remove("show");
   imageModal.setAttribute("aria-hidden", "true");
-  modalImage.src = "";
   document.body.classList.remove("modal-open");
+  setTimeout(() => {
+    modalImage.src = "";
+  }, 200);
   lastFocusedElement?.focus?.();
 }
 
 document.addEventListener("click", (e) => {
-  if (e.target.matches(".project-thumbnail")) {
-    openImageModal(e.target.src, e.target.alt);
+  const card = e.target.closest(".project-item");
+  if (card && (e.target.matches(".project-thumbnail") || e.target.closest(".focus-btn"))) {
+    const img = card.querySelector(".project-thumbnail");
+    openImageModal(img.src, img.alt, card.querySelector(".tile__title")?.textContent);
   }
 
-  if (e.target === imageModal) {
+  if (e.target === imageModal || e.target.closest("#image-modal-close")) {
     closeImageModal();
   }
 });
@@ -385,13 +302,30 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeImageModal();
   }
+  // mantém o foco dentro do modal
+  if (e.key === "Tab" && imageModal?.classList.contains("show")) {
+    e.preventDefault();
+    modalClose?.focus();
+  }
 });
 
 // ============================================================
 // FORMULARIO DE CONTATO
 // ============================================================
 
+if (window.emailjs) {
+  emailjs.init(EMAIL_JS_CONFIG.publicKey);
+}
+
 const contactForm = document.getElementById("contact-form");
+const messageInput = document.getElementById("message");
+const charCount = document.getElementById("char-count");
+
+if (messageInput && charCount) {
+  messageInput.addEventListener("input", () => {
+    charCount.textContent = `${messageInput.value.length}/300`;
+  });
+}
 
 if (contactForm) {
   contactForm.addEventListener("submit", async (e) => {
@@ -408,9 +342,10 @@ if (contactForm) {
     const msg = messageField.value.trim();
     const honeypot = honeypotField.value.trim();
 
-    [nameField, emailField, messageField].forEach((f) =>
-      f.classList.remove("error")
-    );
+    [nameField, emailField, messageField].forEach((f) => {
+      f.classList.remove("error");
+      f.removeAttribute("aria-invalid");
+    });
 
     if (honeypot) {
       messageEl.textContent = "Envio bloqueado.";
@@ -418,25 +353,35 @@ if (contactForm) {
       return;
     }
 
-    let hasError = false;
+    const problems = [];
 
     if (!name || name.length < 2 || name.length > 50) {
       nameField.classList.add("error");
-      hasError = true;
+      nameField.setAttribute("aria-invalid", "true");
+      problems.push("nome com pelo menos 2 letras");
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       emailField.classList.add("error");
-      hasError = true;
+      emailField.setAttribute("aria-invalid", "true");
+      problems.push("um e-mail válido");
     }
 
     if (!msg || msg.length < 10 || msg.length > 300) {
       messageField.classList.add("error");
-      hasError = true;
+      messageField.setAttribute("aria-invalid", "true");
+      problems.push("mensagem entre 10 e 300 caracteres");
     }
 
-    if (hasError) {
-      messageEl.textContent = "Preencha os campos corretamente.";
+    if (problems.length) {
+      messageEl.textContent = `Confira: ${problems.join(", ")}.`;
+      messageEl.className = "form-message error";
+      contactForm.querySelector(".error")?.focus();
+      return;
+    }
+
+    if (!window.emailjs) {
+      messageEl.textContent = GENERIC_FORM_ERROR;
       messageEl.className = "form-message error";
       return;
     }
@@ -451,9 +396,10 @@ if (contactForm) {
         message: msg,
       });
 
-      messageEl.textContent = "Mensagem enviada com sucesso!";
+      messageEl.textContent = "Mensagem enviada. Obrigado pelo contato!";
       messageEl.className = "form-message success";
       contactForm.reset();
+      if (charCount) charCount.textContent = "0/300";
     } catch (error) {
       console.error("Erro EmailJS:", error);
       messageEl.textContent = GENERIC_FORM_ERROR;
@@ -473,7 +419,7 @@ if (copyEmailBtn) {
   copyEmailBtn.addEventListener("click", () => {
     navigator.clipboard
       .writeText(emailText.textContent)
-      .then(() => showCopiedPopup("Copiado!"))
+      .then(() => showCopiedPopup("Copiado"))
       .catch(console.error);
   });
 }
@@ -482,6 +428,7 @@ function showCopiedPopup(text) {
   const popup = document.createElement("div");
   popup.textContent = text;
   popup.className = "copied-popup";
+  popup.setAttribute("role", "status");
   copyEmailBtn.parentElement.appendChild(popup);
 
   requestAnimationFrame(() => popup.classList.add("show"));
@@ -491,3 +438,10 @@ function showCopiedPopup(text) {
     setTimeout(() => popup.remove(), 300);
   }, POPUP_TIMEOUT);
 }
+
+// ============================================================
+// RODAPÉ
+// ============================================================
+
+const yearEl = document.getElementById("year");
+if (yearEl) yearEl.textContent = String(new Date().getFullYear());

@@ -8,180 +8,312 @@
     content="Portfólio de Gabriel Mendes, Cientista de Dados com experiência em Python, SQL, Machine Learning e Visualização de Dados." />
   <meta name="author" content="Gabriel Mendes" />
   <meta name="keywords"
-    content="Gabriel Mendes, Cientista de Dados, Data Science, Python, Machine Learning, SQL, Portfólio" />
+    content="Gabriel Mendes, Cientista de Dados, Data Science, Python, Machine Learning, SQL, Power BI, Portfólio" />
+  <meta name="theme-color" content="#0e1828" />
   <title>Portfólio | Gabriel Mendes</title>
 
-  <!-- Styles -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
     rel="stylesheet" />
+
+  <!-- Styles -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <!-- Modal de imagem -->
+  <a class="skip-link" href="#home">Pular para o conteúdo</a>
+
+  <!-- Modal de imagem (modo foco) -->
   <div class="image-modal" id="image-modal" role="dialog" aria-modal="true" aria-hidden="true"
-    aria-label="Visualização ampliada da imagem do projeto">
-    <img src="" alt="Imagem ampliada do projeto" />
+    aria-labelledby="image-modal-title">
+    <figure class="image-modal__frame">
+      <figcaption class="image-modal__bar">
+        <span id="image-modal-title">Projeto</span>
+        <button type="button" class="icon-btn" id="image-modal-close" aria-label="Sair do modo foco">
+          <i class="bx bx-x"></i>
+        </button>
+      </figcaption>
+      <img src="" alt="Imagem ampliada do projeto" />
+    </figure>
   </div>
 
   <!-- Cabeçalho -->
   <header class="header">
-    <a href="#home" class="logo" aria-label="Ir para seção inicial">
-      Gabriel <span>Mendes</span>
+    <a href="#home" class="logo" aria-label="Ir para a visão geral">
+      <svg class="logo__mark" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="12" width="4" height="9" rx="1" />
+        <rect x="10" y="7" width="4" height="14" rx="1" />
+        <rect x="17" y="3" width="4" height="18" rx="1" />
+      </svg>
+      Gabriel Mendes
     </a>
-    <button id="menu-icon" class="menu-icon" type="button" aria-label="Abrir menu" aria-expanded="false"
-      aria-controls="primary-navigation">
-      <i class="bx bx-menu"></i>
-    </button>
-    <nav class="navbar" id="primary-navigation" aria-label="Navegação principal">
-      <a href="#home">Home</a>
-      <a href="#about">Sobre</a>
-      <a href="#projects">Projetos</a>
-      <a href="#contact">Contato</a>
-    </nav>
+    <div class="header__actions">
+      <a class="icon-btn" href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer"
+        aria-label="GitHub">
+        <i class="bx bxl-github"></i>
+      </a>
+      <a class="icon-btn" href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank"
+        rel="noopener noreferrer" aria-label="LinkedIn">
+        <i class="bx bxl-linkedin"></i>
+      </a>
+      <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost btn--sm">
+        <i class="bx bx-download"></i> Baixar CV
+      </a>
+    </div>
   </header>
 
-  <!-- Seção Home -->
-  <section class="home" id="home">
-    <div class="home-content">
-      <h1><span>Gabriel Mendes</span></h1>
-      <h3><span>Cientista de Dados</span></h3>
-      <p>
-        Transformo dados em análises, modelos e dashboards que apoiam decisões de negócio.
-        Atuo com Python, SQL, Power BI e machine learning para organizar informação,
-        encontrar padrões e gerar entregas objetivas.
-      </p>
-      <div class="social-icons">
-        <a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer"
-          aria-label="Link para GitHub">
-          <i class="bx bxl-github"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer"
-          aria-label="Link para LinkedIn">
-          <i class="bx bxl-linkedin"></i>
-        </a>
-        <a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer"
-          aria-label="Link para WhatsApp">
-          <i class="bx bxl-whatsapp"></i>
-        </a>
+  <main>
+    <!-- Página 1: Visão geral -->
+    <section class="home page" id="home" aria-labelledby="home-title">
+      <div class="home__intro">
+        <p class="status"><span class="status__dot" aria-hidden="true"></span> Aberto a novas oportunidades</p>
+        <h1 id="home-title" class="display">Gabriel<br />Mendes</h1>
+        <div class="home__role">
+          <img class="avatar" src="photo/WhatsApp Image 2024-12-03 at 9.36.39 AM.png" alt="Foto de Gabriel Mendes"
+            width="64" height="64" fetchpriority="high" decoding="async" />
+          <p>Cientista de Dados<br /><span>Goiânia, GO</span></p>
+        </div>
+        <p class="lede">
+          Transformo dados em análises, modelos e dashboards que apoiam decisões de negócio.
+          Atuo com Python, SQL, Power BI e machine learning para organizar informação,
+          encontrar padrões e gerar entregas objetivas.
+        </p>
+        <div class="btn-group">
+          <a href="#projects" class="btn btn--primary">
+            <i class="bx bx-bar-chart-alt-2"></i> Ver projetos
+          </a>
+          <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost">
+            <i class="bx bx-download"></i> Baixar currículo
+          </a>
+        </div>
+        <ul class="social-icons" aria-label="Redes">
+          <li><a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer"
+              aria-label="GitHub"><i class="bx bxl-github"></i></a></li>
+          <li><a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer"
+              aria-label="LinkedIn"><i class="bx bxl-linkedin"></i></a></li>
+          <li><a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer"
+              aria-label="WhatsApp"><i class="bx bxl-whatsapp"></i></a></li>
+        </ul>
       </div>
-      <div class="btn-group">
-        <a href="#projects" class="btn-view">
-          <i class="bx bx-folder"></i> Ver Projetos
-        </a>
-        <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn-download"
-          aria-label="Baixar Currículo">
-          <i class="bx bx-download"></i> Download CV
-        </a>
+
+      <figure class="tile tile--hero" aria-labelledby="hero-chart-title">
+        <figcaption class="tile__head">
+          <div>
+            <h2 class="tile__title" id="hero-chart-title">Do ruído ao sinal</h2>
+            <p class="tile__sub">Série sintética de vendas mensais, com tendência e previsão calculadas no navegador</p>
+          </div>
+          <div class="tile__actions">
+            <button type="button" class="icon-btn" id="hero-table-toggle" aria-pressed="false"
+              aria-controls="hero-table-wrap" title="Mostrar como tabela" aria-label="Mostrar como tabela">
+              <i class="bx bx-table"></i>
+            </button>
+            <button type="button" class="icon-btn" id="hero-replay" title="Reproduzir animação"
+              aria-label="Reproduzir animação">
+              <i class="bx bx-revision"></i>
+            </button>
+          </div>
+        </figcaption>
+
+        <div class="chart" id="hero-chart" tabindex="0" role="img"
+          aria-label="Gráfico de dispersão com 42 observações mensais, linha de tendência e previsão de 8 meses com intervalo de confiança. Use as setas para percorrer os pontos.">
+          <div class="chart__tooltip" id="hero-tooltip" aria-hidden="true"></div>
+        </div>
+
+        <div class="table-wrap" id="hero-table-wrap" hidden>
+          <table class="data-table" id="hero-table">
+            <caption class="sr-only">Dados do gráfico Do ruído ao sinal</caption>
+          </table>
+        </div>
+
+        <ul class="legend" aria-label="Legenda">
+          <li><span class="key key--dot"></span> Observado</li>
+          <li><span class="key key--line"></span> Tendência (LOESS)</li>
+          <li><span class="key key--dash"></span> Previsão com intervalo de 95%</li>
+        </ul>
+      </figure>
+    </section>
+
+    <!-- Página 2: Sobre -->
+    <section class="about page" id="about" aria-labelledby="about-title">
+      <div class="page__head">
+        <h2 id="about-title" class="page__title">Quem sou eu</h2>
       </div>
-    </div>
 
-    <div class="home-img">
-      <img src="photo/WhatsApp Image 2024-12-03 at 9.36.39 AM.png" alt="Foto de Gabriel Mendes" width="300"
-        height="300" fetchpriority="high" decoding="async" />
-    </div>
-  </section>
+      <div class="about__grid">
+        <div class="about__text">
+          <p>
+            Sou formado em <strong>Análise e Desenvolvimento de Sistemas</strong> pelo IPOG e atualmente
+            curso <strong>Pós-graduação em Ciência de Dados</strong>. Minha base em desenvolvimento de software
+            me ajuda a trabalhar dados com visão mais prática: entender o problema, estruturar a informação,
+            automatizar etapas e implementar soluções orientadas a dados.
+          </p>
+          <p>
+            Tenho experiência com Python, SQL, Pandas, NumPy, Scikit-learn e Power BI, atuando em
+            análise exploratória, tratamento de dados, construção de dashboards e modelos preditivos.
+            Busco oportunidades em que eu possa usar dados para reduzir incerteza, apoiar decisões e
+            construir soluções escaláveis.
+          </p>
+        </div>
 
-  <!-- Seção Sobre -->
-  <section class="about" id="about">
-    <div class="about-content">
-      <h2>Quem sou eu?</h2>
-      <p>
-        Sou formado em <strong>Análise e Desenvolvimento de Sistemas</strong> pelo IPOG e atualmente
-        curso <strong>Pós-graduação em Ciência de Dados</strong>. Minha base em desenvolvimento de software
-        me ajuda a trabalhar dados com visão mais prática: entender o problema, estruturar a informação,
-        automatizar etapas e implementar soluções orientadas a dados.
-      </p>
-      <p>
-        Tenho experiência com Python, SQL, Pandas, NumPy, Scikit-learn e Power BI, atuando em
-        análise exploratória, tratamento de dados, construção de dashboards e modelos preditivos.
-        Busco oportunidades em que eu possa usar dados para reduzir incerteza, apoiar decisões e
-        construir soluções escaláveis.
-      </p>
-    </div>
-  </section>
-
-  <!-- Seção Projetos -->
-  <section class="projects" id="projects">
-    <div class="section-title">
-      <h2>Meus Projetos</h2>
-      <p>
-        Alguns projetos em que trabalhei com análise de dados, visualização e machine learning,
-        sempre com foco em problema, abordagem e aplicação prática.
-      </p>
-    </div>
-
-    <!-- Filtros -->
-    <div class="project-filters">
-      <button class="active" data-filter="all">Todos</button>
-      <button data-filter="ml">Machine Learning</button>
-      <button data-filter="analise">Análise de Dados</button>
-      <!-- <button data-filter="web">Web/Desenvolvimento</button> -->
-    </div>
-
-    <div class="project-list" id="project-list">
-      <!-- Os projetos são gerados dinamicamente em scripts.js -->
-    </div>
-  </section>
-
-  <!-- Seção Contato -->
-  <section class="contact" id="contact">
-    <h2 class="section-title">Entre em contato comigo :)</h2>
-    <p>
-      Caso queira entrar em contato, envie uma mensagem através dos contatos abaixo.
-    </p>
-    <form id="contact-form" class="contact-form" autocomplete="off">
-      <input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true"
-        class="honeypot" />
-      <div class="form-group">
-        <label for="name">Nome</label>
-        <input type="text" id="name" name="user_name" placeholder="Seu Nome" required maxlength="50" />
+        <dl class="tile facts">
+          <div class="facts__row">
+            <dt>Formação</dt>
+            <dd>Análise e Desenvolvimento de Sistemas, IPOG</dd>
+          </div>
+          <div class="facts__row">
+            <dt>Em andamento</dt>
+            <dd>Pós-graduação em Ciência de Dados</dd>
+          </div>
+          <div class="facts__row">
+            <dt>Linguagens</dt>
+            <dd>Python, SQL, JavaScript</dd>
+          </div>
+          <div class="facts__row">
+            <dt>Bancos de dados</dt>
+            <dd>MongoDB, Firebase, Firebird</dd>
+          </div>
+        </dl>
       </div>
-      <div class="form-group">
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="user_email" placeholder="Seu E-mail" required
-          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" maxlength="50" />
-      </div>
-      <div class="form-group">
-        <label for="message">Mensagem</label>
-        <textarea id="message" name="message" placeholder="Sua Mensagem" rows="5" maxlength="300"
-          required></textarea>
-      </div>
-      <button type="submit" class="submit-btn" aria-label="Enviar Mensagem">
-        Enviar
-      </button>
-    </form>
-    <div id="form-message" class="form-message" aria-live="polite"></div>
 
-    <div class="contact-links">
-      <a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer">
-        <i class="bx bxl-github"></i> GitHub
-      </a>
-      <a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer">
-        <i class="bx bxl-linkedin"></i> LinkedIn
-      </a>
-      <a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer">
-        <i class="bx bxl-whatsapp"></i> WhatsApp
-      </a>
+      <div class="tile pipeline" id="pipeline">
+        <div class="tile__head">
+          <div>
+            <h3 class="tile__title">Como eu trabalho com dados</h3>
+            <p class="tile__sub">Do dado bruto à decisão, e as ferramentas que uso em cada etapa</p>
+          </div>
+        </div>
+        <ol class="pipeline__steps">
+          <li class="pipeline__step" style="--i: 0">
+            <span class="pipeline__node" aria-hidden="true"><i class="bx bx-data"></i></span>
+            <h4>Extrair</h4>
+            <p>Consultas e otimização de queries para chegar ao dado certo.</p>
+            <ul class="chips"><li>SQL</li><li>MongoDB</li><li>Firebird</li><li>JSON</li></ul>
+          </li>
+          <li class="pipeline__step" style="--i: 1">
+            <span class="pipeline__node" aria-hidden="true"><i class="bx bx-filter-alt"></i></span>
+            <h4>Tratar</h4>
+            <p>Limpeza, padronização e análise exploratória.</p>
+            <ul class="chips"><li>Python</li><li>Pandas</li><li>NumPy</li></ul>
+          </li>
+          <li class="pipeline__step" style="--i: 2">
+            <span class="pipeline__node" aria-hidden="true"><i class="bx bx-network-chart"></i></span>
+            <h4>Modelar</h4>
+            <p>Modelos preditivos comparados por métricas de negócio.</p>
+            <ul class="chips"><li>Scikit-learn</li><li>Logistic Regression</li><li>Random Forest</li></ul>
+          </li>
+          <li class="pipeline__step" style="--i: 3">
+            <span class="pipeline__node" aria-hidden="true"><i class="bx bx-bar-chart-square"></i></span>
+            <h4>Comunicar</h4>
+            <p>Dashboards que respondem perguntas, não só mostram números.</p>
+            <ul class="chips"><li>Power BI</li><li>Time Intelligence</li></ul>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Página 3: Projetos -->
+    <section class="projects page" id="projects" aria-labelledby="projects-title">
+      <div class="page__head">
+        <h2 id="projects-title" class="page__title">Projetos</h2>
+        <p>
+          Projetos de análise de dados, visualização e machine learning, cada um descrito por
+          problema, abordagem e resultado.
+        </p>
+      </div>
+
+      <div class="slicer" role="group" aria-labelledby="slicer-label">
+        <span class="slicer__label" id="slicer-label">Categoria</span>
+        <div class="slicer__options project-filters">
+          <button type="button" class="active" aria-pressed="true" data-filter="all">Todos</button>
+          <button type="button" aria-pressed="false" data-filter="ml">Machine Learning</button>
+          <button type="button" aria-pressed="false" data-filter="analise">Análise de Dados</button>
+          <!-- <button type="button" aria-pressed="false" data-filter="web">Web/Desenvolvimento</button> -->
+        </div>
+        <span class="slicer__count" id="project-count" aria-live="polite"></span>
+      </div>
+
+      <div class="project-list" id="project-list">
+        <!-- Os projetos são gerados dinamicamente em scripts.js -->
+      </div>
+    </section>
+
+    <!-- Página 4: Contato -->
+    <section class="contact page" id="contact" aria-labelledby="contact-title">
+      <div class="page__head">
+        <h2 id="contact-title" class="page__title">Vamos conversar</h2>
+        <p>Tem uma vaga, um projeto ou uma pergunta? Mande uma mensagem ou fale comigo pelos canais abaixo.</p>
+      </div>
+
+      <div class="contact__grid">
+        <div class="tile contact__form-tile">
+          <form id="contact-form" class="contact-form" autocomplete="off" novalidate>
+            <input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true"
+              class="honeypot" />
+            <div class="form-group">
+              <label for="name">Nome</label>
+              <input type="text" id="name" name="user_name" placeholder="Seu nome" required maxlength="50" />
+            </div>
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="user_email" placeholder="voce@empresa.com" required
+                maxlength="50" />
+            </div>
+            <div class="form-group">
+              <label for="message">Mensagem <span class="char-count" id="char-count">0/300</span></label>
+              <textarea id="message" name="message" placeholder="Escreva sua mensagem" rows="5" maxlength="300"
+                required></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary submit-btn">
+              <i class="bx bx-send"></i> Enviar mensagem
+            </button>
+            <div id="form-message" class="form-message" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <div class="tile contact__links">
+          <h3 class="tile__title">Outros canais</h3>
+          <ul class="link-list">
+            <li><a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer">
+                <i class="bx bxl-linkedin"></i><span>LinkedIn<small>linkedin.com/in/gabrielmendesurl</small></span></a>
+            </li>
+            <li><a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer">
+                <i class="bx bxl-github"></i><span>GitHub<small>github.com/GabrielProzin</small></span></a></li>
+            <li><a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer">
+                <i class="bx bxl-whatsapp"></i><span>WhatsApp<small>(62) 98125-3588</small></span></a></li>
+          </ul>
+          <div class="email-display">
+            <span class="email-display__label">E-mail</span>
+            <span id="user-email">gabrielalexandrino2004@gmail.com</span>
+            <button id="copy-email" class="btn btn--ghost btn--sm copy-btn" type="button">
+              <i class="bx bx-copy"></i> Copiar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">© <span id="year">2026</span> Gabriel Mendes</footer>
+    </section>
+  </main>
+
+  <!-- Abas de página, como em um relatório de BI -->
+  <nav class="page-tabs" aria-label="Páginas do portfólio">
+    <div class="page-tabs__list" id="page-tabs">
+      <a href="#home" class="page-tab" aria-current="page">Visão geral</a>
+      <a href="#about" class="page-tab">Sobre</a>
+      <a href="#projects" class="page-tab">Projetos</a>
+      <a href="#contact" class="page-tab">Contato</a>
+      <span class="page-tabs__indicator" aria-hidden="true"></span>
     </div>
-    <div class="email-display">
-      <p>
-        Meu e-mail:
-        <span id="user-email">gabrielalexandrino2004@gmail.com</span>
-        <button id="copy-email" class="copy-btn" aria-label="Copiar e-mail">
-          Copiar
-        </button>
-      </p>
-    </div>
-  </section>
+    <span class="page-tabs__pos" id="page-pos" aria-hidden="true">Página 1 de 4</span>
+  </nav>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="charts.js"></script>
   <script src="scripts.js"></script>
 </body>
 
