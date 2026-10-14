@@ -30,6 +30,7 @@
     attribute vec3 aCA; attribute vec3 aCB;
     attribute vec2 aSeed;
     uniform float uMix, uTime, uAspect, uScale, uSize, uRotA, uRotB, uJitA, uJitB;
+    uniform float uSwayA, uSwayB, uWaveA, uWaveB, uScanA, uScanB;
     uniform vec2 uOffset, uMouse;
     varying vec3 vColor; varying float vAlpha;
 
@@ -43,9 +44,24 @@
       t = t * t * (3.0 - 2.0 * t);
 
       float ang = uTime * 0.18;
-      vec3 a = mix(aA, rotX(rotY(aA, ang), 0.35), uRotA);
-      vec3 b = mix(aB, rotX(rotY(aB, ang), 0.35), uRotB);
+      float sway = sin(uTime * 0.45) * 0.42;
+
+      // barras "ao vivo": a altura de cada barra sobe e desce a partir da base
+      vec3 a = aA;
+      a.y = mix(a.y, -0.8 + (a.y + 0.8) * (1.0 + 0.16 * sin(uTime * 1.3 + aA.x * 5.0)), uWaveA);
+      a = mix(a, rotX(rotY(a, ang), 0.35), uRotA);
+      a = mix(a, rotY(a, sway), uSwayA);
+
+      vec3 b = aB;
+      b.y = mix(b.y, -0.8 + (b.y + 0.8) * (1.0 + 0.16 * sin(uTime * 1.3 + aB.x * 5.0)), uWaveB);
+      b = mix(b, rotX(rotY(b, ang), 0.35), uRotB);
+      b = mix(b, rotY(b, sway), uSwayB);
+
       vec3 p = mix(a, b, t);
+
+      // varredura de luz que percorre os dados da esquerda para a direita
+      float sx = fract(uTime * 0.16) * 2.8 - 1.4;
+      float scan = exp(-pow((p.x - sx) * 5.5, 2.0)) * mix(uScanA, uScanB, t);
 
       // no meio da transição os pontos fazem um arco
       float arc = sin(3.14159 * t);
@@ -54,15 +70,16 @@
 
       // respiração leve
       float jit = mix(uJitA, uJitB, t);
-      p.x += sin(uTime * 0.7 + aSeed.y * 40.0) * 0.006 * jit;
-      p.y += cos(uTime * 0.6 + aSeed.y * 31.0) * 0.006 * jit;
+      float sp = 0.6 + aSeed.x * 0.9;
+      p.x += sin(uTime * sp + aSeed.y * 40.0) * 0.006 * jit;
+      p.y += cos(uTime * sp * 0.85 + aSeed.y * 31.0) * 0.006 * jit;
 
       float persp = 1.0 / (1.0 + p.z * 0.45);
       vec2 xy = p.xy * uScale * persp + uOffset + uMouse * (0.02 + 0.03 * (p.z + 1.0));
       gl_Position = vec4(xy.x / uAspect, xy.y, 0.0, 1.0);
-      gl_PointSize = uSize * persp * (0.75 + aSeed.y * 0.5);
+      gl_PointSize = uSize * persp * (0.75 + aSeed.y * 0.5) * (1.0 + scan * 0.9);
 
-      vColor = mix(aCA, aCB, t);
+      vColor = mix(aCA, aCB, t) + scan * 0.55;
       vAlpha = clamp(0.55 + (0.5 - p.z * 0.6), 0.25, 1.0);
     }
   `;
@@ -227,11 +244,11 @@
   });
 
   const SCENES = [
-    { data: cloud, rot: 1, jitter: 1.4, label: "dados brutos", metric: () => `n = ${N.toLocaleString("pt-BR")} registros` },
-    { data: bars, rot: 0, jitter: 0.5, label: "agregação", metric: () => "12 meses agregados" },
-    { data: clusters, rot: 0, jitter: 0.8, label: "machine learning", metric: () => "k-means, k = 3" },
-    { data: series, rot: 0, jitter: 0.4, label: "tendência", metric: () => "série + previsão" },
-    { data: sphere, rot: 1, jitter: 0.3, label: "conexão", metric: () => "vamos conversar" },
+    { data: cloud, rot: 1, sway: 0, wave: 0, scan: 0, jitter: 1.4, label: "dados brutos", metric: () => `n = ${N.toLocaleString("pt-BR")} registros` },
+    { data: bars, rot: 0, sway: 1, wave: 1, scan: 1, jitter: 0.8, label: "agregação", metric: () => "12 meses agregados" },
+    { data: clusters, rot: 0, sway: 1, wave: 0, scan: 0, jitter: 7, label: "machine learning", metric: () => "k-means, k = 3" },
+    { data: series, rot: 0, sway: 1, wave: 0, scan: 1, jitter: 0.8, label: "tendência", metric: () => "série + previsão" },
+    { data: sphere, rot: 1, sway: 0, wave: 0, scan: 0, jitter: 0.3, label: "conexão", metric: () => "vamos conversar" },
   ].slice(0, sections.length);
 
   // ---------------- Sementes por ponto ----------------
@@ -253,6 +270,8 @@
       uMix: uni("uMix"), uTime: uni("uTime"), uAspect: uni("uAspect"), uScale: uni("uScale"),
       uSize: uni("uSize"), uRotA: uni("uRotA"), uRotB: uni("uRotB"), uJitA: uni("uJitA"),
       uJitB: uni("uJitB"), uOffset: uni("uOffset"), uMouse: uni("uMouse"), uAlpha: uni("uAlpha"),
+      uSwayA: uni("uSwayA"), uSwayB: uni("uSwayB"), uWaveA: uni("uWaveA"), uWaveB: uni("uWaveB"),
+      uScanA: uni("uScanA"), uScanB: uni("uScanB"),
     };
     const buffer = (data) => {
       const b = gl.createBuffer();
@@ -303,6 +322,12 @@
           gl.uniform1f(loc.uRotB, B.rot);
           gl.uniform1f(loc.uJitA, A.jitter);
           gl.uniform1f(loc.uJitB, B.jitter);
+          gl.uniform1f(loc.uSwayA, A.sway);
+          gl.uniform1f(loc.uSwayB, B.sway);
+          gl.uniform1f(loc.uWaveA, A.wave);
+          gl.uniform1f(loc.uWaveB, B.wave);
+          gl.uniform1f(loc.uScanA, A.scan);
+          gl.uniform1f(loc.uScanB, B.scan);
         }
         gl.uniform1f(loc.uMix, st.mix);
         gl.uniform1f(loc.uTime, st.time);
@@ -350,7 +375,28 @@
         const ang = st.time * 0.18;
         const cy = Math.cos(ang), sy = Math.sin(ang);
         const cx = Math.cos(0.35), sx = Math.sin(0.35);
+        const sway = Math.sin(st.time * 0.45) * 0.42;
+        const cw = Math.cos(sway), sw = Math.sin(sway);
+        const scanX = ((st.time * 0.16) % 1) * 2.8 - 1.4;
         const sizeBase = v.size * RES;
+
+        // posição de um ponto numa cena, com os movimentos contínuos dela
+        const place = (S, pos, k, out) => {
+          let x = pos[k], y = pos[k + 1], z = pos[k + 2];
+          if (S.wave) y = -0.8 + (y + 0.8) * (1 + 0.16 * Math.sin(st.time * 1.3 + x * 5));
+          if (S.rot) {
+            const rx = cy * x + sy * z, rz = -sy * x + cy * z;
+            const ry = cx * y - sx * rz;
+            z = sx * y + cx * rz; x = rx; y = ry;
+          }
+          if (S.sway) {
+            const rx = cw * x + sw * z;
+            z = -sw * x + cw * z; x = rx;
+          }
+          out[0] = x; out[1] = y; out[2] = z;
+        };
+        const qa = [0, 0, 0];
+        const qb = [0, 0, 0];
 
         for (let n = 0; n < N; n++) {
           const s0 = seeds[n * 2], s1 = seeds[n * 2 + 1];
@@ -359,29 +405,23 @@
           t = t * t * (3 - 2 * t);
 
           const k = n * 3;
-          let ax = pa[k], ay = pa[k + 1], az = pa[k + 2];
-          if (A.rot) {
-            const rx = cy * ax + sy * az, rz = -sy * ax + cy * az;
-            const ry = cx * ay - sx * rz;
-            az = sx * ay + cx * rz; ax = rx; ay = ry;
-          }
-          let bx = pb[k], by = pb[k + 1], bz = pb[k + 2];
-          if (B.rot) {
-            const rx = cy * bx + sy * bz, rz = -sy * bx + cy * bz;
-            const ry = cx * by - sx * rz;
-            bz = sx * by + cx * rz; bx = rx; by = ry;
-          }
-          let px = ax + (bx - ax) * t;
-          let py = ay + (by - ay) * t;
-          const pz = az + (bz - az) * t;
+          place(A, pa, k, qa);
+          place(B, pb, k, qb);
+          let px = qa[0] + (qb[0] - qa[0]) * t;
+          let py = qa[1] + (qb[1] - qa[1]) * t;
+          const pz = qa[2] + (qb[2] - qa[2]) * t;
+
+          const dxs = (px - scanX) * 5.5;
+          const scan = Math.exp(-dxs * dxs) * (A.scan + (B.scan - A.scan) * t);
 
           const arc = Math.sin(Math.PI * t);
           const th = s1 * 6.2831;
           px += Math.cos(th) * arc * 0.22;
           py += Math.sin(th) * arc * 0.22;
           const jit = A.jitter + (B.jitter - A.jitter) * t;
-          px += Math.sin(st.time * 0.7 + s1 * 40) * 0.006 * jit;
-          py += Math.cos(st.time * 0.6 + s1 * 31) * 0.006 * jit;
+          const spd = 0.6 + s0 * 0.9;
+          px += Math.sin(st.time * spd + s1 * 40) * 0.006 * jit;
+          py += Math.cos(st.time * spd * 0.85 + s1 * 31) * 0.006 * jit;
 
           const persp = 1 / (1 + pz * 0.45);
           const m = 0.02 + 0.03 * (pz + 1);
@@ -393,12 +433,13 @@
 
           let a = 0.55 + (0.5 - pz * 0.6);
           a = (a < 0.25 ? 0.25 : a > 1 ? 1 : a) * st.alpha;
-          const r = Math.min(255, (ca[k] + (cb[k] - ca[k]) * t) * 320);
-          const g = Math.min(255, (ca[k + 1] + (cb[k + 1] - ca[k + 1]) * t) * 320);
-          const b = Math.min(255, (ca[k + 2] + (cb[k + 2] - ca[k + 2]) * t) * 320);
+          const lift = scan * 0.55;
+          const r = Math.min(255, (ca[k] + (cb[k] - ca[k]) * t + lift) * 320);
+          const g = Math.min(255, (ca[k + 1] + (cb[k + 1] - ca[k + 1]) * t + lift) * 320);
+          const b = Math.min(255, (ca[k + 2] + (cb[k + 2] - ca[k + 2]) * t + lift) * 320);
 
           // ponto de 1 ou 2 px (em meia resolução) com borda suave
-          const big = sizeBase * persp * (0.75 + s1 * 0.5) > 1.6;
+          const big = sizeBase * persp * (0.75 + s1 * 0.5) * (1 + scan * 0.9) > 1.6;
           const rad = big ? 1 : 0;
           for (let oy = -rad; oy <= rad; oy++) {
             for (let ox = -rad; ox <= rad; ox++) {
