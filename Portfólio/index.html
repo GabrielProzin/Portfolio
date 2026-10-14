@@ -73,7 +73,7 @@
 
   <main>
     <!-- Página 1: Visão geral -->
-    <section class="home page" id="home" aria-labelledby="home-title">
+    <section class="home page" id="home" data-scene aria-labelledby="home-title">
       <div class="home__intro">
         <p class="status intro-step" style="--d: 0"><span class="status__dot" aria-hidden="true"></span> Aberto a
           novas oportunidades</p>
@@ -105,39 +105,26 @@
           <li><a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer"
               aria-label="WhatsApp"><i class="bx bxl-whatsapp"></i></a></li>
         </ul>
+        <dl class="kpis intro-step" style="--d: 7">
+          <div class="kpi">
+          <dt>unidades na base</dt>
+          <dd><span data-count="3.5" data-decimals="1">3,5</span> mil+</dd>
+        </div>
+          <div class="kpi">
+          <dt>alunos ativos</dt>
+          <dd><span data-count="2.1" data-decimals="1">2,1</span> mi</dd>
+        </div>
+          <div class="kpi">
+          <dt>clientes no pipeline</dt>
+          <dd><span data-count="18">18</span></dd>
+        </div>
+          <div class="kpi">
+          <dt>painéis migrados ao Power BI</dt>
+          <dd><span data-count="20">20</span>+</dd>
+        </div>
+      </dl>
       </div>
 
-      <figure class="tile tile--hero spot intro-step" style="--d: 2" aria-labelledby="hero-chart-title">
-        <figcaption class="tile__head">
-          <h2 class="tile__title" id="hero-chart-title">Tendência e previsão</h2>
-          <div class="tile__actions">
-            <button type="button" class="live-btn" id="hero-live" aria-pressed="false">
-              <span class="live-btn__dot" aria-hidden="true"></span>
-              <span id="hero-live-label">Ao vivo</span>
-            </button>
-            <button type="button" class="icon-btn" id="hero-table-toggle" aria-pressed="false"
-              aria-controls="hero-table-wrap" title="Mostrar como tabela" aria-label="Mostrar como tabela">
-              <i class="bx bx-table"></i>
-            </button>
-          </div>
-        </figcaption>
-
-        <div class="chart" id="hero-chart" tabindex="0" role="img"
-          aria-label="Gráfico mensal com pontos observados, linha de tendência e previsão com intervalo de confiança, atualizado a cada poucos segundos. Use as setas para percorrer os meses.">
-          <div class="chart__tooltip" id="hero-tooltip" aria-hidden="true"></div>
-        </div>
-
-        <div class="table-wrap" id="hero-table-wrap" hidden>
-          <table class="data-table" id="hero-table"></table>
-        </div>
-
-        <ul class="legend" aria-label="Legenda">
-          <li><span class="key key--dot"></span> Observado</li>
-          <li><span class="key key--line"></span> Tendência</li>
-          <li><span class="key key--dash"></span> Previsão</li>
-          <li class="legend__note">dados sintéticos</li>
-        </ul>
-      </figure>
     </section>
 
     <!-- Faixa de ferramentas -->
@@ -160,6 +147,12 @@
       </ul>
     </div>
 
+    <div class="interlude" data-scene>
+      <p class="interlude__index" data-reveal>02 / 05</p>
+      <p class="interlude__title" data-reveal>Dados brutos viram métricas.</p>
+      <p class="interlude__sub" data-reveal>Milhares de registros agregados em indicadores.</p>
+    </div>
+
     <!-- Página 2: Experiência -->
     <section class="experience page" id="experience" aria-labelledby="experience-title">
       <header class="job" data-reveal>
@@ -170,24 +163,6 @@
         </div>
       </header>
 
-      <dl class="kpis" data-reveal>
-        <div class="kpi spot">
-          <dt>unidades na base</dt>
-          <dd><span data-count="3.5" data-decimals="1">3,5</span> mil+</dd>
-        </div>
-        <div class="kpi spot">
-          <dt>alunos ativos</dt>
-          <dd><span data-count="2.1" data-decimals="1">2,1</span> mi</dd>
-        </div>
-        <div class="kpi spot">
-          <dt>clientes no pipeline</dt>
-          <dd><span data-count="18">18</span></dd>
-        </div>
-        <div class="kpi spot">
-          <dt>painéis migrados ao Power BI</dt>
-          <dd><span data-count="20">20</span>+</dd>
-        </div>
-      </dl>
 
       <figure class="tile arch spot" id="arch" data-reveal aria-labelledby="arch-title">
         <figcaption class="tile__head">
@@ -253,6 +228,12 @@
       </ol>
     </section>
 
+    <div class="interlude" data-scene>
+      <p class="interlude__index" data-reveal>03 / 05</p>
+      <p class="interlude__title" data-reveal>Métricas viram modelos.</p>
+      <p class="interlude__sub" data-reveal>Agrupamentos e previsões com machine learning.</p>
+    </div>
+
     <!-- Página 3: Projetos -->
     <section class="projects page" id="projects" aria-labelledby="projects-title">
       <div class="page__head page__head--row" data-reveal>
@@ -270,6 +251,12 @@
         <!-- Os projetos são gerados dinamicamente em scripts.js -->
       </div>
     </section>
+
+    <div class="interlude" data-scene>
+      <p class="interlude__index" data-reveal>04 / 05</p>
+      <p class="interlude__title" data-reveal>Modelos mostram tendências.</p>
+      <p class="interlude__sub" data-reveal>O que os dados dizem sobre o que vem a seguir.</p>
+    </div>
 
     <!-- Página 4: Sobre -->
     <section class="about page" id="about" aria-labelledby="about-title">
@@ -299,6 +286,12 @@
         </dl>
       </div>
     </section>
+
+    <div class="interlude" data-scene>
+      <p class="interlude__index" data-reveal>05 / 05</p>
+      <p class="interlude__title" data-reveal>E tendências viram decisões.</p>
+      <p class="interlude__sub" data-reveal>É aí que o trabalho com dados faz diferença.</p>
+    </div>
 
     <!-- Página 5: Contato -->
     <section class="contact page" id="contact" aria-labelledby="contact-title">
@@ -366,13 +359,18 @@
       <a href="#contact" class="page-tab">Contato</a>
       <span class="page-tabs__indicator" aria-hidden="true"></span>
     </div>
-    <span class="page-tabs__pos" id="page-pos" aria-hidden="true">Página 1 de 5</span>
+    <div class="hud" aria-hidden="true">
+      <span class="hud__bar"><i></i></span>
+      <span class="hud__index">01</span>
+      <span class="hud__label">dados brutos</span>
+      <span class="hud__metric"></span>
+    </div>
   </nav>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
   <script src="motion.js" defer></script>
-  <script src="charts.js" defer></script>
+  <script src="bg.js" defer></script>
   <script src="experience.js" defer></script>
   <script src="scripts.js" defer></script>
 </body>

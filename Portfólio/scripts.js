@@ -173,7 +173,7 @@ function setActiveTab(index) {
     tabIndicator.style.setProperty("--x", `${tab.offsetLeft}px`);
     tabIndicator.style.setProperty("--w", `${tab.offsetWidth}px`);
   }
-  if (pagePos) pagePos.textContent = `Página ${index + 1} de ${tabs.length}`;
+  if (pagePos) pagePos.textContent = `Página ${index + 1} de ${tabs.length}`; // opcional
 }
 
 function updateActiveFromScroll() {

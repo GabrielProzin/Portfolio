@@ -32,6 +32,8 @@
     if (ready) return;
     ready = true;
     requestAnimationFrame(() => root.classList.add("is-ready"));
+    // números do topo contam junto com a entrada
+    setTimeout(() => document.querySelectorAll(".home [data-count]").forEach(countUp), reduceMotion ? 0 : 1100);
   };
   if (reduceMotion) {
     start();
