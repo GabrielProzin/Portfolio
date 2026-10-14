@@ -2,7 +2,6 @@
 // CONFIGURACOES
 // ============================================================
 
-document.documentElement.classList.add("js");
 
 const EMAIL_JS_CONFIG = {
   publicKey: "s7eWkxR-sAUpWSHJh",
@@ -24,31 +23,34 @@ const prefersReducedMotion = () =>
 const projects = [
   {
     title: "Detecção de Fraudes",
+    summary: "Modelos que apontam transações de cartão com maior risco de fraude.",
     problem: "Identificar transações com maior risco de fraude em cartões de crédito.",
     approach:
       "Análise exploratória, preparação dos dados e comparação entre Logistic Regression e Random Forest, com apoio visual em Power BI.",
     result:
       "Uma base analítica que ajuda a interpretar padrões de fraude e avaliar o desempenho dos modelos.",
     image: "ImgProjeto/ML-BI.png",
-    tags: ["Machine Learning", "Scikit-Learn", "Python", "Power BI"],
+    tags: ["Python", "Scikit-Learn", "Power BI"],
     category: ["ml", "analise"],
     github: "https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi",
     live: "",
   },
   {
-    title: "Dashboard de Mercado de Ações",
+    title: "Mercado de Ações",
+    summary: "Dashboard de tendências e comparação entre ativos da NASDAQ.",
     problem: "Organizar dados do mercado acionário para facilitar comparações e leitura de tendências.",
     approach:
       "Tratamento e estruturação de bases reais da NASDAQ e dashboards no Power BI com foco em análise temporal e comparação entre ativos.",
     result: "Uma visualização clara para apoiar a exploração dos dados e a tomada de decisão.",
     image: "ImgProjeto/DashboardAnaliticoMercadoAcoes.png",
-    tags: ["Power BI", "Time Intelligence", "Data Analysis"],
+    tags: ["Power BI", "DAX", "Time Intelligence"],
     category: "analise",
     github: "https://github.com/GabrielProzin/Projetos-Power-BI",
     live: "",
   },
   /* {
     title: "Imersão Back-End",
+    summary: "API em Node.js com autenticação e análise de imagens por IA.",
     problem: "Construir uma API completa do zero.",
     approach: "Node.js, Express e MongoDB, com rotas, middlewares, autenticação JWT e integração com IA para análise de imagens.",
     result: "Um servidor robusto pronto para receber um front-end.",
@@ -91,7 +93,6 @@ function renderProjects(filter = "all") {
       <div class="empty-state">
         <i class="bx bx-bar-chart-alt-2" aria-hidden="true"></i>
         <p>Nenhum projeto nesta categoria por enquanto.</p>
-        <p>Selecione "Todos" para ver os projetos publicados.</p>
       </div>
     `;
     return;
@@ -99,9 +100,8 @@ function renderProjects(filter = "all") {
 
   filtered.forEach((project, i) => {
     const card = document.createElement("article");
-    card.className = "tile project-item";
-
-    const techTags = project.tags.map((t) => `<li>${t}</li>`).join("");
+    card.className = "tile project-item spot";
+    card.dataset.index = String(projects.indexOf(project));
 
     const badges = asArray(project.category)
       .map(
@@ -110,50 +110,31 @@ function renderProjects(filter = "all") {
       )
       .join("");
 
-    let linksHtml = "";
-    if (project.github) {
-      linksHtml += `<a class="btn btn--ghost btn--sm" href="${project.github}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github"></i> Ver no GitHub</a>`;
-    }
-    if (project.live) {
-      linksHtml += `<a class="btn btn--ghost btn--sm" href="${project.live}" target="_blank" rel="noopener noreferrer"><i class="bx bx-link-external"></i> Ver online</a>`;
-    }
-
     card.innerHTML = `
-      <div class="tile__head">
-        <div>
-          <h3 class="tile__title">${project.title}</h3>
-          <div class="project-badges">${badges}</div>
-        </div>
-        <div class="tile__actions">
-          <button type="button" class="icon-btn focus-btn" title="Modo foco" aria-label="Ampliar imagem de ${project.title}">
-            <i class="bx bx-expand-alt"></i>
-          </button>
-        </div>
-      </div>
-      <div class="project-media">
-        <img src="${project.image}" alt="Captura do projeto ${project.title}" class="project-thumbnail" loading="lazy" />
-      </div>
+      <button type="button" class="project-media" aria-label="Ver detalhes de ${project.title}">
+        <img src="${project.image}" alt="" class="project-thumbnail" loading="lazy" />
+        <span class="project-media__hint"><i class="bx bx-expand-alt" aria-hidden="true"></i> Detalhes</span>
+      </button>
       <div class="project-body">
-        <dl class="psr">
-          <div><dt>Problema</dt><dd>${project.problem}</dd></div>
-          <div><dt>Abordagem</dt><dd>${project.approach}</dd></div>
-          <div><dt>Resultado</dt><dd>${project.result}</dd></div>
-        </dl>
-        <ul class="tech-list" aria-label="Tecnologias">${techTags}</ul>
-        <div class="project-links">${linksHtml}</div>
+        <div class="project-badges">${badges}</div>
+        <h3 class="project-title">${project.title}</h3>
+        <p class="project-summary">${project.summary}</p>
+        <div class="project-foot">
+          <ul class="tech-list" aria-label="Tecnologias">${project.tags.map((t) => `<li>${t}</li>`).join("")}</ul>
+          ${project.github ? `<a class="icon-btn" href="${project.github}" target="_blank" rel="noopener noreferrer" aria-label="${project.title} no GitHub"><i class="bx bxl-github"></i></a>` : ""}
+        </div>
       </div>
     `;
 
     projectList.appendChild(card);
 
-    // transição que mostra o que mudou ao filtrar
     if (!prefersReducedMotion() && card.animate) {
       card.animate(
         [
-          { opacity: 0, transform: "translateY(10px)" },
+          { opacity: 0, transform: "translateY(16px) scale(0.98)" },
           { opacity: 1, transform: "none" },
         ],
-        { duration: 320, delay: i * 70, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "backwards" }
+        { duration: 500, delay: i * 90, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" }
       );
     }
   });
@@ -228,47 +209,80 @@ document.fonts?.ready.then(updateActiveFromScroll);
 updateActiveFromScroll();
 
 // ============================================================
-// MODAL DE IMAGEM (modo foco)
+// MODAL DE PROJETO (abre a partir do card)
 // ============================================================
 
 const imageModal = document.getElementById("image-modal");
+const modalFrame = imageModal?.querySelector(".image-modal__frame");
 const modalImage = imageModal?.querySelector("img");
 const modalTitle = document.getElementById("image-modal-title");
+const modalInfo = document.getElementById("image-modal-info");
 const modalClose = document.getElementById("image-modal-close");
 let lastFocusedElement = null;
+let originRect = null;
 
-function openImageModal(src, alt, title) {
-  if (!imageModal || !modalImage) return;
+function openProjectModal(project, fromEl) {
+  if (!imageModal) return;
 
   lastFocusedElement = document.activeElement;
-  modalImage.src = src;
-  modalImage.alt = alt || "Imagem ampliada do projeto";
-  if (modalTitle) modalTitle.textContent = title || "Projeto";
+  modalImage.src = project.image;
+  modalImage.alt = `Captura do projeto ${project.title}`;
+  modalTitle.textContent = project.title;
+  modalInfo.innerHTML = `
+    <dl class="psr">
+      <div><dt>Problema</dt><dd>${project.problem}</dd></div>
+      <div><dt>Abordagem</dt><dd>${project.approach}</dd></div>
+      <div><dt>Resultado</dt><dd>${project.result}</dd></div>
+    </dl>
+    <div class="project-links">
+      ${project.github ? `<a class="btn btn--primary btn--sm" href="${project.github}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github"></i> Ver no GitHub</a>` : ""}
+      ${project.live ? `<a class="btn btn--ghost btn--sm" href="${project.live}" target="_blank" rel="noopener noreferrer"><i class="bx bx-link-external"></i> Ver online</a>` : ""}
+    </div>
+  `;
+
   imageModal.classList.add("show");
   imageModal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
+
+  // o modal "cresce" a partir da imagem do card (técnica FLIP)
+  originRect = fromEl?.getBoundingClientRect() || null;
+  if (originRect && !prefersReducedMotion() && modalFrame.animate) {
+    const to = modalFrame.getBoundingClientRect();
+    const sx = originRect.width / to.width;
+    const sy = originRect.height / to.height;
+    const dx = originRect.left - to.left;
+    const dy = originRect.top - to.top;
+    modalFrame.animate(
+      [
+        { transformOrigin: "top left", transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0.6 },
+        { transformOrigin: "top left", transform: "none", opacity: 1 },
+      ],
+      { duration: 480, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }
+    );
+    modalInfo.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], {
+      duration: 400, delay: 220, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards",
+    });
+  }
   modalClose?.focus();
 }
 
 function closeImageModal() {
-  if (!imageModal || !modalImage || !imageModal.classList.contains("show")) {
-    return;
-  }
+  if (!imageModal || !imageModal.classList.contains("show")) return;
 
   imageModal.classList.remove("show");
   imageModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
   setTimeout(() => {
-    modalImage.src = "";
-  }, 200);
+    if (!imageModal.classList.contains("show")) modalImage.src = "";
+  }, 250);
   lastFocusedElement?.focus?.();
 }
 
 document.addEventListener("click", (e) => {
-  const card = e.target.closest(".project-item");
-  if (card && (e.target.matches(".project-thumbnail") || e.target.closest(".focus-btn"))) {
-    const img = card.querySelector(".project-thumbnail");
-    openImageModal(img.src, img.alt, card.querySelector(".tile__title")?.textContent);
+  const media = e.target.closest(".project-media");
+  if (media) {
+    const card = media.closest(".project-item");
+    openProjectModal(projects[Number(card.dataset.index)], media);
   }
 
   if (e.target === imageModal || e.target.closest("#image-modal-close")) {
@@ -277,15 +291,47 @@ document.addEventListener("click", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    closeImageModal();
-  }
+  if (!imageModal?.classList.contains("show")) return;
+  if (e.key === "Escape") closeImageModal();
   // mantém o foco dentro do modal
-  if (e.key === "Tab" && imageModal?.classList.contains("show")) {
-    e.preventDefault();
-    modalClose?.focus();
+  if (e.key === "Tab") {
+    const focusables = Array.from(imageModal.querySelectorAll("button, a[href]"));
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
 });
+
+// ============================================================
+// SPOTLIGHT NOS TILES (segue o ponteiro, só em mouse)
+// ============================================================
+
+if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !prefersReducedMotion()) {
+  let spotRaf = 0;
+  let spotEvent = null;
+  document.addEventListener(
+    "pointermove",
+    (e) => {
+      spotEvent = e;
+      if (spotRaf) return;
+      spotRaf = requestAnimationFrame(() => {
+        spotRaf = 0;
+        const tile = spotEvent.target.closest?.(".spot");
+        if (!tile) return;
+        const r = tile.getBoundingClientRect();
+        tile.style.setProperty("--mx", `${spotEvent.clientX - r.left}px`);
+        tile.style.setProperty("--my", `${spotEvent.clientY - r.top}px`);
+      });
+    },
+    { passive: true }
+  );
+}
 
 // ============================================================
 // FORMULARIO DE CONTATO

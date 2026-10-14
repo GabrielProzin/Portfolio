@@ -28,18 +28,21 @@
 <body>
   <a class="skip-link" href="#home">Pular para o conteúdo</a>
 
-  <!-- Modal de imagem (modo foco) -->
+  <!-- Modal de projeto (modo foco) -->
   <div class="image-modal" id="image-modal" role="dialog" aria-modal="true" aria-hidden="true"
     aria-labelledby="image-modal-title">
-    <figure class="image-modal__frame">
-      <figcaption class="image-modal__bar">
+    <article class="image-modal__frame">
+      <header class="image-modal__bar">
         <span id="image-modal-title">Projeto</span>
-        <button type="button" class="icon-btn" id="image-modal-close" aria-label="Sair do modo foco">
+        <button type="button" class="icon-btn" id="image-modal-close" aria-label="Fechar">
           <i class="bx bx-x"></i>
         </button>
-      </figcaption>
-      <img src="" alt="Imagem ampliada do projeto" />
-    </figure>
+      </header>
+      <div class="image-modal__body">
+        <img src="" alt="" />
+        <div class="image-modal__info" id="image-modal-info"></div>
+      </div>
+    </article>
   </div>
 
   <!-- Cabeçalho -->
@@ -84,16 +87,14 @@
           <p>Cientista de Dados<br /><span>Goiânia, GO</span></p>
         </div>
         <p class="lede intro-step" style="--d: 4">
-          Trabalho de ponta a ponta no ciclo de dados: pipelines em Python orquestrados com Apache Airflow,
-          SQL no Google BigQuery e dashboards de KPIs no Power BI. Na Pacto Soluções, atuei sobre dados de
-          mais de 3,5 mil unidades e 2 milhões de alunos ativos.
+          Pipelines, SQL e dashboards que transformam dados em decisão.
         </p>
         <div class="btn-group intro-step" style="--d: 5">
           <a href="#experience" class="btn btn--primary">
             <i class="bx bx-git-merge"></i> Ver experiência
           </a>
-          <a href="#projects" class="btn btn--ghost">
-            <i class="bx bx-bar-chart-alt-2"></i> Projetos
+          <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost">
+            <i class="bx bx-download"></i> Baixar CV
           </a>
         </div>
         <ul class="social-icons intro-step" style="--d: 6" aria-label="Redes">
@@ -103,94 +104,94 @@
               aria-label="LinkedIn"><i class="bx bxl-linkedin"></i></a></li>
           <li><a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer"
               aria-label="WhatsApp"><i class="bx bxl-whatsapp"></i></a></li>
-          <li><a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes"
-              aria-label="Baixar currículo"><i class="bx bx-download"></i></a></li>
         </ul>
       </div>
 
-      <figure class="tile tile--hero intro-step" style="--d: 2" aria-labelledby="hero-chart-title">
+      <figure class="tile tile--hero spot intro-step" style="--d: 2" aria-labelledby="hero-chart-title">
         <figcaption class="tile__head">
-          <div>
-            <h2 class="tile__title" id="hero-chart-title">Do ruído ao sinal</h2>
-            <p class="tile__sub">Série sintética mensal, com tendência e previsão calculadas no navegador</p>
-          </div>
+          <h2 class="tile__title" id="hero-chart-title">Tendência e previsão</h2>
           <div class="tile__actions">
+            <button type="button" class="live-btn" id="hero-live" aria-pressed="false">
+              <span class="live-btn__dot" aria-hidden="true"></span>
+              <span id="hero-live-label">Ao vivo</span>
+            </button>
             <button type="button" class="icon-btn" id="hero-table-toggle" aria-pressed="false"
               aria-controls="hero-table-wrap" title="Mostrar como tabela" aria-label="Mostrar como tabela">
               <i class="bx bx-table"></i>
-            </button>
-            <button type="button" class="icon-btn" id="hero-replay" title="Reproduzir animação"
-              aria-label="Reproduzir animação">
-              <i class="bx bx-revision"></i>
             </button>
           </div>
         </figcaption>
 
         <div class="chart" id="hero-chart" tabindex="0" role="img"
-          aria-label="Gráfico de dispersão com 42 observações mensais, linha de tendência e previsão de 8 meses com intervalo de confiança. Use as setas para percorrer os pontos.">
+          aria-label="Gráfico mensal com pontos observados, linha de tendência e previsão com intervalo de confiança, atualizado a cada poucos segundos. Use as setas para percorrer os meses.">
           <div class="chart__tooltip" id="hero-tooltip" aria-hidden="true"></div>
         </div>
 
         <div class="table-wrap" id="hero-table-wrap" hidden>
-          <table class="data-table" id="hero-table">
-            <caption class="sr-only">Dados do gráfico Do ruído ao sinal</caption>
-          </table>
+          <table class="data-table" id="hero-table"></table>
         </div>
 
         <ul class="legend" aria-label="Legenda">
           <li><span class="key key--dot"></span> Observado</li>
-          <li><span class="key key--line"></span> Tendência (LOESS)</li>
-          <li><span class="key key--dash"></span> Previsão com intervalo de 95%</li>
+          <li><span class="key key--line"></span> Tendência</li>
+          <li><span class="key key--dash"></span> Previsão</li>
+          <li class="legend__note">dados sintéticos</li>
         </ul>
       </figure>
     </section>
 
+    <!-- Faixa de ferramentas -->
+    <div class="ticker" aria-label="Ferramentas que uso">
+      <ul class="ticker__track">
+        <li>Python</li>
+        <li>SQL</li>
+        <li>Apache Airflow</li>
+        <li>Google BigQuery</li>
+        <li>Power BI</li>
+        <li>DAX</li>
+        <li>MySQL HeatWave</li>
+        <li>PostgreSQL</li>
+        <li>Looker Studio</li>
+        <li>Pandas</li>
+        <li>Scikit-learn</li>
+        <li>Oracle Cloud</li>
+        <li>Git</li>
+        <li>MCP</li>
+      </ul>
+    </div>
+
     <!-- Página 2: Experiência -->
     <section class="experience page" id="experience" aria-labelledby="experience-title">
-      <div class="page__head" data-reveal>
+      <header class="job" data-reveal>
         <h2 id="experience-title" class="page__title">Experiência</h2>
-        <p>O que construí como cientista de dados, das fontes de dados até os painéis usados pelo negócio.</p>
-      </div>
-
-      <article class="tile job" data-reveal>
-        <header class="job__head">
-          <div>
-            <h3 class="job__role">Cientista de Dados</h3>
-            <p class="job__org">Pacto Soluções, Goiânia (GO)</p>
-          </div>
+        <div class="job__line">
+          <p class="job__role">Cientista de Dados, <span>Pacto Soluções</span></p>
           <p class="job__period"><time datetime="2026-05">mai/2026</time> a <time datetime="2026-10">out/2026</time></p>
-        </header>
-        <p class="job__summary">
-          Atuei de ponta a ponta no ciclo de dados de uma plataforma de gestão para academias: ingestão e
-          orquestração de pipelines, modelagem e entrega de dashboards de KPIs.
-        </p>
-        <dl class="kpis">
-          <div class="kpi">
-            <dt>Unidades na base</dt>
-            <dd><span data-count="3.5" data-decimals="1">3,5</span> mil+</dd>
-          </div>
-          <div class="kpi">
-            <dt>Redes de clientes</dt>
-            <dd><span data-count="400">400</span></dd>
-          </div>
-          <div class="kpi">
-            <dt>Alunos ativos</dt>
-            <dd><span data-count="2.1" data-decimals="1">2,1</span> mi</dd>
-          </div>
-          <div class="kpi">
-            <dt>Clientes no pipeline multi-cliente</dt>
-            <dd><span data-count="18">18</span></dd>
-          </div>
-        </dl>
-      </article>
+        </div>
+      </header>
 
-      <figure class="tile arch" id="arch" data-reveal aria-labelledby="arch-title">
+      <dl class="kpis" data-reveal>
+        <div class="kpi spot">
+          <dt>unidades na base</dt>
+          <dd><span data-count="3.5" data-decimals="1">3,5</span> mil+</dd>
+        </div>
+        <div class="kpi spot">
+          <dt>alunos ativos</dt>
+          <dd><span data-count="2.1" data-decimals="1">2,1</span> mi</dd>
+        </div>
+        <div class="kpi spot">
+          <dt>clientes no pipeline</dt>
+          <dd><span data-count="18">18</span></dd>
+        </div>
+        <div class="kpi spot">
+          <dt>painéis migrados ao Power BI</dt>
+          <dd><span data-count="20">20</span>+</dd>
+        </div>
+      </dl>
+
+      <figure class="tile arch spot" id="arch" data-reveal aria-labelledby="arch-title">
         <figcaption class="tile__head">
-          <div>
-            <h3 class="tile__title" id="arch-title">Fluxo de dados em que trabalhei</h3>
-            <p class="tile__sub">Versão simplificada. Passe o mouse, toque ou navegue com Tab por uma etapa para
-              ver o que fiz nela.</p>
-          </div>
+          <h3 class="tile__title" id="arch-title">Fluxo de dados</h3>
           <div class="tile__actions">
             <button type="button" class="icon-btn" id="arch-pause" aria-pressed="false" title="Pausar animação"
               aria-label="Pausar animação">
@@ -202,146 +203,68 @@
         <div class="arch__stage">
           <canvas class="arch__canvas" aria-hidden="true"></canvas>
           <div class="arch__grid">
-            <div class="arch__col" data-col="fontes">
-              <span class="arch__col-label">Fontes</span>
+            <div class="arch__col">
               <button type="button" class="arch__node" data-node="zendesk"
-                data-detail="Pipelines ETL em Python que extraem tickets da API do Zendesk, com carga incremental no BigQuery. Corrigi um bug de lógica que inflava a contagem em dezenas de milhares de tickets e reprocessei o histórico validando contra a origem.">
-                <i class="bx bx-support" aria-hidden="true"></i><span>API Zendesk<small>tickets de suporte</small></span>
+                data-detail="ETL em Python da API do Zendesk para o BigQuery, com correção de um bug que inflava a contagem de tickets.">
+                <i class="bx bx-support" aria-hidden="true"></i><span>Zendesk</span>
               </button>
               <button type="button" class="arch__node" data-node="jira"
-                data-detail="Extração de issues e projetos da API do Jira para o BigQuery, reaproveitando a mesma estrutura de DAGs e configuração por cliente.">
-                <i class="bx bx-task" aria-hidden="true"></i><span>API Jira<small>gestão de projetos</small></span>
+                data-detail="ETL em Python da API do Jira para o BigQuery, no mesmo padrão de DAGs.">
+                <i class="bx bx-task" aria-hidden="true"></i><span>Jira</span>
               </button>
             </div>
 
-            <div class="arch__col" data-col="orquestracao">
-              <span class="arch__col-label">Orquestração</span>
+            <div class="arch__col">
               <button type="button" class="arch__node arch__node--hub" data-node="airflow"
-                data-detail="DAGs no Apache Airflow com um registro centralizado de configurações, o que permitiu escalar os mesmos pipelines para 18 clientes. Diagnóstico de falhas em produção até a causa raiz, incluindo conexões por túnel OCI Bastion.">
-                <i class="bx bx-git-repo-forked" aria-hidden="true"></i><span>Apache Airflow<small>DAGs em Python, 18 clientes</small></span>
+                data-detail="DAGs no Apache Airflow com configuração centralizada, escaladas para 18 clientes.">
+                <i class="bx bx-git-repo-forked" aria-hidden="true"></i><span>Airflow</span>
               </button>
             </div>
 
-            <div class="arch__col" data-col="armazenamento">
-              <span class="arch__col-label">Armazenamento</span>
+            <div class="arch__col">
               <button type="button" class="arch__node" data-node="bigquery"
-                data-detail="Modelagem e otimização de SQL no Google BigQuery, com MERGE incremental e views para consumo dos painéis.">
-                <i class="bx bx-data" aria-hidden="true"></i><span>Google BigQuery<small>SQL e views analíticas</small></span>
+                data-detail="Modelagem e otimização de SQL no BigQuery, com cargas incrementais e views para os painéis.">
+                <i class="bx bx-data" aria-hidden="true"></i><span>BigQuery</span>
               </button>
               <button type="button" class="arch__node" data-node="heatwave"
                 data-detail="Atuação na migração de dados do BigQuery para o MySQL HeatWave, na Oracle Cloud.">
-                <i class="bx bx-transfer-alt" aria-hidden="true"></i><span>MySQL HeatWave<small>migração na Oracle Cloud</small></span>
+                <i class="bx bx-transfer-alt" aria-hidden="true"></i><span>HeatWave</span>
               </button>
             </div>
 
-            <div class="arch__col" data-col="consumo">
-              <span class="arch__col-label">Consumo</span>
+            <div class="arch__col">
               <button type="button" class="arch__node" data-node="powerbi"
-                data-detail="Migração de cerca de 21 painéis de KPIs do Looker Studio para o Power BI (ativos, churn, cancelamentos, faturamento e inadimplência), conciliando cada número com a fonte por unidade e no consolidado. Medidas DAX e documentação técnica dos painéis.">
-                <i class="bx bx-bar-chart-square" aria-hidden="true"></i><span>Power BI<small>~21 painéis de KPIs</small></span>
+                data-detail="Migração de 20+ painéis de KPIs do Looker Studio ao Power BI, com cada número conciliado com a fonte.">
+                <i class="bx bx-bar-chart-square" aria-hidden="true"></i><span>Power BI</span>
               </button>
               <button type="button" class="arch__node" data-node="mcp"
-                data-detail="Servidor MCP somente leitura sobre o BigQuery, para consultar dados com IA sem risco de alteração, e propostas de acesso seguro para clientes externos.">
-                <i class="bx bx-bot" aria-hidden="true"></i><span>IA via MCP<small>consultas somente leitura</small></span>
+                data-detail="Servidor MCP somente leitura para consultar o BigQuery com IA, sem risco de alterar dados.">
+                <i class="bx bx-bot" aria-hidden="true"></i><span>IA via MCP</span>
               </button>
             </div>
           </div>
         </div>
-        <p class="arch__detail" id="arch-detail" aria-live="polite">
-          Selecione uma etapa para ver o que fiz nela.
-        </p>
+        <p class="arch__detail" id="arch-detail" aria-live="polite">Passe o mouse ou toque em uma etapa.</p>
       </figure>
 
-      <div class="tile streams" data-reveal>
-        <div class="streams__tabs" role="tablist" aria-label="Frentes de trabalho">
-          <button type="button" role="tab" id="tab-eng" aria-controls="panel-eng" aria-selected="true">Engenharia de dados</button>
-          <button type="button" role="tab" id="tab-bi" aria-controls="panel-bi" aria-selected="false" tabindex="-1">BI e DAX</button>
-          <button type="button" role="tab" id="tab-prod" aria-controls="panel-prod" aria-selected="false" tabindex="-1">Produto de dados</button>
-          <button type="button" role="tab" id="tab-ia" aria-controls="panel-ia" aria-selected="false" tabindex="-1">IA aplicada</button>
-          <span class="streams__ink" aria-hidden="true"></span>
-        </div>
-
-        <div class="streams__panels">
-          <div class="streams__panel" role="tabpanel" id="panel-eng" aria-labelledby="tab-eng">
-            <ul class="bullets">
-              <li>Pipelines ETL/ELT em Python orquestrados com Apache Airflow, integrando as APIs do Zendesk e do Jira ao Google BigQuery.</li>
-              <li>Registro centralizado de configurações para escalar os pipelines a 18 clientes.</li>
-              <li>Atuação na migração de dados do BigQuery para o MySQL HeatWave.</li>
-              <li>Diagnóstico de falhas em DAGs até a causa raiz, correção de lógica de métricas e reprocessamento de histórico validado contra a origem.</li>
-            </ul>
-            <ul class="chips"><li>Python</li><li>Apache Airflow</li><li>Google BigQuery</li><li>MySQL HeatWave</li><li>Oracle Cloud (OCI)</li><li>Git</li></ul>
-          </div>
-          <div class="streams__panel" role="tabpanel" id="panel-bi" aria-labelledby="tab-bi" hidden>
-            <ul class="bullets">
-              <li>Migração de dashboards de KPIs do Looker Studio para o Power BI: ativos, churn, cancelamentos, faturamento e inadimplência.</li>
-              <li>Conciliação dos números com a fonte, por unidade e no consolidado, incluindo diferenças de agregação entre as ferramentas (média contra soma, vazio contra nulo).</li>
-              <li>Criação e correção de medidas DAX, regras de negócio e otimização do modelo semântico.</li>
-              <li>Documentação técnica dos painéis de Vendas, Contratos e Acessos.</li>
-            </ul>
-            <ul class="chips"><li>Power BI</li><li>DAX</li><li>Looker Studio</li><li>SQL</li><li>Modelagem de dados</li></ul>
-          </div>
-          <div class="streams__panel" role="tabpanel" id="panel-prod" aria-labelledby="tab-prod" hidden>
-            <ul class="bullets">
-              <li>Levantamento de requisitos para um módulo de NPS.</li>
-              <li>Projetei, dirigi e validei um protótipo full-stack: back-end em Java/Spring com PostgreSQL e front-end em React, com login Google.</li>
-              <li>Mais de 300 testes automatizados entre back-end e front-end.</li>
-            </ul>
-            <ul class="chips"><li>Java</li><li>Spring</li><li>PostgreSQL</li><li>React</li><li>Testes automatizados</li></ul>
-          </div>
-          <div class="streams__panel" role="tabpanel" id="panel-ia" aria-labelledby="tab-ia" hidden>
-            <ul class="bullets">
-              <li>Uso de LLMs e integrações via MCP para acelerar desenvolvimento, análise e documentação.</li>
-              <li>Servidor MCP com acesso somente leitura aos dados no BigQuery.</li>
-              <li>Propostas de acesso seguro a dados para clientes externos.</li>
-            </ul>
-            <ul class="chips"><li>LLMs</li><li>MCP</li><li>Claude</li><li>Google BigQuery</li></ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="earlier" data-reveal>
-        <h3 class="earlier__title">Antes disso</h3>
-        <ol class="timeline">
-          <li class="timeline__item">
-            <div class="timeline__head">
-              <h4>Escolar Manager</h4>
-              <span class="timeline__period">Estágio, depois CLT</span>
-            </div>
-            <p>Análise e tratamento de dados com SQL, manipulação de dados estruturados e semiestruturados (JSON) e
-              otimização de queries.</p>
-          </li>
-          <li class="timeline__item">
-            <div class="timeline__head">
-              <h4>Pacto Soluções, Consultor de Relacionamento</h4>
-              <span class="timeline__period"><time datetime="2022-08">ago/2022</time> a <time datetime="2024-11">nov/2024</time></span>
-            </div>
-            <p>Mais de dois anos no relacionamento com clientes da plataforma. Foi onde aprendi as regras de negócio
-              que depois usei para modelar os dados.</p>
-          </li>
-        </ol>
-      </div>
+      <ol class="earlier" data-reveal aria-label="Experiências anteriores">
+        <li><strong>Escolar Manager</strong><span>Estágio e CLT</span></li>
+        <li><strong>Pacto Soluções, Consultor de Relacionamento</strong><span><time datetime="2022-08">ago/2022</time> a <time datetime="2024-11">nov/2024</time></span></li>
+      </ol>
     </section>
 
     <!-- Página 3: Projetos -->
     <section class="projects page" id="projects" aria-labelledby="projects-title">
-      <div class="page__head" data-reveal>
+      <div class="page__head page__head--row" data-reveal>
         <h2 id="projects-title" class="page__title">Projetos</h2>
-        <p>
-          Projetos pessoais de análise de dados, visualização e machine learning, cada um descrito por
-          problema, abordagem e resultado.
-        </p>
-      </div>
-
-      <div class="slicer" role="group" aria-labelledby="slicer-label" data-reveal>
-        <span class="slicer__label" id="slicer-label">Categoria</span>
-        <div class="slicer__options project-filters">
+        <div class="slicer__options project-filters" role="group" aria-label="Filtrar por categoria">
           <button type="button" class="active" aria-pressed="true" data-filter="all">Todos</button>
           <button type="button" aria-pressed="false" data-filter="ml">Machine Learning</button>
           <button type="button" aria-pressed="false" data-filter="analise">Análise de Dados</button>
           <!-- <button type="button" aria-pressed="false" data-filter="web">Web/Desenvolvimento</button> -->
         </div>
-        <span class="slicer__count" id="project-count" aria-live="polite"></span>
       </div>
+      <span class="sr-only" id="project-count" aria-live="polite"></span>
 
       <div class="project-list" id="project-list">
         <!-- Os projetos são gerados dinamicamente em scripts.js -->
@@ -350,80 +273,30 @@
 
     <!-- Página 4: Sobre -->
     <section class="about page" id="about" aria-labelledby="about-title">
-      <div class="page__head" data-reveal>
-        <h2 id="about-title" class="page__title">Quem sou eu</h2>
-      </div>
-
       <div class="about__grid">
         <div class="about__text" data-reveal>
+          <h2 id="about-title" class="page__title">Quem sou eu</h2>
           <p>
-            Sou formado em <strong>Análise e Desenvolvimento de Sistemas</strong> pelo IPOG e faço
-            <strong>pós-graduação em Ciência de Dados</strong>, aprofundando estatística e machine learning.
-          </p>
-          <p>
-            Antes de ir para dados, passei mais de dois anos no relacionamento com clientes. Isso me deu
-            facilidade para entender regras de negócio e traduzir problemas reais em soluções analíticas.
-            A base em desenvolvimento de software me ajuda a automatizar etapas e a levar soluções até
-            produção.
-          </p>
-          <p>
-            Busco oportunidades como Cientista de Dados, Engenheiro de Dados ou Analista de BI.
+            Formado em Análise e Desenvolvimento de Sistemas e cursando pós em Ciência de Dados.
+            Antes dos dados, passei dois anos no relacionamento com clientes, o que me ajuda a entender a
+            regra de negócio por trás de cada número.
           </p>
         </div>
 
-        <dl class="tile facts" data-reveal>
+        <dl class="tile facts spot" data-reveal>
           <div class="facts__row">
             <dt>Formação</dt>
-            <dd>Análise e Desenvolvimento de Sistemas, IPOG</dd>
+            <dd>ADS, IPOG</dd>
           </div>
           <div class="facts__row">
-            <dt>Em andamento</dt>
-            <dd>Pós-graduação em Ciência de Dados</dd>
+            <dt>Cursando</dt>
+            <dd>Pós em Ciência de Dados</dd>
           </div>
           <div class="facts__row">
-            <dt>Áreas</dt>
-            <dd>Engenharia de dados, BI e ciência de dados</dd>
-          </div>
-          <div class="facts__row">
-            <dt>Local</dt>
-            <dd>Goiânia, GO</dd>
+            <dt>Busco</dt>
+            <dd>Ciência de Dados, Engenharia de Dados ou BI</dd>
           </div>
         </dl>
-      </div>
-
-      <div class="tile stack" data-reveal>
-        <div class="tile__head">
-          <div>
-            <h3 class="tile__title">Stack</h3>
-            <p class="tile__sub">Ferramentas que usei em trabalho real ou em projetos</p>
-          </div>
-        </div>
-        <div class="stack__grid">
-          <div class="stack__group">
-            <h4>Linguagens</h4>
-            <ul class="chips"><li>Python</li><li>SQL</li><li>DAX</li><li>JavaScript</li><li>Java</li></ul>
-          </div>
-          <div class="stack__group">
-            <h4>Engenharia de dados</h4>
-            <ul class="chips"><li>Apache Airflow</li><li>ETL/ELT</li><li>APIs REST</li><li>Git</li></ul>
-          </div>
-          <div class="stack__group">
-            <h4>Bancos e nuvem</h4>
-            <ul class="chips"><li>Google BigQuery</li><li>MySQL HeatWave</li><li>PostgreSQL</li><li>Oracle Cloud</li><li>MongoDB</li><li>Firebird</li></ul>
-          </div>
-          <div class="stack__group">
-            <h4>BI e visualização</h4>
-            <ul class="chips"><li>Power BI</li><li>Looker Studio</li><li>Modelagem semântica</li></ul>
-          </div>
-          <div class="stack__group">
-            <h4>Ciência de dados</h4>
-            <ul class="chips"><li>Pandas</li><li>NumPy</li><li>Scikit-learn</li></ul>
-          </div>
-          <div class="stack__group">
-            <h4>IA aplicada</h4>
-            <ul class="chips"><li>LLMs</li><li>MCP</li></ul>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -431,26 +304,27 @@
     <section class="contact page" id="contact" aria-labelledby="contact-title">
       <div class="page__head" data-reveal>
         <h2 id="contact-title" class="page__title">Vamos conversar</h2>
-        <p>Tem uma vaga, um projeto ou uma pergunta? Mande uma mensagem ou fale comigo pelos canais abaixo.</p>
       </div>
 
       <div class="contact__grid">
-        <div class="tile contact__form-tile" data-reveal>
+        <div class="tile contact__form-tile spot" data-reveal>
           <form id="contact-form" class="contact-form" autocomplete="off" novalidate>
             <input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true"
               class="honeypot" />
-            <div class="form-group">
-              <label for="name">Nome</label>
-              <input type="text" id="name" name="user_name" placeholder="Seu nome" required maxlength="50" />
-            </div>
-            <div class="form-group">
-              <label for="email">E-mail</label>
-              <input type="email" id="email" name="user_email" placeholder="voce@empresa.com" required
-                maxlength="50" />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="user_name" placeholder="Seu nome" required maxlength="50" />
+              </div>
+              <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="user_email" placeholder="voce@empresa.com" required
+                  maxlength="50" />
+              </div>
             </div>
             <div class="form-group">
               <label for="message">Mensagem <span class="char-count" id="char-count">0/300</span></label>
-              <textarea id="message" name="message" placeholder="Escreva sua mensagem" rows="5" maxlength="300"
+              <textarea id="message" name="message" placeholder="Escreva sua mensagem" rows="4" maxlength="300"
                 required></textarea>
             </div>
             <button type="submit" class="btn btn--primary submit-btn">
@@ -460,19 +334,16 @@
           </form>
         </div>
 
-        <div class="tile contact__links" data-reveal>
-          <h3 class="tile__title">Outros canais</h3>
+        <div class="contact__links" data-reveal>
           <ul class="link-list">
             <li><a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer">
-                <i class="bx bxl-linkedin"></i><span>LinkedIn<small>linkedin.com/in/gabrielmendesurl</small></span></a>
-            </li>
+                <i class="bx bxl-linkedin"></i><span>LinkedIn</span></a></li>
             <li><a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer">
-                <i class="bx bxl-github"></i><span>GitHub<small>github.com/GabrielProzin</small></span></a></li>
+                <i class="bx bxl-github"></i><span>GitHub</span></a></li>
             <li><a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer">
-                <i class="bx bxl-whatsapp"></i><span>WhatsApp<small>(62) 98125-3588</small></span></a></li>
+                <i class="bx bxl-whatsapp"></i><span>WhatsApp</span></a></li>
           </ul>
           <div class="email-display">
-            <span class="email-display__label">E-mail</span>
             <span id="user-email">gabrielalexandrino2004@gmail.com</span>
             <button id="copy-email" class="btn btn--ghost btn--sm copy-btn" type="button">
               <i class="bx bx-copy"></i> Copiar

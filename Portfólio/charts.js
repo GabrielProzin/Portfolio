@@ -1,7 +1,9 @@
 // ============================================================
-// GRÁFICO DO HERO — "Do ruído ao sinal"
-// Série sintética (semente fixa) + tendência LOESS + previsão
-// linear com intervalo de 95%, tudo calculado no navegador.
+// GRÁFICO DO HERO — série "ao vivo"
+// Série sintética com semente fixa. A cada poucos segundos chega
+// um novo mês: a janela desliza, a tendência (LOESS) e a previsão
+// são recalculadas no navegador. Só a camada do gráfico se move
+// (transform), então a animação roda na GPU.
 // ============================================================
 
 (function () {
@@ -12,16 +14,20 @@
   const tableWrap = document.getElementById("hero-table-wrap");
   const table = document.getElementById("hero-table");
   const tableToggle = document.getElementById("hero-table-toggle");
-  const replayBtn = document.getElementById("hero-replay");
+  const liveBtn = document.getElementById("hero-live");
+  const liveLabel = document.getElementById("hero-live-label");
 
   const NS = "http://www.w3.org/2000/svg";
-  const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ---------------- Dados ----------------
-  const N = 42; // meses observados (jan/23 a jun/26)
-  const H = 8; // meses de previsão
+  const WIN = 36; // meses visíveis
+  const H = 6; // meses de previsão
+  const TICK_MS = 2200; // intervalo entre novos meses
+  const Y0 = 20;
+  const Y1 = 100;
   const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-  const monthLabel = (i) => `${MESES[i % 12]}/${23 + Math.floor(i / 12)}`;
+  const monthLabel = (k) => `${MESES[k % 12]}/${23 + Math.floor(k / 12)}`;
 
   function mulberry32(a) {
     return function () {
@@ -32,7 +38,6 @@
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
   }
-
   const rand = mulberry32(20261014);
   const gauss = () => {
     let u = 0;
@@ -42,11 +47,13 @@
     return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   };
 
-  const obs = Array.from({ length: N }, (_, t) =>
-    52 + 0.62 * t + 6.5 * Math.sin((2 * Math.PI * (t - 2)) / 12) + 4.2 * gauss()
-  );
+  // ciclo longo + sazonalidade anual + ruído (fica sempre na mesma faixa)
+  const gen = (k) =>
+    60 + 11 * Math.sin((2 * Math.PI * k) / 40) + 6 * Math.sin((2 * Math.PI * (k - 2)) / 12) + 3.6 * gauss();
 
-  // LOESS (regressão local linear com pesos tricúbicos)
+  const series = [];
+  for (let k = 0; k < WIN; k++) series.push(gen(k));
+
   function loess(ys, span) {
     const n = ys.length;
     const k = Math.max(3, Math.round(span * n));
@@ -68,33 +75,47 @@
     });
   }
 
-  const trend = loess(obs, 0.4);
+  let kStart = 0;
+  let obs = [];
+  let trend = [];
+  let fcst = [];
 
-  // Regressão linear (MQO) para inclinação e erro da previsão
-  const tBar = (N - 1) / 2;
-  const yBar = obs.reduce((a, b) => a + b, 0) / N;
-  let sxx = 0, sxy = 0;
-  obs.forEach((y, t) => {
-    sxx += (t - tBar) ** 2;
-    sxy += (t - tBar) * (y - yBar);
-  });
-  const slope = sxy / sxx;
-  const resid = obs.map((y, t) => y - trend[t]);
-  const sigma = Math.sqrt(resid.reduce((a, r) => a + r * r, 0) / (N - 2));
+  function compute() {
+    kStart = series.length - WIN;
+    obs = series.slice(-WIN);
+    trend = loess(obs, 0.35);
 
-  const fcst = [];
-  for (let t = N - 1; t < N + H; t++) {
-    const mean = trend[N - 1] + slope * (t - (N - 1));
-    const se = t === N - 1 ? 0 : sigma * Math.sqrt(1 + 1 / N + (t - tBar) ** 2 / sxx);
-    fcst.push({ t, mean, lo: mean - 1.96 * se, hi: mean + 1.96 * se });
+    // inclinação recente da tendência (MQO nos últimos 8 pontos)
+    const m = 8;
+    const xs = Array.from({ length: m }, (_, i) => i);
+    const ys = trend.slice(-m);
+    const xb = (m - 1) / 2;
+    const yb = ys.reduce((a, b) => a + b, 0) / m;
+    let sxx = 0, sxy = 0;
+    xs.forEach((x, i) => {
+      sxx += (x - xb) ** 2;
+      sxy += (x - xb) * (ys[i] - yb);
+    });
+    const slope = sxy / sxx;
+
+    const resid = obs.map((y, i) => y - trend[i]);
+    const sigma = Math.sqrt(resid.reduce((a, r) => a + r * r, 0) / (WIN - 2));
+    const last = trend[WIN - 1];
+
+    fcst = [];
+    for (let h = 0; h <= H; h++) {
+      const mean = last + slope * h;
+      const se = h === 0 ? 0 : sigma * Math.sqrt(1 + 0.35 * h);
+      fcst.push({ i: WIN - 1 + h, mean, lo: mean - 1.96 * se, hi: mean + 1.96 * se });
+    }
   }
-  const fcstAt = (t) => fcst.find((f) => f.t === t);
+  compute();
 
-  const fmt = (v) =>
-    v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const fcstAt = (i) => fcst.find((f) => f.i === i);
+  const fmt = (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
   // ---------------- Desenho ----------------
-  let state = null; // geometria do último render
+  let state = null;
   let hoverIdx = null;
 
   function el(name, attrs = {}, parent) {
@@ -104,18 +125,12 @@
     return node;
   }
 
-  function niceTicks(min, max, count) {
-    const raw = (max - min) / count;
-    const pow = Math.pow(10, Math.floor(Math.log10(raw)));
-    const step = [1, 2, 2.5, 5, 10].map((m) => m * pow).find((s) => s >= raw);
-    const lo = Math.floor(min / step) * step;
-    const hi = Math.ceil(max / step) * step;
-    const ticks = [];
-    for (let v = lo; v <= hi + 1e-9; v += step) ticks.push(v);
-    return ticks;
-  }
+  const pathOf = (pts) => pts.map((p, i) => `${i ? "L" : "M"}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join("");
 
-  function render(animate) {
+  /**
+   * mode: "intro" (sequência de entrada), "shift" (novo mês chegando) ou "static"
+   */
+  function render(mode) {
     const W = root.clientWidth;
     const Ht = root.clientHeight;
     if (!W || !Ht) return;
@@ -123,82 +138,85 @@
     root.querySelector("svg")?.remove();
 
     const narrow = W < 460;
-    const m = { t: 18, r: narrow ? 56 : 84, b: 28, l: 34 };
+    const m = { t: 14, r: narrow ? 50 : 70, b: 26, l: 32 };
     const iw = W - m.l - m.r;
     const ih = Ht - m.t - m.b;
+    const step = iw / (WIN + H - 1);
 
-    const allY = [...obs, ...fcst.map((f) => f.lo), ...fcst.map((f) => f.hi)];
-    const ticks = niceTicks(Math.min(...allY), Math.max(...allY), Ht < 300 ? 3 : 4);
-    const y0 = ticks[0];
-    const y1 = ticks[ticks.length - 1];
-
-    const x = (t) => m.l + (t / (N + H - 1)) * iw;
-    const y = (v) => m.t + (1 - (v - y0) / (y1 - y0)) * ih;
+    const x = (i) => m.l + i * step;
+    const y = (v) => m.t + (1 - (v - Y0) / (Y1 - Y0)) * ih;
 
     const svg = el("svg", { viewBox: `0 0 ${W} ${Ht}`, "aria-hidden": "true", focusable: "false" });
+    const defs = el("defs", {}, svg);
 
-    // Grade e eixo Y
+    // área de plotagem recortada (o que sai pela esquerda some)
+    const clipPlot = el("clipPath", { id: "plot-clip" }, defs);
+    el("rect", { x: m.l - 6, y: 0, width: iw + 6 + m.r, height: Ht }, clipPlot);
+
+    // gradiente sob a tendência
+    const grad = el("linearGradient", { id: "trend-fill", x1: 0, x2: 0, y1: 0, y2: 1 }, defs);
+    el("stop", { offset: "0%", "stop-color": "var(--s-trend)", "stop-opacity": "0.22" }, grad);
+    el("stop", { offset: "100%", "stop-color": "var(--s-trend)", "stop-opacity": "0" }, grad);
+
+    // grade fixa
     const gGrid = el("g", {}, svg);
-    ticks.forEach((v, i) => {
+    for (let v = Y0; v <= Y1; v += 20) {
       el("line", {
-        class: i === 0 ? "baseline" : "gridline",
-        x1: m.l, x2: W - m.r + 8, y1: Math.round(y(v)) + 0.5, y2: Math.round(y(v)) + 0.5,
+        class: v === Y0 ? "baseline" : "gridline",
+        x1: m.l, x2: W - m.r + 6, y1: Math.round(y(v)) + 0.5, y2: Math.round(y(v)) + 0.5,
       }, gGrid);
       const label = el("text", { class: "tick", x: m.l - 8, y: y(v) + 4, "text-anchor": "end" }, gGrid);
-      label.textContent = v.toLocaleString("pt-BR");
-    });
-
-    // Eixo X
-    const every = narrow ? 12 : 6;
-    for (let t = 0; t < N + H; t += every) {
-      const label = el("text", { class: "tick", x: x(t), y: Ht - 8, "text-anchor": "middle" }, gGrid);
-      label.textContent = monthLabel(t);
+      label.textContent = v;
     }
 
-    // Divisória observado | previsão
-    const xNow = (x(N - 1) + x(N)) / 2;
+    // linha do "agora" (fixa)
+    const xNow = (x(WIN - 1) + x(WIN)) / 2;
     el("line", { class: "now-line", x1: xNow, x2: xNow, y1: m.t, y2: m.t + ih }, svg);
-    const nowLabel = el("text", { class: "now-label", x: xNow + 6, y: m.t + 10 }, svg);
-    nowLabel.textContent = "previsão";
 
-    // Faixa + linha de previsão (recortadas para a animação)
-    const clipId = "fcst-clip";
-    const defs = el("defs", {}, svg);
-    const clip = el("clipPath", { id: clipId }, defs);
-    const clipRect = el("rect", {
-      x: x(N - 1) - 2, y: 0, height: Ht, width: animate ? 0 : x(N + H - 1) - x(N - 1) + 40,
-    }, clip);
+    // camada móvel
+    const clipWrap = el("g", { "clip-path": "url(#plot-clip)" }, svg);
+    const gMove = el("g", {}, clipWrap);
 
-    const gF = el("g", { "clip-path": `url(#${clipId})` }, svg);
-    const bandD =
-      fcst.map((f, i) => `${i ? "L" : "M"}${x(f.t)},${y(f.hi)}`).join("") +
-      [...fcst].reverse().map((f) => `L${x(f.t)},${y(f.lo)}`).join("") + "Z";
-    el("path", { class: "band", d: bandD }, gF);
-    el("path", {
-      class: "fcst",
-      d: fcst.map((f, i) => `${i ? "L" : "M"}${x(f.t)},${y(f.mean)}`).join(""),
+    // rótulos do eixo X (andam junto com os dados)
+    const every = narrow ? 12 : 6;
+    for (let i = 0; i < WIN + H; i++) {
+      const k = kStart + i;
+      if (k % every !== 0 || x(i) < m.l + 14) continue;
+      const label = el("text", { class: "tick", x: x(i), y: Ht - 7, "text-anchor": "middle" }, gMove);
+      label.textContent = monthLabel(k);
+    }
+
+    // área + tendência
+    const trendPts = trend.map((v, i) => [x(i), y(v)]);
+    const area = el("path", {
+      class: "trend-area",
+      d: pathOf(trendPts) + `L${x(WIN - 1)},${y(Y0)}L${x(0)},${y(Y0)}Z`,
+      fill: "url(#trend-fill)",
+    }, gMove);
+
+    // faixa e linha de previsão
+    const gF = el("g", {}, gMove);
+    const band = el("path", {
+      class: "band",
+      d: pathOf(fcst.map((f) => [x(f.i), y(f.hi)])) +
+        [...fcst].reverse().map((f) => `L${x(f.i).toFixed(1)},${y(f.lo).toFixed(1)}`).join("") + "Z",
     }, gF);
+    el("path", { class: "fcst", d: pathOf(fcst.map((f) => [x(f.i), y(f.mean)])) }, gF);
 
-    // Pontos observados
-    const gObs = el("g", {}, svg);
-    const dots = obs.map((v, t) => el("circle", { class: "obs", cx: x(t), cy: y(v), r: 4.5 }, gObs));
+    // pontos
+    const gObs = el("g", { class: "obs-group" }, gMove);
+    const dots = obs.map((v, i) => el("circle", { class: "obs", cx: x(i), cy: y(v), r: 4 }, gObs));
 
-    // Tendência
-    const trendPath = el("path", {
-      class: "trend",
-      d: trend.map((v, t) => `${t ? "L" : "M"}${x(t)},${y(v)}`).join(""),
-    }, svg);
+    const trendPath = el("path", { class: "trend", d: pathOf(trendPts) }, gMove);
 
-    // Rótulo final (só o valor que importa)
+    // valor final da previsão (fixo à direita)
     const last = fcst[fcst.length - 1];
     const gEnd = el("g", {}, svg);
-    el("circle", { class: "end-dot", cx: x(last.t), cy: y(last.mean), r: 5 }, gEnd);
-    const endText = el("text", { class: "end-label", x: x(last.t) + 10, y: y(last.mean) - 2 }, gEnd);
+    el("circle", { class: "end-dot", cx: x(last.i), cy: y(last.mean), r: 5 }, gEnd);
+    const endText = el("text", { class: "end-label", x: x(last.i) + 10, y: y(last.mean) + 4 }, gEnd);
     endText.textContent = fmt(last.mean);
-    const endSub = el("tspan", { class: "sub", x: x(last.t) + 10, dy: 15 }, endText);
-    endSub.textContent = monthLabel(last.t);
 
-    // Camada de hover
+    // hover
     const gHover = el("g", {}, svg);
     gHover.style.display = "none";
     const cross = el("line", { class: "crosshair", y1: m.t, y2: m.t + ih }, gHover);
@@ -209,115 +227,101 @@
     hObs.style.fill = "var(--s-obs)";
     hFcst.style.fill = "var(--s-fcst)";
 
-    const overlay = el("rect", {
-      x: m.l - 8, y: 0, width: W - m.l + 8, height: Ht, fill: "transparent",
-    }, svg);
+    const overlay = el("rect", { x: m.l - 8, y: 0, width: W - m.l + 8, height: Ht, fill: "transparent" }, svg);
     overlay.style.cursor = "crosshair";
 
     root.insertBefore(svg, tooltip);
-
-    state = { x, y, m, W, Ht, ih, gHover, cross, hTrend, hObs, hFcst, overlay };
+    state = { x, y, W, Ht, gHover, cross, hTrend, hObs, hFcst };
 
     overlay.addEventListener("pointermove", (e) => {
       const rect = svg.getBoundingClientRect();
       const px = ((e.clientX - rect.left) / rect.width) * W;
-      const t = Math.round(((px - m.l) / iw) * (N + H - 1));
-      showAt(Math.max(0, Math.min(N + H - 1, t)));
+      showAt(Math.max(0, Math.min(WIN + H - 1, Math.round((px - m.l) / step))));
     });
-    overlay.addEventListener("pointerleave", hide);
+    overlay.addEventListener("pointerenter", () => setHover(true));
+    overlay.addEventListener("pointerleave", () => {
+      hide();
+      setHover(false);
+    });
 
     if (hoverIdx !== null) showAt(hoverIdx);
 
-    if (!animate) {
-      gObs.setAttribute("opacity", "0.7");
+    const ease = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+    if (mode === "shift") {
+      // tudo desliza um mês para a esquerda
+      gMove.animate([{ transform: `translateX(${step}px)` }, { transform: "none" }], {
+        duration: 900, easing: ease,
+      });
+      const nd = dots[dots.length - 1];
+      nd.style.transformBox = "fill-box";
+      nd.style.transformOrigin = "center";
+      nd.animate([{ transform: "scale(0)", opacity: 0 }, { transform: "scale(1.6)", opacity: 1, offset: 0.6 }, { transform: "scale(1)" }], {
+        duration: 700, delay: 250, easing: ease, fill: "backwards",
+      });
+      gEnd.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 600, delay: 300, fill: "backwards" });
       return;
     }
 
-    // ---------- Sequência de entrada (um único momento orquestrado) ----------
-    const ease = "cubic-bezier(0.22, 0.61, 0.36, 1)";
-    const stagger = 26;
+    if (mode !== "intro") return;
 
-    gGrid.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: 450, easing: "linear", fill: "backwards" });
-
+    // ---------- Sequência de entrada ----------
+    const stagger = 24;
+    gGrid.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: 450, fill: "backwards" });
     dots.forEach((dot, i) => {
       dot.style.transformBox = "fill-box";
       dot.style.transformOrigin = "center";
       dot.animate(
-        [
-          { opacity: 0, transform: "translateY(-14px) scale(0.4)" },
-          { opacity: 1, transform: "none" },
-        ],
+        [{ opacity: 0, transform: "translateY(-14px) scale(0.4)" }, { opacity: 1, transform: "none" }],
         { duration: 420, delay: 650 + i * stagger, easing: ease, fill: "backwards" }
       );
     });
-
-    const tStart = 650 + N * stagger;
+    const tStart = 650 + WIN * stagger;
     const len = trendPath.getTotalLength();
     trendPath.style.strokeDasharray = `${len}`;
-    trendPath.animate(
-      [{ strokeDashoffset: len }, { strokeDashoffset: 0 }],
-      { duration: 1100, delay: tStart, easing: ease, fill: "backwards" }
-    ).finished.then(() => {
-      trendPath.style.strokeDasharray = "";
-    }).catch(() => {});
-
-    // Dados observados ficam mais discretos quando a tendência aparece
-    gObs.animate([{ opacity: 1 }, { opacity: 0.7 }], {
-      duration: 700, delay: tStart + 300, easing: ease, fill: "forwards",
+    trendPath.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], {
+      duration: 1100, delay: tStart, easing: ease, fill: "backwards",
+    }).finished.then(() => (trendPath.style.strokeDasharray = "")).catch(() => {});
+    area.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 800, delay: tStart + 500, fill: "backwards" });
+    gF.animate([{ opacity: 0, transform: "translateX(-12px)" }, { opacity: 1, transform: "none" }], {
+      duration: 700, delay: tStart + 1000, easing: ease, fill: "backwards",
     });
-
-    const fStart = tStart + 1000;
-    const fullW = x(N + H - 1) - x(N - 1) + 40;
-    const t0 = performance.now() + fStart;
-    const tween = (now) => {
-      if (!clipRect.isConnected) return;
-      const p = Math.min(1, Math.max(0, (now - t0) / 900));
-      const e = 1 - Math.pow(1 - p, 3);
-      clipRect.setAttribute("width", fullW * e);
-      if (p < 1) requestAnimationFrame(tween);
-    };
-    requestAnimationFrame(tween);
-
-    gEnd.animate([{ opacity: 0 }, { opacity: 1 }], {
-      duration: 400, delay: fStart + 850, easing: "linear", fill: "backwards",
-    });
+    gEnd.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, delay: tStart + 1500, fill: "backwards" });
+    return tStart + 1900; // fim da entrada
   }
 
-  function showAt(t) {
+  function showAt(i) {
     if (!state) return;
-    hoverIdx = t;
+    hoverIdx = i;
     const { x, y, W, gHover, cross, hTrend, hObs, hFcst } = state;
-    const xp = x(t);
-
+    const xp = x(i);
     gHover.style.display = "";
     cross.setAttribute("x1", xp);
     cross.setAttribute("x2", xp);
 
-    const isObs = t < N;
-    const f = fcstAt(t);
-    toggleDot(hObs, isObs, xp, isObs ? y(obs[t]) : 0);
-    toggleDot(hTrend, isObs, xp, isObs ? y(trend[t]) : 0);
+    const isObs = i < WIN;
+    const f = fcstAt(i);
+    const k = kStart + i;
+    toggleDot(hObs, isObs, xp, isObs ? y(obs[i]) : 0);
+    toggleDot(hTrend, isObs, xp, isObs ? y(trend[i]) : 0);
     toggleDot(hFcst, !isObs, xp, f ? y(f.mean) : 0);
 
     const row = (cls, label, value) =>
       `<span class="row"><span class="key ${cls}"></span>${label}<b>${value}</b></span>`;
-
     tooltip.innerHTML = isObs
-      ? `<strong>${monthLabel(t)}</strong>` +
-        row("key--dot", "Observado", fmt(obs[t])) +
-        row("key--line", "Tendência", fmt(trend[t])) +
-        row("", "Resíduo", (obs[t] - trend[t] > 0 ? "+" : "") + fmt(obs[t] - trend[t]))
-      : `<strong>${monthLabel(t)} · previsão</strong>` +
+      ? `<strong>${monthLabel(k)}</strong>` +
+        row("key--dot", "Observado", fmt(obs[i])) +
+        row("key--line", "Tendência", fmt(trend[i]))
+      : `<strong>${monthLabel(k)}, previsão</strong>` +
         row("key--dash", "Esperado", fmt(f.mean)) +
         row("", "IC 95%", `${fmt(f.lo)} a ${fmt(f.hi)}`);
 
     const tipW = tooltip.offsetWidth;
     const tipH = tooltip.offsetHeight;
-    const anchorY = isObs ? y(obs[t]) : y(f.mean);
+    const anchorY = isObs ? y(obs[i]) : y(f.mean);
     let left = xp + 16;
     if (left + tipW > W) left = xp - tipW - 16;
-    let top = anchorY - tipH / 2;
-    top = Math.max(0, Math.min(state.Ht - tipH, top));
+    const top = Math.max(0, Math.min(state.Ht - tipH, anchorY - tipH / 2));
     tooltip.style.transform = `translate(${left}px, ${top}px)`;
     tooltip.classList.add("is-visible");
   }
@@ -336,62 +340,107 @@
     if (state) state.gHover.style.display = "none";
   }
 
-  // Teclado: setas percorrem os meses
+  // ---------------- Loop "ao vivo" ----------------
+  let started = false;
+  let introDone = false;
+  let visible = false;
+  let hovering = false;
+  let userPaused = reduceMotion;
+  let timer = 0;
+
+  const canRun = () =>
+    started && introDone && visible && !hovering && !userPaused && !document.hidden && !root.hidden;
+
+  function updateLiveUi() {
+    if (!liveBtn) return;
+    const live = !userPaused;
+    liveBtn.setAttribute("aria-pressed", String(!live));
+    liveBtn.classList.toggle("is-paused", !live);
+    liveLabel.textContent = live ? "Ao vivo" : "Pausado";
+    liveBtn.setAttribute("aria-label", live ? "Pausar atualização ao vivo" : "Retomar atualização ao vivo");
+  }
+
+  function schedule() {
+    clearTimeout(timer);
+    if (!canRun()) return;
+    timer = setTimeout(() => {
+      if (!canRun()) return;
+      series.push(gen(series.length));
+      compute();
+      render("shift");
+      if (!tableWrap.hidden) buildTable();
+      schedule();
+    }, TICK_MS);
+  }
+
+  function setHover(on) {
+    hovering = on;
+    schedule();
+  }
+
   root.addEventListener("keydown", (e) => {
-    const cur = hoverIdx ?? N - 1;
-    const map = { ArrowLeft: cur - 1, ArrowRight: cur + 1, Home: 0, End: N + H - 1 };
+    const cur = hoverIdx ?? WIN - 1;
+    const map = { ArrowLeft: cur - 1, ArrowRight: cur + 1, Home: 0, End: WIN + H - 1 };
     if (e.key in map) {
       e.preventDefault();
-      showAt(Math.max(0, Math.min(N + H - 1, map[e.key])));
+      showAt(Math.max(0, Math.min(WIN + H - 1, map[e.key])));
     } else if (e.key === "Escape") {
       hide();
     }
   });
-  root.addEventListener("focus", () => showAt(hoverIdx ?? N - 1));
-  root.addEventListener("blur", hide);
+  root.addEventListener("focus", () => {
+    setHover(true);
+    showAt(hoverIdx ?? WIN - 1);
+  });
+  root.addEventListener("blur", () => {
+    hide();
+    setHover(false);
+  });
 
-  // ---------------- Tabela (modo "mostrar como tabela") ----------------
+  liveBtn?.addEventListener("click", () => {
+    userPaused = !userPaused;
+    updateLiveUi();
+    schedule();
+  });
+  if (reduceMotion && liveBtn) liveBtn.hidden = true;
+  updateLiveUi();
+
+  // ---------------- Tabela ----------------
   function buildTable() {
-    const head = `<thead><tr><th scope="col">Mês</th><th scope="col">Observado</th><th scope="col">Tendência</th><th scope="col">Previsão</th><th scope="col">IC 95%</th></tr></thead>`;
     const rows = [];
-    for (let t = 0; t < N + H; t++) {
-      const f = t >= N ? fcstAt(t) : null;
+    for (let i = 0; i < WIN + H; i++) {
+      const f = i >= WIN ? fcstAt(i) : null;
       rows.push(
-        `<tr class="${f ? "is-forecast" : ""}"><td>${monthLabel(t)}</td>` +
-          `<td>${f ? "—" : fmt(obs[t])}</td>` +
-          `<td>${f ? "—" : fmt(trend[t])}</td>` +
+        `<tr class="${f ? "is-forecast" : ""}"><td>${monthLabel(kStart + i)}</td>` +
+          `<td>${f ? "—" : fmt(obs[i])}</td>` +
+          `<td>${f ? "—" : fmt(trend[i])}</td>` +
           `<td>${f ? fmt(f.mean) : "—"}</td>` +
           `<td>${f ? `${fmt(f.lo)} a ${fmt(f.hi)}` : "—"}</td></tr>`
       );
     }
-    table.insertAdjacentHTML("beforeend", head + `<tbody>${rows.join("")}</tbody>`);
+    table.innerHTML =
+      `<caption class="sr-only">Dados do gráfico</caption>` +
+      `<thead><tr><th scope="col">Mês</th><th scope="col">Observado</th><th scope="col">Tendência</th><th scope="col">Previsão</th><th scope="col">IC 95%</th></tr></thead>` +
+      `<tbody>${rows.join("")}</tbody>`;
   }
-  buildTable();
 
   tableToggle?.addEventListener("click", () => {
     const showTable = tableToggle.getAttribute("aria-pressed") !== "true";
     tableToggle.setAttribute("aria-pressed", String(showTable));
-    tableToggle.setAttribute("aria-label", showTable ? "Mostrar como gráfico" : "Mostrar como tabela");
-    tableToggle.title = showTable ? "Mostrar como gráfico" : "Mostrar como tabela";
+    const label = showTable ? "Mostrar como gráfico" : "Mostrar como tabela";
+    tableToggle.setAttribute("aria-label", label);
+    tableToggle.title = label;
     tableToggle.querySelector("i").className = showTable ? "bx bx-line-chart" : "bx bx-table";
+    if (showTable) buildTable();
     tableWrap.hidden = !showTable;
     root.hidden = showTable;
-    if (!showTable) render(false);
-  });
-
-  replayBtn?.addEventListener("click", () => {
-    hide();
-    if (root.hidden) tableToggle.click();
-    render(!motionQuery.matches);
+    if (!showTable) render("static");
+    schedule();
   });
 
   // ---------------- Inicialização ----------------
-  // A animação só começa quando o gráfico aparece na tela (no celular ele
-  // fica abaixo da dobra); depois disso, redimensionar só redesenha.
-  let started = false;
   let raf = 0;
   let lastSize = "";
-
   const ro = new ResizeObserver(() => {
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(() => {
@@ -399,35 +448,43 @@
       const size = `${root.clientWidth}x${root.clientHeight}`;
       if (size === lastSize) return;
       lastSize = size;
-      render(false);
+      render("static");
     });
   });
 
-  const begin = () => {
+  function begin() {
     if (started) return;
     started = true;
     lastSize = `${root.clientWidth}x${root.clientHeight}`;
-    render(!motionQuery.matches);
+    if (reduceMotion) {
+      render("static");
+      introDone = true;
+    } else {
+      const end = render("intro") || 0;
+      setTimeout(() => {
+        introDone = true;
+        schedule();
+      }, end);
+    }
     ro.observe(root);
-  };
+  }
 
   const watch = () => {
-    if (!("IntersectionObserver" in window)) return begin();
-    const io = new IntersectionObserver(
+    if (!("IntersectionObserver" in window)) {
+      visible = true;
+      return begin();
+    }
+    new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          io.disconnect();
-          begin();
-        }
+        visible = entries.some((e) => e.isIntersecting);
+        if (visible) begin();
+        schedule();
       },
-      { threshold: 0.4 }
-    );
-    io.observe(root);
+      { threshold: 0.3 }
+    ).observe(root);
   };
+  document.addEventListener("visibilitychange", schedule);
 
-  if (document.fonts?.ready) {
-    document.fonts.ready.then(watch);
-  } else {
-    watch();
-  }
+  if (document.fonts?.ready) document.fonts.ready.then(watch);
+  else watch();
 })();

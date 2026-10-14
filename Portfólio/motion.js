@@ -112,4 +112,29 @@
   );
   window.addEventListener("resize", updateBar);
   updateBar();
+  // ---------------- Faixa de ferramentas (ticker) ----------------
+  const ticker = document.querySelector(".ticker");
+  const track = ticker?.querySelector(".ticker__track");
+  if (ticker && track && !reduceMotion) {
+    // duplica os itens para o loop não ter emenda
+    Array.from(track.children).forEach((li) => {
+      const clone = li.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      track.appendChild(clone);
+    });
+    const setSpeed = () => {
+      const half = track.scrollWidth / 2;
+      ticker.style.setProperty("--ticker-dur", `${Math.round(half / 45)}s`); // ~45 px/s
+    };
+    setSpeed();
+    document.fonts?.ready.then(setSpeed);
+    // só anima quando está na tela
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver((entries) => {
+        ticker.classList.toggle("is-running", entries.some((e) => e.isIntersecting));
+      }).observe(ticker);
+    } else {
+      ticker.classList.add("is-running");
+    }
+  }
 })();
