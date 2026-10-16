@@ -10,41 +10,82 @@ const EMAIL_JS_CONFIG = {
 };
 
 const POPUP_TIMEOUT = 2000;
-const GENERIC_FORM_ERROR =
-  "Não foi possível enviar a mensagem agora. Tente novamente em alguns minutos ou use os links de contato.";
+
+// traduções (i18n.js); sem ele, mostra a própria chave
+const T = (key, vars) => (window.I18N ? window.I18N.t(key, vars) : key);
+const LANG = () => (window.I18N ? window.I18N.lang : "pt");
 
 const prefersReducedMotion = () => document.documentElement.classList.contains("motion-off");
 
 // Botão para pausar/retomar todas as animações (fica salvo no navegador)
 const motionToggle = document.getElementById("motion-toggle");
-if (motionToggle) {
+function labelMotionToggle() {
+  if (!motionToggle) return;
   const off = prefersReducedMotion();
+  const label = T(off ? "motion.resume" : "motion.pause");
   motionToggle.setAttribute("aria-pressed", String(off));
-  const label = off ? "Retomar animações" : "Pausar animações";
   motionToggle.setAttribute("aria-label", label);
   motionToggle.title = label;
   motionToggle.querySelector("i").className = off ? "bx bx-play-circle" : "bx bx-pause-circle";
+}
+if (motionToggle) {
+  labelMotionToggle();
   motionToggle.addEventListener("click", () => {
     try {
-      localStorage.setItem("motion", off ? "on" : "off");
+      localStorage.setItem("motion", prefersReducedMotion() ? "on" : "off");
     } catch (e) {}
     location.reload();
   });
 }
 
 // ============================================================
-// PROJETOS
+// PROJETOS (textos em PT e EN)
 // ============================================================
 
 const projects = [
   {
-    title: "Detecção de Fraudes",
-    summary: "Modelos que apontam transações de cartão com maior risco de fraude.",
-    problem: "Identificar transações com maior risco de fraude em cartões de crédito.",
-    approach:
-      "Análise exploratória, preparação dos dados e comparação entre Logistic Regression e Random Forest, com apoio visual em Power BI.",
-    result:
-      "Uma base analítica que ajuda a interpretar padrões de fraude e avaliar o desempenho dos modelos.",
+    pt: {
+      title: "Pipeline de Dados com Apache Airflow",
+      summary: "Coleta semanal automatizada de dados de uma API, orquestrada no Airflow.",
+      problem: "Automatizar a coleta recorrente de dados de uma API externa sem execução manual.",
+      approach:
+        "DAG no Apache Airflow agendada para toda segunda-feira, com uma tarefa que cria a partição da semana e outra que extrai a previsão de 7 dias da API Visual Crossing. Ambiente em Docker Compose com CeleryExecutor, Redis e PostgreSQL.",
+      result:
+        "A cada semana, os dados brutos e duas tabelas tratadas (temperaturas e condições) ficam salvos em uma pasta da semana, prontos para análise.",
+    },
+    en: {
+      title: "Data Pipeline with Apache Airflow",
+      summary: "Automated weekly data collection from an API, orchestrated in Airflow.",
+      problem: "Automate recurring data collection from an external API with no manual runs.",
+      approach:
+        "An Apache Airflow DAG scheduled every Monday, with one task that creates the week's partition and another that pulls a 7-day forecast from the Visual Crossing API. Runs on Docker Compose with CeleryExecutor, Redis and PostgreSQL.",
+      result:
+        "Every week, the raw data and two curated tables (temperatures and conditions) are saved to that week's folder, ready for analysis.",
+    },
+    image: "ImgProjeto/PipelineAirflow.png",
+    tags: ["Python", "Apache Airflow", "Docker", "Pandas"],
+    category: "eng",
+    github: "https://github.com/GabrielProzin/MiniProjectAirflow",
+    live: "",
+  },
+  {
+    pt: {
+      title: "Detecção de Fraudes",
+      summary: "Modelos que apontam transações de cartão com maior risco de fraude.",
+      problem: "Identificar transações com maior risco de fraude em cartões de crédito.",
+      approach:
+        "Análise exploratória, preparação dos dados e comparação entre Logistic Regression e Random Forest, com apoio visual em Power BI.",
+      result:
+        "Uma base analítica que ajuda a interpretar padrões de fraude e avaliar o desempenho dos modelos.",
+    },
+    en: {
+      title: "Fraud Detection",
+      summary: "Models that flag card transactions with the highest fraud risk.",
+      problem: "Identify credit card transactions with the highest risk of fraud.",
+      approach:
+        "Exploratory analysis, data preparation and a comparison between Logistic Regression and Random Forest, with visual support in Power BI.",
+      result: "An analytical base that helps interpret fraud patterns and evaluate model performance.",
+    },
     image: "ImgProjeto/ML-BI.png",
     tags: ["Python", "Scikit-Learn", "Power BI"],
     category: ["ml", "analise"],
@@ -52,69 +93,74 @@ const projects = [
     live: "",
   },
   {
-    title: "Mercado de Ações",
-    summary: "Dashboard de tendências e comparação entre ativos da NASDAQ.",
-    problem: "Organizar dados do mercado acionário para facilitar comparações e leitura de tendências.",
-    approach:
-      "Tratamento e estruturação de bases reais da NASDAQ e dashboards no Power BI com foco em análise temporal e comparação entre ativos.",
-    result: "Uma visualização clara para apoiar a exploração dos dados e a tomada de decisão.",
+    pt: {
+      title: "Mercado de Ações",
+      summary: "Dashboard de tendências e comparação entre ativos da NASDAQ.",
+      problem: "Organizar dados do mercado acionário para facilitar comparações e leitura de tendências.",
+      approach:
+        "Tratamento e estruturação de bases reais da NASDAQ e dashboards no Power BI com foco em análise temporal e comparação entre ativos.",
+      result: "Uma visualização clara para apoiar a exploração dos dados e a tomada de decisão.",
+    },
+    en: {
+      title: "Stock Market",
+      summary: "Dashboard of trends and comparisons across NASDAQ stocks.",
+      problem: "Organize stock market data to make comparisons and trends easy to read.",
+      approach:
+        "Cleaning and structuring real NASDAQ data, with Power BI dashboards focused on time analysis and comparisons between stocks.",
+      result: "A clear visualization to support data exploration and decision-making.",
+    },
     image: "ImgProjeto/DashboardAnaliticoMercadoAcoes.png",
     tags: ["Power BI", "DAX", "Time Intelligence"],
     category: "analise",
-    github: "https://github.com/GabrielProzin/Projetos-Power-BI",
+    github: "https://github.com/GabrielProzin/Projeto-Dashboard-Mercado-Acoes",
     live: "",
   },
-  /* {
-    title: "Imersão Back-End",
-    summary: "API em Node.js com autenticação e análise de imagens por IA.",
-    problem: "Construir uma API completa do zero.",
-    approach: "Node.js, Express e MongoDB, com rotas, middlewares, autenticação JWT e integração com IA para análise de imagens.",
-    result: "Um servidor robusto pronto para receber um front-end.",
-    image: "ImgProjeto/imagem_2024-12-03_110024271.png",
-    tags: ["Node.js", "Express", "MongoDB"],
-    category: "web",
-    github: "https://github.com/GabrielProzin/ImersaoBackEnd",
-    live: "",
-  }, */
 ];
 
-const filterLabels = {
-  ml: "Machine Learning",
-  analise: "Análise de Dados",
-  web: "Web/Desenvolvimento",
+const txt = (project) => project[LANG()] || project.pt;
+
+const filterKeys = {
+  ml: "proj.ml",
+  analise: "proj.analysis",
+  eng: "proj.eng",
+  web: "proj.web",
 };
 
 // cor fixa por categoria (a cor segue a entidade, não a posição)
 const filterColors = {
   ml: "var(--s-trend)",
   analise: "var(--s-obs)",
+  eng: "var(--s-violet)",
   web: "var(--s-fcst)",
 };
 
 const projectList = document.getElementById("project-list");
 const projectCount = document.getElementById("project-count");
+let currentFilter = "all";
 
 const asArray = (v) => (Array.isArray(v) ? v : [v]);
 
-function renderProjects(filter = "all") {
+function renderProjects(filter = "all", animate = true) {
+  currentFilter = filter;
   const filtered =
     filter === "all" ? projects : projects.filter((p) => asArray(p.category).includes(filter));
 
   projectList.innerHTML = "";
   projectCount.textContent =
-    filtered.length === 1 ? "1 projeto" : `${filtered.length} projetos`;
+    filtered.length === 1 ? T("proj.one") : T("proj.many", { n: filtered.length });
 
   if (filtered.length === 0) {
     projectList.innerHTML = `
       <div class="empty-state">
         <i class="bx bx-bar-chart-alt-2" aria-hidden="true"></i>
-        <p>Nenhum projeto nesta categoria por enquanto.</p>
+        <p>${T("proj.empty")}</p>
       </div>
     `;
     return;
   }
 
   filtered.forEach((project, i) => {
+    const p = txt(project);
     const card = document.createElement("article");
     card.className = "tile project-item spot";
     card.dataset.index = String(projects.indexOf(project));
@@ -122,29 +168,29 @@ function renderProjects(filter = "all") {
     const badges = asArray(project.category)
       .map(
         (c) =>
-          `<span class="category-badge" style="--badge: ${filterColors[c] || "var(--muted)"}">${filterLabels[c] || c}</span>`
+          `<span class="category-badge" style="--badge: ${filterColors[c] || "var(--muted)"}">${T(filterKeys[c] || c)}</span>`
       )
       .join("");
 
     card.innerHTML = `
-      <button type="button" class="project-media" aria-label="Ver detalhes de ${project.title}">
+      <button type="button" class="project-media" aria-label="${T("proj.detailsOf", { t: p.title })}">
         <img src="${project.image}" alt="" class="project-thumbnail" loading="lazy" />
-        <span class="project-media__hint"><i class="bx bx-expand-alt" aria-hidden="true"></i> Detalhes</span>
+        <span class="project-media__hint"><i class="bx bx-expand-alt" aria-hidden="true"></i> ${T("proj.details")}</span>
       </button>
       <div class="project-body">
         <div class="project-badges">${badges}</div>
-        <h3 class="project-title">${project.title}</h3>
-        <p class="project-summary">${project.summary}</p>
+        <h3 class="project-title">${p.title}</h3>
+        <p class="project-summary">${p.summary}</p>
         <div class="project-foot">
-          <ul class="tech-list" aria-label="Tecnologias">${project.tags.map((t) => `<li>${t}</li>`).join("")}</ul>
-          ${project.github ? `<a class="icon-btn" href="${project.github}" target="_blank" rel="noopener noreferrer" aria-label="${project.title} no GitHub"><i class="bx bxl-github"></i></a>` : ""}
+          <ul class="tech-list" aria-label="${T("proj.tech")}">${project.tags.map((t) => `<li>${t}</li>`).join("")}</ul>
+          ${project.github ? `<a class="icon-btn" href="${project.github}" target="_blank" rel="noopener noreferrer" aria-label="${T("proj.onGithub", { t: p.title })}"><i class="bx bxl-github"></i></a>` : ""}
         </div>
       </div>
     `;
 
     projectList.appendChild(card);
 
-    if (!prefersReducedMotion() && card.animate) {
+    if (animate && !prefersReducedMotion() && card.animate) {
       card.animate(
         [
           { opacity: 0, transform: "translateY(16px) scale(0.98)" },
@@ -168,6 +214,13 @@ document.querySelectorAll(".project-filters button").forEach((btn) => {
     btn.setAttribute("aria-pressed", "true");
     renderProjects(btn.dataset.filter);
   });
+});
+
+// ao trocar o idioma, refaz o que é gerado pelo JavaScript
+document.addEventListener("langchange", () => {
+  renderProjects(currentFilter, false);
+  labelMotionToggle();
+  if (imageModal?.classList.contains("show") && openProject) fillModal(openProject);
 });
 
 // ============================================================
@@ -243,25 +296,32 @@ const modalInfo = document.getElementById("image-modal-info");
 const modalClose = document.getElementById("image-modal-close");
 let lastFocusedElement = null;
 let originRect = null;
+let openProject = null;
+
+function fillModal(project) {
+  const p = txt(project);
+  modalImage.src = project.image;
+  modalImage.alt = T("proj.capture", { t: p.title });
+  modalTitle.textContent = p.title;
+  modalInfo.innerHTML = `
+    <dl class="psr">
+      <div><dt>${T("proj.problem")}</dt><dd>${p.problem}</dd></div>
+      <div><dt>${T("proj.approach")}</dt><dd>${p.approach}</dd></div>
+      <div><dt>${T("proj.result")}</dt><dd>${p.result}</dd></div>
+    </dl>
+    <div class="project-links">
+      ${project.github ? `<a class="btn btn--primary btn--sm" href="${project.github}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github"></i> ${T("proj.viewGithub")}</a>` : ""}
+      ${project.live ? `<a class="btn btn--ghost btn--sm" href="${project.live}" target="_blank" rel="noopener noreferrer"><i class="bx bx-link-external"></i> ${T("proj.viewLive")}</a>` : ""}
+    </div>
+  `;
+}
 
 function openProjectModal(project, fromEl) {
   if (!imageModal) return;
 
   lastFocusedElement = document.activeElement;
-  modalImage.src = project.image;
-  modalImage.alt = `Captura do projeto ${project.title}`;
-  modalTitle.textContent = project.title;
-  modalInfo.innerHTML = `
-    <dl class="psr">
-      <div><dt>Problema</dt><dd>${project.problem}</dd></div>
-      <div><dt>Abordagem</dt><dd>${project.approach}</dd></div>
-      <div><dt>Resultado</dt><dd>${project.result}</dd></div>
-    </dl>
-    <div class="project-links">
-      ${project.github ? `<a class="btn btn--primary btn--sm" href="${project.github}" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github"></i> Ver no GitHub</a>` : ""}
-      ${project.live ? `<a class="btn btn--ghost btn--sm" href="${project.live}" target="_blank" rel="noopener noreferrer"><i class="bx bx-link-external"></i> Ver online</a>` : ""}
-    </div>
-  `;
+  openProject = project;
+  fillModal(project);
 
   imageModal.classList.add("show");
   imageModal.setAttribute("aria-hidden", "false");
@@ -395,7 +455,7 @@ if (contactForm) {
     });
 
     if (honeypot) {
-      messageEl.textContent = "Envio bloqueado.";
+      messageEl.textContent = T("form.blocked");
       messageEl.className = "form-message error";
       return;
     }
@@ -405,35 +465,35 @@ if (contactForm) {
     if (!name || name.length < 2 || name.length > 50) {
       nameField.classList.add("error");
       nameField.setAttribute("aria-invalid", "true");
-      problems.push("nome com pelo menos 2 letras");
+      problems.push(T("form.name"));
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       emailField.classList.add("error");
       emailField.setAttribute("aria-invalid", "true");
-      problems.push("um e-mail válido");
+      problems.push(T("form.email"));
     }
 
     if (!msg || msg.length < 10 || msg.length > 300) {
       messageField.classList.add("error");
       messageField.setAttribute("aria-invalid", "true");
-      problems.push("mensagem entre 10 e 300 caracteres");
+      problems.push(T("form.msg"));
     }
 
     if (problems.length) {
-      messageEl.textContent = `Confira: ${problems.join(", ")}.`;
+      messageEl.textContent = T("form.check", { list: problems.join(", ") });
       messageEl.className = "form-message error";
       contactForm.querySelector(".error")?.focus();
       return;
     }
 
     if (!window.emailjs) {
-      messageEl.textContent = GENERIC_FORM_ERROR;
+      messageEl.textContent = T("form.error");
       messageEl.className = "form-message error";
       return;
     }
 
-    messageEl.textContent = "Enviando...";
+    messageEl.textContent = T("form.sending");
     messageEl.className = "form-message info";
 
     try {
@@ -443,13 +503,13 @@ if (contactForm) {
         message: msg,
       });
 
-      messageEl.textContent = "Mensagem enviada. Obrigado pelo contato!";
+      messageEl.textContent = T("form.sent");
       messageEl.className = "form-message success";
       contactForm.reset();
       if (charCount) charCount.textContent = "0/300";
     } catch (error) {
       console.error("Erro EmailJS:", error);
-      messageEl.textContent = GENERIC_FORM_ERROR;
+      messageEl.textContent = T("form.error");
       messageEl.className = "form-message error";
     }
   });
@@ -466,7 +526,7 @@ if (copyEmailBtn) {
   copyEmailBtn.addEventListener("click", () => {
     navigator.clipboard
       .writeText(emailText.textContent)
-      .then(() => showCopiedPopup("Copiado"))
+      .then(() => showCopiedPopup(T("contact.copied")))
       .catch(console.error);
   });
 }

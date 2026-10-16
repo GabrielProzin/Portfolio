@@ -243,6 +243,7 @@ button {
 }
 
 .logo {
+  white-space: nowrap;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -275,6 +276,60 @@ button {
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
+}
+
+/* ---------- Botão de idioma (PT / EN) ---------- */
+.lang-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 3px;
+  margin-right: 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(21, 35, 58, 0.7);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* pílula que desliza para o idioma ativo */
+.lang-toggle::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 999px;
+  background: rgba(85, 152, 231, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(85, 152, 231, 0.45);
+  transition: transform 0.4s cubic-bezier(0.34, 1.3, 0.5, 1);
+}
+
+.lang-toggle[data-lang="en"]::before {
+  transform: translateX(100%);
+}
+
+.lang-toggle__opt {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 100%;
+  color: var(--muted);
+  transition: color 0.3s var(--ease);
+}
+
+.lang-toggle[data-lang="pt"] .lang-toggle__opt[data-l="pt"],
+.lang-toggle[data-lang="en"] .lang-toggle__opt[data-l="en"] {
+  color: var(--ink);
+}
+
+.lang-toggle:hover .lang-toggle__opt {
+  color: var(--ink-2);
 }
 
 /* ---------- Navegação em pílula, no topo ---------- */
@@ -451,7 +506,14 @@ button {
   line-height: 1.15;
 }
 
-.home__role span {
+.home__role .role {
+  font-family: var(--font-display);
+  font-size: inherit;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.home__role span:not(.role) {
   font-family: var(--font-body);
   font-size: var(--fs-sm);
   font-weight: 400;
@@ -845,8 +907,14 @@ button {
 
 .project-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
+}
+
+@media (max-width: 1180px) {
+  .project-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .project-item {
@@ -2031,6 +2099,25 @@ html:not(.js) .kpi::after {
 }
 
 @media (max-width: 480px) {
+  /* no celular o botão de CV do topo vira só ícone (o do hero continua com texto) */
+  .header .btn--sm [data-i18n] {
+    display: none;
+  }
+
+  .header .btn--sm {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .header .btn--sm i {
+    font-size: 1.2rem;
+  }
+
+  .lang-toggle {
+    margin-right: 2px;
+  }
+
   .page-tab {
     padding: 7px 9px;
     font-size: 0.74rem;

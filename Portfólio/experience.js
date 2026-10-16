@@ -201,7 +201,7 @@
       }
       grid.classList.toggle("has-active", !!node);
 
-      const text = node ? nodeEls[node].dataset.detail : defaultDetail;
+      const text = node ? nodeEls[node].dataset.detail : detail.dataset.default || defaultDetail;
       if (detail.textContent !== text) {
         detail.textContent = text;
         if (!reduceMotion) {
@@ -231,6 +231,9 @@
       el.setAttribute("aria-pressed", "false");
     }
     grid.addEventListener("pointerleave", () => setActive(pinned));
+    document.addEventListener("langchange", () => {
+      detail.textContent = active ? nodeEls[active].dataset.detail : detail.dataset.default || defaultDetail;
+    });
     grid.addEventListener("focusout", (e) => {
       if (!grid.contains(e.relatedTarget)) setActive(pinned);
     });

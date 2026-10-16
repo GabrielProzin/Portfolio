@@ -12,6 +12,31 @@
   <meta name="theme-color" content="#0e1828" />
   <title>Portfólio | Gabriel Mendes</title>
 
+  <!-- Ícones -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <!-- Prévia ao compartilhar o link (LinkedIn, WhatsApp, etc.) -->
+  <link rel="canonical" href="https://gmendes.vercel.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://gmendes.vercel.app/" />
+  <meta property="og:site_name" content="Gabriel Mendes" />
+  <meta property="og:title" content="Gabriel Mendes | Cientista de Dados" />
+  <meta property="og:description"
+    content="Pipelines em Python e Apache Airflow, SQL no BigQuery e dashboards de KPIs no Power BI." />
+  <meta property="og:image" content="https://gmendes.vercel.app/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Gabriel Mendes, Cientista de Dados" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gabriel Mendes | Cientista de Dados" />
+  <meta name="twitter:description"
+    content="Pipelines em Python e Apache Airflow, SQL no BigQuery e dashboards de KPIs no Power BI." />
+  <meta name="twitter:image" content="https://gmendes.vercel.app/og.png" />
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,7 +57,7 @@
 </head>
 
 <body>
-  <a class="skip-link" href="#home">Pular para o conteúdo</a>
+  <a class="skip-link" href="#home" data-i18n="skip">Pular para o conteúdo</a>
 
   <!-- Modal de projeto (modo foco) -->
   <div class="image-modal" id="image-modal" role="dialog" aria-modal="true" aria-hidden="true"
@@ -40,7 +65,7 @@
     <article class="image-modal__frame">
       <header class="image-modal__bar">
         <span id="image-modal-title">Projeto</span>
-        <button type="button" class="icon-btn" id="image-modal-close" aria-label="Fechar">
+        <button type="button" class="icon-btn" id="image-modal-close" aria-label="Fechar" data-i18n-attr="aria-label:close">
           <i class="bx bx-x"></i>
         </button>
       </header>
@@ -53,7 +78,7 @@
 
   <!-- Cabeçalho -->
   <header class="header">
-    <a href="#home" class="logo" aria-label="Ir para a visão geral">
+    <a href="#home" class="logo" aria-label="Ir para a visão geral" data-i18n-attr="aria-label:logo">
       <svg class="logo__mark" viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3" y="12" width="4" height="9" rx="1" />
         <rect x="10" y="7" width="4" height="14" rx="1" />
@@ -61,17 +86,21 @@
       </svg>
       Gabriel Mendes
     </a>
-    <nav class="nav" aria-label="Seções do portfólio">
+    <nav class="nav" aria-label="Seções do portfólio" data-i18n-attr="aria-label:nav.aria">
       <div class="nav__track page-tabs__list" id="page-tabs">
         <span class="nav__pill page-tabs__indicator" aria-hidden="true"></span>
-        <a href="#home" class="page-tab" aria-current="page">Visão geral</a>
-        <a href="#experience" class="page-tab">Experiência</a>
-        <a href="#projects" class="page-tab">Projetos</a>
-        <a href="#about" class="page-tab">Sobre</a>
-        <a href="#contact" class="page-tab">Contato</a>
+        <a href="#home" class="page-tab" aria-current="page" data-i18n="nav.home">Visão geral</a>
+        <a href="#experience" class="page-tab" data-i18n="nav.experience">Experiência</a>
+        <a href="#projects" class="page-tab" data-i18n="nav.projects">Projetos</a>
+        <a href="#about" class="page-tab" data-i18n="nav.about">Sobre</a>
+        <a href="#contact" class="page-tab" data-i18n="nav.contact">Contato</a>
       </div>
     </nav>
     <div class="header__actions">
+      <button type="button" class="lang-toggle" id="lang-toggle" data-lang="pt" aria-label="Switch to English"
+        title="Switch to English">
+        <span class="lang-toggle__opt" data-l="pt">PT</span><span class="lang-toggle__opt" data-l="en">EN</span>
+      </button>
       <button type="button" class="icon-btn" id="motion-toggle" aria-pressed="false" title="Pausar animações"
         aria-label="Pausar animações">
         <i class="bx bx-pause-circle"></i>
@@ -84,8 +113,8 @@
         rel="noopener noreferrer" aria-label="LinkedIn">
         <i class="bx bxl-linkedin"></i>
       </a>
-      <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost btn--sm">
-        <i class="bx bx-download"></i> Baixar CV
+      <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost btn--sm" data-cv>
+        <i class="bx bx-download"></i> <span data-i18n="cv.download">Baixar CV</span>
       </a>
     </div>
     <span class="scroll-progress" aria-hidden="true"></span>
@@ -95,8 +124,8 @@
     <!-- Página 1: Visão geral -->
     <section class="home page" id="home" data-scene aria-labelledby="home-title">
       <div class="home__intro">
-        <p class="status intro-step" style="--d: 0"><span class="status__dot" aria-hidden="true"></span> Aberto a
-          novas oportunidades</p>
+        <p class="status intro-step" style="--d: 0"><span class="status__dot" aria-hidden="true"></span> <span
+            data-i18n="home.status">Aberto a novas oportunidades</span></p>
         <h1 id="home-title" class="display" aria-label="Gabriel Mendes">
           <span class="display__line" data-split>Gabriel</span>
           <span class="display__line" data-split>Mendes</span>
@@ -104,20 +133,18 @@
         <div class="home__role intro-step" style="--d: 3">
           <img class="avatar" src="photo/WhatsApp Image 2024-12-03 at 9.36.39 AM.png" alt="Foto de Gabriel Mendes"
             width="64" height="64" fetchpriority="high" decoding="async" />
-          <p>Cientista de Dados<br /><span>Goiânia, GO</span></p>
+          <p><span class="role" data-i18n="home.role">Cientista de Dados</span><br /><span data-i18n="home.city">Goiânia, GO</span></p>
         </div>
-        <p class="lede intro-step" style="--d: 4">
-          Pipelines, SQL e dashboards que transformam dados em decisão.
-        </p>
+        <p class="lede intro-step" style="--d: 4" data-i18n="home.lede">Pipelines, SQL e dashboards que transformam dados em decisão.</p>
         <div class="btn-group intro-step" style="--d: 5">
           <a href="#experience" class="btn btn--primary">
-            <i class="bx bx-git-merge"></i> Ver experiência
+            <i class="bx bx-git-merge"></i> <span data-i18n="home.cta">Ver experiência</span>
           </a>
-          <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost">
-            <i class="bx bx-download"></i> Baixar CV
+          <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost" data-cv>
+            <i class="bx bx-download"></i> <span data-i18n="cv.download">Baixar CV</span>
           </a>
         </div>
-        <ul class="social-icons intro-step" style="--d: 6" aria-label="Redes">
+        <ul class="social-icons intro-step" style="--d: 6" aria-label="Redes" data-i18n-attr="aria-label:home.social">
           <li><a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer"
               aria-label="GitHub"><i class="bx bxl-github"></i></a></li>
           <li><a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer"
@@ -127,16 +154,16 @@
         </ul>
         <dl class="kpis intro-step" style="--d: 7">
           <div class="kpi">
-            <dt>unidades na base de dados</dt>
-            <dd><span data-count="3.5" data-decimals="1">3,5</span> mil+</dd>
+            <dt data-i18n="kpi.units">unidades na base de dados</dt>
+            <dd><span data-count="3.5" data-decimals="1">3,5</span><span class="u" data-i18n="unit.thousandPlus"> mil+</span></dd>
           </div>
           <div class="kpi">
-            <dt>redes de clientes</dt>
+            <dt data-i18n="kpi.networks">redes de clientes</dt>
             <dd><span data-count="400">400</span></dd>
           </div>
           <div class="kpi">
-            <dt>alunos ativos</dt>
-            <dd><span data-count="2.1" data-decimals="1">2,1</span> mi</dd>
+            <dt data-i18n="kpi.students">alunos ativos</dt>
+            <dd><span data-count="2.1" data-decimals="1">2,1</span><span class="u" data-i18n="unit.million"> mi</span></dd>
           </div>
         </dl>
       </div>
@@ -144,7 +171,7 @@
     </section>
 
     <!-- Faixa de ferramentas -->
-    <div class="ticker" aria-label="Ferramentas que uso">
+    <div class="ticker" aria-label="Ferramentas que uso" data-i18n-attr="aria-label:ticker">
       <ul class="ticker__track">
         <li>Python</li>
         <li>SQL</li>
@@ -165,76 +192,61 @@
 
     <div class="interlude" data-scene>
       <p class="interlude__index" data-reveal>02 / 05</p>
-      <p class="interlude__title" data-reveal>Dados brutos viram métricas.</p>
-      <p class="interlude__sub" data-reveal>Milhares de registros agregados em indicadores.</p>
+      <p class="interlude__title" data-reveal data-i18n="i2.title">Dados brutos viram métricas.</p>
+      <p class="interlude__sub" data-reveal data-i18n="i2.sub">Milhares de registros agregados em indicadores.</p>
     </div>
 
     <!-- Página 2: Experiência -->
     <section class="experience page" id="experience" aria-labelledby="experience-title">
       <header class="job" data-reveal>
-        <h2 id="experience-title" class="page__title">Experiência</h2>
+        <h2 id="experience-title" class="page__title" data-i18n="exp.title">Experiência</h2>
         <div class="job__line">
-          <p class="job__role">Cientista de Dados, <span>Pacto Soluções</span></p>
-          <p class="job__period"><time datetime="2026-05">mai/2026</time> a <time datetime="2026-10">out/2026</time></p>
+          <p class="job__role" data-i18n-html="exp.role">Cientista de Dados, <span>Pacto Soluções</span></p>
+          <p class="job__period" data-i18n="exp.period">mai/2026 a out/2026</p>
         </div>
-        <p class="job__summary">
-          Ciclo de dados de ponta a ponta numa plataforma de gestão para academias: da ingestão e
-          orquestração de pipelines à modelagem e aos dashboards de KPIs usados pelo negócio.
-        </p>
+        <p class="job__summary" data-i18n="exp.summary">Ciclo de dados de ponta a ponta numa plataforma de gestão para academias: da ingestão e orquestração de pipelines à modelagem e aos dashboards de KPIs usados pelo negócio.</p>
       </header>
 
       <div class="cases">
         <article class="case tile spot" data-reveal style="--c: var(--s-obs)">
           <p class="case__stat"><span class="case__num"><span data-count="18">18</span></span><span
-              class="case__unit">clientes no mesmo pipeline</span></p>
-          <h3 class="case__title">Pipelines de dados multi-cliente</h3>
-          <p class="case__text">
-            ETL em Python orquestrado no Apache Airflow, levando dados das APIs do Zendesk e do Jira ao
-            BigQuery. Uma configuração centralizada faz o mesmo código atender 18 clientes.
-          </p>
+              class="case__unit" data-i18n="case1.unit">clientes no mesmo pipeline</span></p>
+          <h3 class="case__title" data-i18n="case1.title">Pipelines de dados multi-cliente</h3>
+          <p class="case__text" data-i18n="case1.text">ETL em Python orquestrado no Apache Airflow, levando dados das APIs do Zendesk e do Jira ao BigQuery. Uma configuração centralizada faz o mesmo código atender 18 clientes.</p>
           <ul class="case__tags"><li>Python</li><li>Airflow</li><li>BigQuery</li></ul>
         </article>
 
         <article class="case tile spot" data-reveal style="--c: var(--s-violet)">
           <p class="case__stat"><span class="case__num"><span data-count="20">20</span>+</span><span
-              class="case__unit">painéis de KPIs migrados</span></p>
-          <h3 class="case__title">Migração do Looker Studio ao Power BI</h3>
-          <p class="case__text">
-            Ativos, churn, cancelamentos, faturamento e inadimplência, com cada número conciliado contra a
-            fonte, por unidade e no consolidado.
-          </p>
+              class="case__unit" data-i18n="case2.unit">painéis de KPIs migrados</span></p>
+          <h3 class="case__title" data-i18n="case2.title">Migração do Looker Studio ao Power BI</h3>
+          <p class="case__text" data-i18n="case2.text">Ativos, churn, cancelamentos, faturamento e inadimplência, com cada número conciliado contra a fonte, por unidade e no consolidado.</p>
           <ul class="case__tags"><li>Power BI</li><li>DAX</li><li>Looker Studio</li></ul>
         </article>
 
         <article class="case tile spot" data-reveal style="--c: var(--s-trend)">
-          <p class="case__stat"><span class="case__num"><span data-count="404">404</span> mil</span><span
-              class="case__unit">linhas de histórico diário modelado</span></p>
-          <h3 class="case__title">Modelagem e qualidade de dados</h3>
-          <p class="case__text">
-            Histórico diário de 444 dias da situação de cada aluno. Encontrei e corrigi um bug que inflava a
-            contagem de tickets em dezenas de milhares, reprocessando o histórico validado contra a origem.
-          </p>
-          <ul class="case__tags"><li>SQL</li><li>DAX</li><li>Causa raiz</li></ul>
+          <p class="case__stat"><span class="case__num"><span data-count="404">404</span><span data-i18n="unit.thousand"> mil</span></span><span
+              class="case__unit" data-i18n="case3.unit">linhas de histórico diário modelado</span></p>
+          <h3 class="case__title" data-i18n="case3.title">Modelagem e qualidade de dados</h3>
+          <p class="case__text" data-i18n="case3.text">Histórico diário de 444 dias da situação de cada aluno. Encontrei e corrigi um bug que inflava a contagem de tickets em dezenas de milhares, reprocessando o histórico validado contra a origem.</p>
+          <ul class="case__tags"><li>SQL</li><li>DAX</li><li data-i18n="case3.tag">Causa raiz</li></ul>
         </article>
 
         <article class="case tile spot" data-reveal style="--c: var(--s-fcst)">
           <p class="case__stat"><span class="case__num"><span data-count="300">300</span>+</span><span
-              class="case__unit">testes automatizados</span></p>
-          <h3 class="case__title">Protótipo de módulo de NPS</h3>
-          <p class="case__text">
-            Projetei, dirigi e validei um protótipo full-stack, do levantamento de requisitos ao login com
-            Google: back-end em Java/Spring com PostgreSQL e front-end em React.
-          </p>
+              class="case__unit" data-i18n="case4.unit">testes automatizados</span></p>
+          <h3 class="case__title" data-i18n="case4.title">Protótipo de módulo de NPS</h3>
+          <p class="case__text" data-i18n="case4.text">Projetei, dirigi e validei um protótipo full-stack, do levantamento de requisitos ao login com Google: back-end em Java/Spring com PostgreSQL e front-end em React.</p>
           <ul class="case__tags"><li>Java</li><li>Spring</li><li>React</li><li>PostgreSQL</li></ul>
         </article>
       </div>
 
       <figure class="tile arch spot" id="arch" data-reveal aria-labelledby="arch-title">
         <figcaption class="tile__head">
-          <h3 class="tile__title" id="arch-title">Fluxo de dados</h3>
+          <h3 class="tile__title" id="arch-title" data-i18n="arch.title">Fluxo de dados</h3>
           <div class="tile__actions">
             <button type="button" class="icon-btn" id="arch-pause" aria-pressed="false" title="Pausar animação"
-              aria-label="Pausar animação">
+              aria-label="Pausar animação" data-i18n-attr="title:arch.pause; aria-label:arch.pause">
               <i class="bx bx-pause"></i>
             </button>
           </div>
@@ -244,69 +256,70 @@
           <canvas class="arch__canvas" aria-hidden="true"></canvas>
           <div class="arch__grid">
             <div class="arch__col">
-              <button type="button" class="arch__node" data-node="zendesk"
+              <button type="button" class="arch__node" data-node="zendesk" data-i18n-attr="data-detail:arch.zendesk"
                 data-detail="ETL em Python da API do Zendesk para o BigQuery, com correção de um bug que inflava a contagem de tickets.">
                 <i class="bx bx-support" aria-hidden="true"></i><span>Zendesk</span>
               </button>
-              <button type="button" class="arch__node" data-node="jira"
+              <button type="button" class="arch__node" data-node="jira" data-i18n-attr="data-detail:arch.jira"
                 data-detail="ETL em Python da API do Jira para o BigQuery, no mesmo padrão de DAGs.">
                 <i class="bx bx-task" aria-hidden="true"></i><span>Jira</span>
               </button>
             </div>
 
             <div class="arch__col">
-              <button type="button" class="arch__node arch__node--hub" data-node="airflow"
+              <button type="button" class="arch__node arch__node--hub" data-node="airflow" data-i18n-attr="data-detail:arch.airflow"
                 data-detail="DAGs no Apache Airflow com configuração centralizada, escaladas para 18 clientes.">
                 <i class="bx bx-git-repo-forked" aria-hidden="true"></i><span>Airflow</span>
               </button>
             </div>
 
             <div class="arch__col">
-              <button type="button" class="arch__node" data-node="bigquery"
+              <button type="button" class="arch__node" data-node="bigquery" data-i18n-attr="data-detail:arch.bigquery"
                 data-detail="Modelagem e otimização de SQL no BigQuery, com cargas incrementais e views para os painéis.">
                 <i class="bx bx-data" aria-hidden="true"></i><span>BigQuery</span>
               </button>
-              <button type="button" class="arch__node" data-node="heatwave"
+              <button type="button" class="arch__node" data-node="heatwave" data-i18n-attr="data-detail:arch.heatwave"
                 data-detail="Atuação na migração de dados do BigQuery para o MySQL HeatWave, na Oracle Cloud.">
                 <i class="bx bx-transfer-alt" aria-hidden="true"></i><span>HeatWave</span>
               </button>
             </div>
 
             <div class="arch__col">
-              <button type="button" class="arch__node" data-node="powerbi"
+              <button type="button" class="arch__node" data-node="powerbi" data-i18n-attr="data-detail:arch.powerbi"
                 data-detail="Migração de 20+ painéis de KPIs do Looker Studio ao Power BI, com cada número conciliado com a fonte.">
                 <i class="bx bx-bar-chart-square" aria-hidden="true"></i><span>Power BI</span>
               </button>
-              <button type="button" class="arch__node" data-node="mcp"
+              <button type="button" class="arch__node" data-node="mcp" data-i18n-attr="data-detail:arch.mcp"
                 data-detail="Servidor MCP somente leitura para consultar o BigQuery com IA, sem risco de alterar dados.">
-                <i class="bx bx-bot" aria-hidden="true"></i><span>IA via MCP</span>
+                <i class="bx bx-bot" aria-hidden="true"></i><span data-i18n="arch.mcpLabel">IA via MCP</span>
               </button>
             </div>
           </div>
         </div>
-        <p class="arch__detail" id="arch-detail" aria-live="polite">Passe o mouse ou toque em uma etapa.</p>
+        <p class="arch__detail" id="arch-detail" aria-live="polite" data-default="Passe o mouse ou toque em uma etapa." data-i18n-attr="data-default:arch.default">Passe o mouse ou toque em uma etapa.</p>
       </figure>
 
-      <ol class="earlier" data-reveal aria-label="Experiências anteriores">
-        <li><strong>Escolar Manager</strong><span>Estágio e CLT</span></li>
-        <li><strong>Pacto Soluções, Consultor de Relacionamento</strong><span><time datetime="2022-08">ago/2022</time> a <time datetime="2024-11">nov/2024</time></span></li>
+      <ol class="earlier" data-reveal aria-label="Experiências anteriores" data-i18n-attr="aria-label:earlier.aria">
+        <li><strong>Escolar Manager</strong><span data-i18n="earlier.escolar">Estágio e CLT</span></li>
+        <li><strong data-i18n="earlier.consultant">Pacto Soluções, Consultor de Relacionamento</strong><span data-i18n="earlier.consultantPeriod">ago/2022 a nov/2024</span></li>
       </ol>
     </section>
 
     <div class="interlude" data-scene>
       <p class="interlude__index" data-reveal>03 / 05</p>
-      <p class="interlude__title" data-reveal>Métricas viram modelos.</p>
-      <p class="interlude__sub" data-reveal>Agrupamentos e previsões com machine learning.</p>
+      <p class="interlude__title" data-reveal data-i18n="i3.title">Métricas viram modelos.</p>
+      <p class="interlude__sub" data-reveal data-i18n="i3.sub">Agrupamentos e previsões com machine learning.</p>
     </div>
 
     <!-- Página 3: Projetos -->
     <section class="projects page" id="projects" aria-labelledby="projects-title">
       <div class="page__head page__head--row" data-reveal>
-        <h2 id="projects-title" class="page__title">Projetos</h2>
-        <div class="slicer__options project-filters" role="group" aria-label="Filtrar por categoria">
-          <button type="button" class="active" aria-pressed="true" data-filter="all">Todos</button>
-          <button type="button" aria-pressed="false" data-filter="ml">Machine Learning</button>
-          <button type="button" aria-pressed="false" data-filter="analise">Análise de Dados</button>
+        <h2 id="projects-title" class="page__title" data-i18n="proj.title">Projetos</h2>
+        <div class="slicer__options project-filters" role="group" aria-label="Filtrar por categoria" data-i18n-attr="aria-label:proj.filterAria">
+          <button type="button" class="active" aria-pressed="true" data-filter="all" data-i18n="proj.all">Todos</button>
+          <button type="button" aria-pressed="false" data-filter="ml" data-i18n="proj.ml">Machine Learning</button>
+          <button type="button" aria-pressed="false" data-filter="analise" data-i18n="proj.analysis">Análise de Dados</button>
+          <button type="button" aria-pressed="false" data-filter="eng" data-i18n="proj.eng">Engenharia de Dados</button>
           <!-- <button type="button" aria-pressed="false" data-filter="web">Web/Desenvolvimento</button> -->
         </div>
       </div>
@@ -319,34 +332,30 @@
 
     <div class="interlude" data-scene>
       <p class="interlude__index" data-reveal>04 / 05</p>
-      <p class="interlude__title" data-reveal>Modelos mostram tendências.</p>
-      <p class="interlude__sub" data-reveal>O que os dados dizem sobre o que vem a seguir.</p>
+      <p class="interlude__title" data-reveal data-i18n="i4.title">Modelos mostram tendências.</p>
+      <p class="interlude__sub" data-reveal data-i18n="i4.sub">O que os dados dizem sobre o que vem a seguir.</p>
     </div>
 
     <!-- Página 4: Sobre -->
     <section class="about page" id="about" aria-labelledby="about-title">
       <div class="about__grid">
         <div class="about__text" data-reveal>
-          <h2 id="about-title" class="page__title">Quem sou eu</h2>
-          <p>
-            Formado em Análise e Desenvolvimento de Sistemas e cursando pós em Ciência de Dados.
-            Antes dos dados, passei dois anos no relacionamento com clientes, o que me ajuda a entender a
-            regra de negócio por trás de cada número.
-          </p>
+          <h2 id="about-title" class="page__title" data-i18n="about.title">Quem sou eu</h2>
+          <p data-i18n="about.text">Formado em Análise e Desenvolvimento de Sistemas e cursando pós em Ciência de Dados. Antes dos dados, passei dois anos no relacionamento com clientes, o que me ajuda a entender a regra de negócio por trás de cada número.</p>
         </div>
 
         <dl class="tile facts spot" data-reveal>
           <div class="facts__row">
-            <dt>Formação</dt>
-            <dd>ADS, IPOG</dd>
+            <dt data-i18n="about.education">Formação</dt>
+            <dd data-i18n="about.educationVal">ADS, IPOG</dd>
           </div>
           <div class="facts__row">
-            <dt>Cursando</dt>
-            <dd>Pós em Ciência de Dados</dd>
+            <dt data-i18n="about.current">Cursando</dt>
+            <dd data-i18n="about.currentVal">Pós em Ciência de Dados</dd>
           </div>
           <div class="facts__row">
-            <dt>Busco</dt>
-            <dd>Ciência de Dados, Engenharia de Dados ou BI</dd>
+            <dt data-i18n="about.seeking">Busco</dt>
+            <dd data-i18n="about.seekingVal">Ciência de Dados, Engenharia de Dados ou BI</dd>
           </div>
         </dl>
       </div>
@@ -354,14 +363,14 @@
 
     <div class="interlude" data-scene>
       <p class="interlude__index" data-reveal>05 / 05</p>
-      <p class="interlude__title" data-reveal>E tendências viram decisões.</p>
-      <p class="interlude__sub" data-reveal>É aí que o trabalho com dados faz diferença.</p>
+      <p class="interlude__title" data-reveal data-i18n="i5.title">E tendências viram decisões.</p>
+      <p class="interlude__sub" data-reveal data-i18n="i5.sub">É aí que o trabalho com dados faz diferença.</p>
     </div>
 
     <!-- Página 5: Contato -->
     <section class="contact page" id="contact" aria-labelledby="contact-title">
       <div class="page__head" data-reveal>
-        <h2 id="contact-title" class="page__title">Vamos conversar</h2>
+        <h2 id="contact-title" class="page__title" data-i18n="contact.title">Vamos conversar</h2>
       </div>
 
       <div class="contact__grid">
@@ -371,22 +380,22 @@
               class="honeypot" />
             <div class="form-row">
               <div class="form-group">
-                <label for="name">Nome</label>
-                <input type="text" id="name" name="user_name" placeholder="Seu nome" required maxlength="50" />
+                <label for="name" data-i18n="contact.name">Nome</label>
+                <input type="text" id="name" name="user_name" placeholder="Seu nome" data-i18n-attr="placeholder:contact.namePh" required maxlength="50" />
               </div>
               <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="user_email" placeholder="voce@empresa.com" required
+                <label for="email" data-i18n="contact.email">E-mail</label>
+                <input type="email" id="email" name="user_email" placeholder="voce@empresa.com" data-i18n-attr="placeholder:contact.emailPh" required
                   maxlength="50" />
               </div>
             </div>
             <div class="form-group">
-              <label for="message">Mensagem <span class="char-count" id="char-count">0/300</span></label>
-              <textarea id="message" name="message" placeholder="Escreva sua mensagem" rows="4" maxlength="300"
+              <label for="message"><span data-i18n="contact.message">Mensagem</span> <span class="char-count" id="char-count">0/300</span></label>
+              <textarea id="message" name="message" placeholder="Escreva sua mensagem" data-i18n-attr="placeholder:contact.messagePh" rows="4" maxlength="300"
                 required></textarea>
             </div>
             <button type="submit" class="btn btn--primary submit-btn">
-              <i class="bx bx-send"></i> Enviar mensagem
+              <i class="bx bx-send"></i> <span data-i18n="contact.send">Enviar mensagem</span>
             </button>
             <div id="form-message" class="form-message" aria-live="polite"></div>
           </form>
@@ -404,7 +413,7 @@
           <div class="email-display">
             <span id="user-email">gabrielalexandrino2004@gmail.com</span>
             <button id="copy-email" class="btn btn--ghost btn--sm copy-btn" type="button">
-              <i class="bx bx-copy"></i> Copiar
+              <i class="bx bx-copy"></i> <span data-i18n="contact.copy">Copiar</span>
             </button>
           </div>
         </div>
@@ -417,6 +426,17 @@
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
+  <!-- Vercel Web Analytics: só carrega no site publicado (no arquivo local não faz nada) -->
+  <script>
+    if (/\.vercel\.app$/.test(location.hostname)) {
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+      var va = document.createElement("script");
+      va.defer = true;
+      va.src = "/_vercel/insights/script.js";
+      document.head.appendChild(va);
+    }
+  </script>
+  <script src="i18n.js" defer></script>
   <script src="motion.js" defer></script>
   <script src="bg.js" defer></script>
   <script src="experience.js" defer></script>

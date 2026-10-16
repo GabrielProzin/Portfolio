@@ -44,7 +44,7 @@
 
   // ---------------- Contadores ----------------
   const fmtNumber = (v, decimals) =>
-    v.toLocaleString("pt-BR", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+    v.toLocaleString(window.I18N ? window.I18N.locale() : "pt-BR", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
   function countUp(el) {
     const target = parseFloat(el.dataset.count);
@@ -55,8 +55,10 @@
     }
     const duration = 1600;
     const t0 = performance.now();
+    el.dataset.counting = "1";
     const tick = (now) => {
       const p = Math.min(1, (now - t0) / duration);
+      if (p >= 1) delete el.dataset.counting;
       const eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p); // easeOutExpo
       el.textContent = fmtNumber(target * eased, decimals);
       if (p < 1) requestAnimationFrame(tick);
