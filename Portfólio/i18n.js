@@ -84,10 +84,6 @@
     "arch.mcp": "Read-only MCP server for querying BigQuery with AI, with no risk of changing data.",
     "arch.mcpLabel": "AI via MCP",
 
-    "earlier.aria": "Previous experience",
-    "earlier.escolar": "Intern, then full-time",
-    "earlier.consultant": "Pacto Soluções, Customer Relationship Consultant",
-    "earlier.consultantPeriod": "Aug 2022 – Nov 2024",
 
     "proj.title": "Projects",
     "proj.filterAria": "Filter by category",
@@ -112,13 +108,45 @@
 
     "about.title": "About me",
     "about.text":
-      "I hold a degree in Systems Analysis and Development and I'm pursuing a postgraduate degree in Data Science. Before data, I spent two years in customer relationship roles, which helps me understand the business rules behind every number.",
+      "I started at Pacto Soluções in customer relationship roles, analyzing technical requests and error patterns. That experience made it easy for me to understand the business rules behind every number.",
+    "about.text2":
+      "Today I work end to end across the data lifecycle, from ingestion to dashboards, and I'm pursuing a postgraduate degree in Data Science to go deeper into statistics and machine learning.",
     "about.education": "Education",
     "about.educationVal": "Systems Analysis and Development, IPOG",
     "about.current": "Currently",
-    "about.currentVal": "Postgraduate degree in Data Science",
+    "about.currentVal": "Postgraduate degree in Data Science, IPOG",
     "about.seeking": "Looking for",
     "about.seekingVal": "Data Science, Data Engineering or BI roles",
+    "about.location": "Location",
+    "about.locationVal": "Goiânia, Brazil",
+
+    "journey.title": "Journey",
+    "tl1.title": "Customer Relationship Consultant",
+    "tl1.period": "Aug 2022 – Nov 2024",
+    "tl1.text": "Client support, error-pattern analysis and requirements for the development team.",
+    "tl2.title": "Degree in Systems Analysis",
+    "tl2.period": "Aug 2023 – Dec 2025",
+    "tl2.text": "Systems Analysis and Development: the programming foundation I bring to data.",
+    "tl3.title": "Data at Escolar Manager",
+    "tl3.period": "Feb 2025 – May 2026",
+    "tl3.text": "Intern, then full-time: SQL queries, management reports and data quality.",
+    "tl4.title": "Postgraduate in Data Science",
+    "tl4.period": "since Jan 2026",
+    "tl4.text": "Statistics, machine learning and applied projects.",
+    "tl5.title": "Data Scientist",
+    "tl5.period": "May 2026 – Oct 2026",
+    "tl5.text": "Airflow pipelines, BigQuery and KPI dashboards in Power BI.",
+
+    "how.title": "How I work",
+    "how1.title": "I start with the business rule",
+    "how1.text": "Before any query, I understand what the number needs to answer and for whom.",
+    "how2.title": "Every number is reconciled",
+    "how2.text": "I check each metric against the source, per unit and consolidated, before it reaches a dashboard.",
+    "how3.title": "I document what I build",
+    "how3.text": "Pipelines and dashboards come with technical documentation so others can maintain and evolve them.",
+
+    "certs.title": "Certifications",
+    "cert2": "Power BI for Business Intelligence and Data Science",
 
     "contact.title": "Let's talk",
     "contact.name": "Name",
