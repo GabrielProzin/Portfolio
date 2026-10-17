@@ -45,6 +45,35 @@ if (motionToggle) {
 const projects = [
   {
     pt: {
+      title: "Sistema de Locação de Mesas e Cadeiras",
+      summary: "App web mobile-first que tirou do papel a gestão de aluguéis e despesas de um negócio de locação.",
+      problem:
+        "O controle de aluguéis de mesas, cadeiras e forros era feito em anotações de papel, sem visão de agenda, valores do mês ou itens em uso.",
+      approach:
+        "Aplicação em Next.js 15 com React 19 e TypeScript, dados no Firestore e login no Firebase Auth restrito a contas autorizadas. Cadastro em três etapas (cliente e itens, entrega, revisão) com cobrança automática por preço unitário ou valor combinado e frete por km; lista com busca e filtros por status e mês; controle de despesas em centavos, com litros para combustível. Regras do Firestore validam os campos, e a suíte de testes no Vitest roda a cada commit via Husky.",
+      result:
+        "Em uso pelo cliente: um dashboard mensal com valor contratado comparado ao mês anterior, ticket médio, clientes únicos, itens em uso, histórico de 6 meses e agenda de entregas e devoluções, pensado para uso no celular.",
+    },
+    en: {
+      title: "Table & Chair Rental System",
+      summary: "Mobile-first web app that moved a rental business's bookings and expenses off paper.",
+      problem:
+        "Table, chair and tablecloth rentals were tracked in paper notes, with no view of the schedule, the month's totals or the items currently out.",
+      approach:
+        "A Next.js 15 app with React 19 and TypeScript, data in Firestore and Firebase Auth login limited to authorized accounts. Three-step booking form (customer and items, delivery, review) with automatic unit pricing or a flat agreed price plus per-km delivery fee; a list with search and status/month filters; expense tracking stored in cents, with liters for fuel. Firestore rules validate the fields, and the Vitest suite runs on every commit through Husky.",
+      result:
+        "In use by the client: a monthly dashboard with contracted value against the previous month, average ticket, unique customers, items in use, a 6-month history and a delivery/return schedule, designed for phone use.",
+    },
+    image: "ImgProjeto/WDA-Capa.webp",
+    gallery: ["ImgProjeto/WDA-VisaoGeral.webp", "ImgProjeto/WDA-Graficos.webp"],
+    darkCover: true,
+    tags: ["Next.js", "TypeScript", "Firebase", "Vitest"],
+    category: "web",
+    github: "https://github.com/GabrielProzin/wdalocacao",
+    live: "",
+  },
+  {
+    pt: {
       title: "Pipeline de Dados com Apache Airflow",
       summary: "Coleta semanal automatizada de dados de uma API, orquestrada no Airflow.",
       problem: "Automatizar a coleta recorrente de dados de uma API externa sem execução manual.",
@@ -63,6 +92,7 @@ const projects = [
         "Every week, the raw data and two curated tables (temperatures and conditions) are saved to that week's folder, ready for analysis.",
     },
     image: "ImgProjeto/PipelineAirflow.webp",
+    darkCover: true,
     tags: ["Python", "Apache Airflow", "Docker", "Pandas"],
     category: "eng",
     github: "https://github.com/GabrielProzin/MiniProjectAirflow",
@@ -183,7 +213,10 @@ function renderProjects(filter = "all", animate = true) {
         <p class="project-summary">${p.summary}</p>
         <div class="project-foot">
           <ul class="tech-list" aria-label="${T("proj.tech")}">${project.tags.map((t) => `<li>${t}</li>`).join("")}</ul>
-          ${project.github ? `<a class="icon-btn" href="${project.github}" target="_blank" rel="noopener noreferrer" aria-label="${T("proj.onGithub", { t: p.title })}"><i class="bx bxl-github"></i></a>` : ""}
+          <span class="project-links">
+            ${project.live ? `<a class="icon-btn" href="${project.live}" target="_blank" rel="noopener noreferrer" aria-label="${T("proj.liveOf", { t: p.title })}"><i class="bx bx-link-external"></i></a>` : ""}
+            ${project.github ? `<a class="icon-btn" href="${project.github}" target="_blank" rel="noopener noreferrer" aria-label="${T("proj.onGithub", { t: p.title })}"><i class="bx bxl-github"></i></a>` : ""}
+          </span>
         </div>
       </div>
     `;
@@ -290,7 +323,8 @@ updateActiveFromScroll();
 
 const imageModal = document.getElementById("image-modal");
 const modalFrame = imageModal?.querySelector(".image-modal__frame");
-const modalImage = imageModal?.querySelector("img");
+const modalImage = imageModal?.querySelector(".image-modal__media > img");
+const modalThumbs = document.getElementById("image-modal-thumbs");
 const modalTitle = document.getElementById("image-modal-title");
 const modalInfo = document.getElementById("image-modal-info");
 const modalClose = document.getElementById("image-modal-close");
@@ -300,8 +334,20 @@ let openProject = null;
 
 function fillModal(project) {
   const p = txt(project);
-  modalImage.src = project.image;
-  modalImage.alt = T("proj.capture", { t: p.title });
+  const shots = project.gallery || [project.image];
+  const show = (i) => {
+    modalImage.src = shots[i];
+    modalImage.alt = T("proj.capture", { t: p.title }) + (shots.length > 1 ? ` (${i + 1}/${shots.length})` : "");
+    modalThumbs.querySelectorAll("button").forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
+  };
+  // capas geradas no tema escuro não ganham faixas brancas
+  modalImage.style.background = project.darkCover ? "var(--canvas)" : "";
+  modalThumbs.hidden = shots.length < 2;
+  modalThumbs.innerHTML = shots.length < 2 ? "" : shots
+    .map((src, i) => `<button type="button" aria-label="${T("proj.shot", { n: i + 1 })}"><img src="${src}" alt="" loading="lazy" /></button>`)
+    .join("");
+  modalThumbs.querySelectorAll("button").forEach((b, i) => b.addEventListener("click", () => show(i)));
+  show(0);
   modalTitle.textContent = p.title;
   modalInfo.innerHTML = `
     <dl class="psr">

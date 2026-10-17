@@ -70,7 +70,10 @@
         </button>
       </header>
       <div class="image-modal__body">
-        <img src="" alt="" />
+        <div class="image-modal__media">
+          <img src="" alt="" />
+          <div class="image-modal__thumbs" id="image-modal-thumbs" hidden></div>
+        </div>
         <div class="image-modal__info" id="image-modal-info"></div>
       </div>
     </article>
@@ -316,7 +319,7 @@
           <button type="button" aria-pressed="false" data-filter="ml" data-i18n="proj.ml">Machine Learning</button>
           <button type="button" aria-pressed="false" data-filter="analise" data-i18n="proj.analysis">Análise de Dados</button>
           <button type="button" aria-pressed="false" data-filter="eng" data-i18n="proj.eng">Engenharia de Dados</button>
-          <!-- <button type="button" aria-pressed="false" data-filter="web">Web/Desenvolvimento</button> -->
+          <button type="button" aria-pressed="false" data-filter="web" data-i18n="proj.web">Web/Desenvolvimento</button>
         </div>
       </div>
       <span class="sr-only" id="project-count" aria-live="polite"></span>

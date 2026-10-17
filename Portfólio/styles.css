@@ -911,6 +911,19 @@ button {
   gap: 24px;
 }
 
+/* 4 projetos: 2x2 em vez de 3 + 1 sozinho */
+@media (min-width: 861px) {
+  .project-list:has(> :nth-child(4):last-child) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.project-links {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
 @media (max-width: 1180px) {
   .project-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1139,12 +1152,63 @@ button {
   overflow: auto;
 }
 
-.image-modal img {
+.image-modal__media {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--canvas);
+}
+
+.image-modal__thumbs {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.image-modal__thumbs[hidden] {
+  display: none;
+}
+
+.image-modal__thumbs button {
+  width: 120px;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: none;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+
+.image-modal__thumbs button:hover,
+.image-modal__thumbs button[aria-pressed="true"] {
+  opacity: 1;
+  border-color: var(--accent, #5598e7);
+}
+
+.image-modal__thumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  display: block;
+}
+
+.image-modal__media > img {
+  flex: 1;
+  min-height: 0;
   width: 100%;
   height: 100%;
   max-height: calc(100vh - 140px);
   object-fit: contain;
   background: #fff;
+}
+
+.image-modal__media:has(.image-modal__thumbs:not([hidden])) > img {
+  max-height: calc(100vh - 230px);
 }
 
 .image-modal__info {
@@ -1156,7 +1220,16 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .image-modal img {
+  .image-modal__media {
+    min-height: auto;
+  }
+
+  .image-modal__thumbs {
+    flex-shrink: 0;
+  }
+
+  .image-modal__media > img {
+    flex: none;
     height: auto;
     max-height: 50vh;
   }
