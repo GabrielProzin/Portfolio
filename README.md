@@ -12,6 +12,17 @@ Atualmente estou em evolução na área de **Ciência de Dados**, utilizando fer
 
 ## 🚀 Projetos em destaque
 
+### 🔎 busca_vagas: radar de vagas com ETL e NLP
+- Pipeline ETL em **Python** orquestrado no **GitHub Actions** (5 coletas por dia, 5 fontes, carga no **PostgreSQL**)
+- Nota de compatibilidade com **embeddings multilíngues**, habilidades e tipo de cargo, ajustada pelo histórico de decisões
+- **K-means** (silhueta) para agrupar as vagas em tipos e análise de lacunas de habilidades contra o currículo
+- Site em **Next.js** com envio de candidaturas em lote pelo Gmail, leitura de respostas via IMAP e testes no CI (pytest e Playwright)
+
+🔗 Repositório:  
+https://github.com/GabrielProzin/busca_vagas
+
+---
+
 ### 🛡️ Detecção de Fraudes com Machine Learning
 - Modelos preditivos com **Logistic Regression** e **Random Forest**
 - Análise exploratória de dados

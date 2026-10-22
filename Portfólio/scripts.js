@@ -45,6 +45,43 @@ if (motionToggle) {
 const projects = [
   {
     pt: {
+      title: "busca_vagas: radar de vagas com ETL e NLP",
+      summary:
+        "Sistema que coleta vagas júnior de dados de 5 fontes, dá uma nota contra o meu currículo e envia candidaturas pelo Gmail, com o pipeline rodando no GitHub Actions.",
+      problem:
+        "Procurar vaga júnior de dados exige olhar várias plataformas por dia, descartar o que não serve e mandar currículo um a um. E as vagas com o email direto do recrutador quase só aparecem em posts do LinkedIn.",
+      approach:
+        "Pipeline ETL em Python orquestrado no GitHub Actions, com 5 coletas por dia: extrai vagas da Gupy, Remotar, Sólides, GitHub e posts do LinkedIn, remove duplicadas entre fontes, filtra por área, nível e local e carrega no PostgreSQL (Supabase), com backup cifrado conferido contra o banco. A nota de compatibilidade combina similaridade semântica com embeddings multilíngues (45%), habilidades (40%) e tipo de cargo (15%), e se ajusta com as vagas que aplico ou descarto. K-means sobre os embeddings agrupa as vagas em tipos (número de grupos escolhido pela silhueta) e uma análise de lacunas mostra quais habilidades pedidas faltam no currículo. Site em Next.js com login, envio de emails em lote por uma fila com limite diário, leitura de respostas no Gmail via IMAP, monitor de uso dos planos gratuitos e testes automatizados (pytest e Playwright) no CI.",
+      result:
+        "Em uso na minha busca de emprego: cerca de 1.200 vagas lidas por coleta viram uma lista curta, com a nota explicada, o email ao recrutador pronto para revisar e cada candidatura acompanhada até a resposta. Tudo em planos gratuitos.",
+    },
+    en: {
+      title: "busca_vagas: job radar with ETL and NLP",
+      summary:
+        "A system that collects junior data jobs from 5 sources, scores them against my resume and sends applications through Gmail, with the pipeline running on GitHub Actions.",
+      problem:
+        "Looking for a junior data job means checking several platforms every day, discarding what doesn't fit and sending resumes one by one. And postings with the recruiter's direct email show up almost only in LinkedIn posts.",
+      approach:
+        "A Python ETL pipeline orchestrated on GitHub Actions, running 5 times a day: it extracts jobs from Gupy, Remotar, Sólides, GitHub and LinkedIn posts, removes cross-source duplicates, filters by field, level and location and loads them into PostgreSQL (Supabase), with an encrypted backup checked against the database. The fit score combines semantic similarity from multilingual embeddings (45%), skills (40%) and job track (15%), and adjusts to the jobs I apply to or discard. K-means on the embeddings groups jobs into types (number of groups picked by silhouette) and a skill-gap analysis shows which requested skills are missing from my resume. A Next.js site with login, batch emailing through a queue with a daily limit, Gmail reply detection over IMAP, a usage monitor for the free tiers and automated tests (pytest and Playwright) in CI.",
+      result:
+        "In use in my own job search: about 1,200 jobs read per run become a short list, with the score explained, the recruiter email ready to review and each application tracked until a reply. All on free tiers.",
+    },
+    image: "ImgProjeto/BuscaVagas-Capa.webp",
+    gallery: [
+      "ImgProjeto/BuscaVagas-Capa.webp",
+      "ImgProjeto/BuscaVagas-Vaga.webp",
+      "ImgProjeto/BuscaVagas-Lote.webp",
+      "ImgProjeto/BuscaVagas-Tipos.webp",
+      "ImgProjeto/BuscaVagas-Estudar.webp",
+      "ImgProjeto/BuscaVagas-Uso.webp",
+    ],
+    tags: ["Python", "GitHub Actions", "Embeddings (NLP)", "PostgreSQL", "Next.js"],
+    category: ["eng", "ml", "web"],
+    github: "https://github.com/GabrielProzin/busca_vagas",
+    live: "",
+  },
+  {
+    pt: {
       title: "Sistema de Locação de Mesas e Cadeiras",
       summary: "App web mobile-first que tirou do papel a gestão de aluguéis e despesas de um negócio de locação.",
       problem:
