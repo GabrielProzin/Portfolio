@@ -39,10 +39,10 @@
   --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Escala tipográfica (razão ~1.25) */
-  --fs-xs: 0.78rem;
-  --fs-sm: 0.875rem;
-  --fs-base: 1rem;
-  --fs-md: 1.125rem;
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-base: 1.0625rem;
+  --fs-md: 1.1875rem;
   --fs-lg: 1.4rem;
   --fs-xl: clamp(1.9rem, 3.4vw, 2.6rem);
   --fs-display: clamp(3.4rem, 9vw, 7.25rem);
@@ -594,7 +594,7 @@ button {
 .chart .tick {
   fill: var(--muted);
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-variant-numeric: tabular-nums;
 }
 
@@ -606,7 +606,7 @@ button {
 
 .chart .now-label {
   fill: var(--muted);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-family: var(--font-body);
 }
 
@@ -646,7 +646,7 @@ button {
 .chart .end-label {
   fill: var(--ink);
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
@@ -2430,7 +2430,7 @@ html:not(.js) .timeline::after,
 
   .page-tab {
     padding: 7px 9px;
-    font-size: 0.74rem;
+    font-size: var(--fs-xs);
   }
 
   .home .kpis {
@@ -2545,3 +2545,117 @@ html.motion-off.js [data-reveal] .chips li {
     background: Highlight;
   }
 }
+
+
+/* ============================================================
+   MELHORIAS DE UI/UX (out/2026)
+   Revisão com o Taste Skill (regras da casa e inspetor no navegador)
+   e o UI UX Pro Max (checklist de entrega: contraste 4,5:1, alvos de toque,
+   texto de 16px+ no celular, linhas de 65 a 75 caracteres, movimento reduzido).
+   O visual, as cores e a estrutura continuam os mesmos.
+   ============================================================ */
+
+/* superfícies separadas por tom, sem contorno de 1px nem brilho que segue o ponteiro */
+.tile,
+.certs__list li,
+.nav__track,
+.btn--ghost,
+.chips li,
+.tech-list li,
+.slicer__options button,
+.project-filters button {
+  border-color: transparent !important;
+}
+.tile { background-color: rgba(23, 38, 62, 0.82); }
+.btn--ghost { background: rgba(27, 44, 71, 0.9); }
+.btn--ghost:hover { background: var(--tile-raised); }
+.spot, .spot:hover { background-image: none; }
+.header { border-bottom-color: transparent; }
+.ticker { border-color: transparent !important; }
+
+/* aba ativa e barra de progresso em cor chapada */
+.nav__pill {
+  background: rgba(85, 152, 231, 0.2);
+  box-shadow: none;
+}
+.scroll-progress { background: var(--accent); }
+
+/* texto corrido legível: medida de 65ch e entrelinha folgada */
+.case__text,
+.job__summary,
+.about__text p,
+.project-summary,
+.principle p,
+.tl__text,
+.lede,
+.interlude__sub {
+  max-width: 65ch;
+  line-height: 1.6;
+}
+.principle p, .project-summary, .case__text, .tl__text { font-size: var(--fs-base); color: var(--ink-2); }
+.lede { font-size: var(--fs-md); }
+
+/* "Como eu trabalho": texto em colunas, sem cartões de ícone */
+.principles__grid { gap: 32px 40px; }
+.principle {
+  padding: 0;
+  background: none !important;
+}
+.principle:hover { transform: none; }
+.principle h4 { font-size: var(--fs-lg); margin-bottom: 10px; }
+
+/* pausas entre as seções: mais curtas, título em duas linhas no máximo */
+.interlude { min-height: 58vh; }
+.interlude__title { max-width: 13ch; font-size: clamp(2.4rem, 6vw, 5.25rem); }
+
+/* cases: mais ar entre um e outro */
+.cases { gap: 28px; }
+.case { padding: 28px; }
+
+/* categorias do projeto ficam abaixo do resumo, não acima do título */
+.project-badges { margin-top: 2px; }
+
+/* contraste do "pular para o conteúdo" */
+.skip-link { color: var(--ink); background: var(--tile-raised); }
+
+/* campos do formulário mantêm a borda (é o que mostra que dá para digitar) */
+.contact-form input,
+.contact-form textarea {
+  border: 1px solid var(--edge) !important;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--accent) !important;
+}
+
+/* tudo que é clicável mostra a mãozinha e o foco do teclado */
+a, button, [role="button"], .project-media, .arch__node { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* celular: alvos de toque de 44px e texto de 16px ou mais */
+@media (max-width: 760px) {
+  :root { --fs-sm: 1rem; --fs-base: 1.0625rem; }
+  .icon-btn { width: 44px; height: 44px; }
+  .btn, .btn--sm { min-height: 44px; }
+  .page-tab { padding: 10px 14px; }
+  .interlude { min-height: 46vh; }
+  .interlude__title { font-size: clamp(2.25rem, 10vw, 3rem); }
+  .case { padding: 22px; }
+  .principles__grid { grid-template-columns: 1fr; }
+}
+
+/* filtros dos projetos: preenchidos, sem contorno; o ativo em azul */
+.slicer__options button { background: rgba(27, 44, 71, 0.9); min-height: 40px; }
+.slicer__options button:hover { background: var(--tile-raised); }
+.slicer__options button.active { background: var(--accent-strong); color: #fff; }
+@media (max-width: 760px) { .slicer__options button { min-height: 44px; } }
+
+/* sem linhas finas entre a imagem e o texto dos projetos nem acima do detalhe do fluxo */
+.project-media { border: 0 !important; }
+.arch__detail { border-top: 0 !important; padding-top: 14px; }
+
+/* listas separadas por espaço, não por linha */
+.facts__row + .facts__row,
+.link-list li + li { border-top: 0 !important; }
+.facts__row { padding-block: 10px; }
+.email-display { border-color: transparent !important; background: rgba(23, 38, 62, 0.82); }

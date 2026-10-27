@@ -40,13 +40,13 @@
     "unit.million": "M",
     "ticker": "Tools I use",
 
-    "i2.title": "Raw data becomes metrics.",
+    "i2.title": "Data becomes metrics.",
     "i2.sub": "Thousands of records aggregated into indicators.",
     "i3.title": "Metrics become models.",
     "i3.sub": "Clustering and forecasting with machine learning.",
     "i4.title": "Models reveal trends.",
     "i4.sub": "What the data says about what comes next.",
-    "i5.title": "And trends become decisions.",
+    "i5.title": "Trends become decisions.",
     "i5.sub": "That's where working with data makes a difference.",
 
     "exp.title": "Experience",

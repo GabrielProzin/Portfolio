@@ -67,6 +67,8 @@ const projects = [
         "Runs on its own 5 times a day: about 1,200 jobs read per run become a short list, with the score explained, the recruiter email ready to review and each application tracked until a reply. All on free tiers, open source.",
     },
     image: "ImgProjeto/BuscaVagas-Capa.webp",
+    video: "ImgProjeto/BuscaVagas-Demo.mp4",
+    poster: "ImgProjeto/BuscaVagas-Demo.jpg",
     gallery: [
       "ImgProjeto/BuscaVagas-Capa.webp",
       "ImgProjeto/BuscaVagas-Vaga.webp",
@@ -229,7 +231,7 @@ function renderProjects(filter = "all", animate = true) {
   filtered.forEach((project, i) => {
     const p = txt(project);
     const card = document.createElement("article");
-    card.className = "tile project-item spot";
+    card.className = "tile project-item";
     card.dataset.index = String(projects.indexOf(project));
 
     const badges = asArray(project.category)
@@ -241,13 +243,15 @@ function renderProjects(filter = "all", animate = true) {
 
     card.innerHTML = `
       <button type="button" class="project-media" aria-label="${T("proj.detailsOf", { t: p.title })}">
-        <img src="${project.image}" alt="" class="project-thumbnail" loading="lazy" />
+        ${project.video
+          ? `<video class="project-thumbnail" src="${project.video}" poster="${project.poster}" muted loop playsinline ${prefersReducedMotion() ? "" : "autoplay"} preload="metadata" aria-hidden="true"></video>`
+          : `<img src="${project.image}" alt="" class="project-thumbnail" loading="lazy" />`}
         <span class="project-media__hint"><i class="bx bx-expand-alt" aria-hidden="true"></i> ${T("proj.details")}</span>
       </button>
       <div class="project-body">
-        <div class="project-badges">${badges}</div>
         <h3 class="project-title">${p.title}</h3>
         <p class="project-summary">${p.summary}</p>
+        <div class="project-badges">${badges}</div>
         <div class="project-foot">
           <ul class="tech-list" aria-label="${T("proj.tech")}">${project.tags.map((t) => `<li>${t}</li>`).join("")}</ul>
           <span class="project-links">

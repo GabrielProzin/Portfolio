@@ -51,7 +51,8 @@
     document.documentElement.classList.add("js");
     // animações ligadas por padrão; o visitante pode pausar pelo botão no topo
     try {
-      if (localStorage.getItem("motion") === "off") document.documentElement.classList.add("motion-off");
+      var escolha = localStorage.getItem("motion");
+      if (escolha === "off" || (!escolha && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) document.documentElement.classList.add("motion-off");
     } catch (e) {}
   </script>
 </head>
@@ -71,7 +72,7 @@
       </header>
       <div class="image-modal__body">
         <div class="image-modal__media">
-          <img src="" alt="" />
+          <img alt="" />
           <div class="image-modal__thumbs" id="image-modal-thumbs" hidden></div>
         </div>
         <div class="image-modal__info" id="image-modal-info"></div>
@@ -127,8 +128,6 @@
     <!-- Página 1: Visão geral -->
     <section class="home page" id="home" data-scene aria-labelledby="home-title">
       <div class="home__intro">
-        <p class="status intro-step" style="--d: 0"><span class="status__dot" aria-hidden="true"></span> <span
-            data-i18n="home.status">Aberto a novas oportunidades</span></p>
         <h1 id="home-title" class="display" aria-label="Gabriel Mendes">
           <span class="display__line" data-split>Gabriel</span>
           <span class="display__line" data-split>Mendes</span>
@@ -194,8 +193,7 @@
     </div>
 
     <div class="interlude" data-scene>
-      <p class="interlude__index" data-reveal>02 / 05</p>
-      <p class="interlude__title" data-reveal data-i18n="i2.title">Dados brutos viram métricas.</p>
+      <p class="interlude__title" data-reveal data-i18n="i2.title">Dados viram métricas.</p>
       <p class="interlude__sub" data-reveal data-i18n="i2.sub">Milhares de registros agregados em indicadores.</p>
     </div>
 
@@ -305,7 +303,6 @@
     </section>
 
     <div class="interlude" data-scene>
-      <p class="interlude__index" data-reveal>03 / 05</p>
       <p class="interlude__title" data-reveal data-i18n="i3.title">Métricas viram modelos.</p>
       <p class="interlude__sub" data-reveal data-i18n="i3.sub">Agrupamentos e previsões com machine learning.</p>
     </div>
@@ -330,7 +327,6 @@
     </section>
 
     <div class="interlude" data-scene>
-      <p class="interlude__index" data-reveal>04 / 05</p>
       <p class="interlude__title" data-reveal data-i18n="i4.title">Modelos mostram tendências.</p>
       <p class="interlude__sub" data-reveal data-i18n="i4.sub">O que os dados dizem sobre o que vem a seguir.</p>
     </div>
@@ -409,17 +405,14 @@
         <h3 class="block-title" data-i18n="how.title">Como eu trabalho</h3>
         <div class="principles__grid">
           <article class="principle tile spot">
-            <i class="bx bx-briefcase-alt-2" aria-hidden="true"></i>
             <h4 data-i18n="how1.title">Começo pela regra de negócio</h4>
             <p data-i18n="how1.text">Antes de qualquer query, entendo o que o número precisa responder e para quem.</p>
           </article>
           <article class="principle tile spot">
-            <i class="bx bx-check-double" aria-hidden="true"></i>
             <h4 data-i18n="how2.title">Todo número é conciliado</h4>
             <p data-i18n="how2.text">Comparo cada indicador com a fonte, por unidade e no consolidado, antes de ele chegar a um dashboard.</p>
           </article>
           <article class="principle tile spot">
-            <i class="bx bx-book-content" aria-hidden="true"></i>
             <h4 data-i18n="how3.title">Documento o que construo</h4>
             <p data-i18n="how3.text">Pipelines e painéis com documentação técnica, para que outras pessoas consigam manter e evoluir.</p>
           </article>
@@ -436,8 +429,7 @@
     </section>
 
     <div class="interlude" data-scene>
-      <p class="interlude__index" data-reveal>05 / 05</p>
-      <p class="interlude__title" data-reveal data-i18n="i5.title">E tendências viram decisões.</p>
+      <p class="interlude__title" data-reveal data-i18n="i5.title">Tendências viram decisões.</p>
       <p class="interlude__sub" data-reveal data-i18n="i5.sub">É aí que o trabalho com dados faz diferença.</p>
     </div>
 
