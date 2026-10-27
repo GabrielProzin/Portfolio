@@ -13,6 +13,7 @@ Atualmente estou em evolução na área de **Ciência de Dados**, utilizando fer
 ## 🚀 Projetos em destaque
 
 ### 🔎 busca_vagas: radar de vagas com ETL e NLP
+Projeto pessoal que automatiza a busca de vagas júnior de dados.
 - Pipeline ETL em **Python** orquestrado no **GitHub Actions** (5 coletas por dia, 5 fontes, carga no **PostgreSQL**)
 - Nota de compatibilidade com **embeddings multilíngues**, habilidades e tipo de cargo, ajustada pelo histórico de decisões
 - **K-means** (silhueta) para agrupar as vagas em tipos e análise de lacunas de habilidades contra o currículo
