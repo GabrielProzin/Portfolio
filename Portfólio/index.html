@@ -5,502 +5,400 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="Portfólio de Gabriel Mendes, Cientista de Dados: pipelines em Python e Apache Airflow, SQL no Google BigQuery e dashboards de KPIs no Power BI." />
+    content="Portfólio de Gabriel Mendes, cientista de dados em Goiânia: pipelines em Python e Apache Airflow, SQL no Google BigQuery, painéis no Power BI e projetos próprios como o busca_vagas." />
   <meta name="author" content="Gabriel Mendes" />
-  <meta name="keywords"
-    content="Gabriel Mendes, Cientista de Dados, Engenharia de Dados, Python, SQL, Apache Airflow, BigQuery, Power BI, DAX, ETL, Portfólio" />
-  <meta name="theme-color" content="#0e1828" />
-  <title>Portfólio | Gabriel Mendes</title>
+  <meta name="theme-color" content="#2a1d17" />
+  <title>Gabriel Mendes | Cientista de dados</title>
 
-  <!-- Ícones -->
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-  <!-- Prévia ao compartilhar o link (LinkedIn, WhatsApp, etc.) -->
   <link rel="canonical" href="https://gmendes.vercel.app/" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://gmendes.vercel.app/" />
   <meta property="og:site_name" content="Gabriel Mendes" />
-  <meta property="og:title" content="Gabriel Mendes | Cientista de Dados" />
+  <meta property="og:title" content="Gabriel Mendes | Cientista de dados" />
   <meta property="og:description"
-    content="Pipelines em Python e Apache Airflow, SQL no BigQuery e dashboards de KPIs no Power BI." />
+    content="Pipelines em Python e Apache Airflow, SQL no BigQuery, painéis no Power BI e projetos próprios." />
   <meta property="og:image" content="https://gmendes.vercel.app/og.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Gabriel Mendes, Cientista de Dados" />
   <meta property="og:locale" content="pt_BR" />
   <meta property="og:locale:alternate" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Gabriel Mendes | Cientista de Dados" />
-  <meta name="twitter:description"
-    content="Pipelines em Python e Apache Airflow, SQL no BigQuery e dashboards de KPIs no Power BI." />
-  <meta name="twitter:image" content="https://gmendes.vercel.app/og.png" />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
-    rel="stylesheet" />
-
-  <!-- Styles -->
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="preload" href="fonts/hanken-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
-  <script>
-    document.documentElement.classList.add("js");
-    // animações ligadas por padrão; o visitante pode pausar pelo botão no topo
-    try {
-      if (localStorage.getItem("motion") === "off") document.documentElement.classList.add("motion-off");
-    } catch (e) {}
-  </script>
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 
 <body>
-  <a class="skip-link" href="#home" data-i18n="skip">Pular para o conteúdo</a>
+  <a class="skip" href="#projetos" data-i18n="skip">Pular para os projetos</a>
 
-  <!-- Modal de projeto (modo foco) -->
-  <div class="image-modal" id="image-modal" role="dialog" aria-modal="true" aria-hidden="true"
-    aria-labelledby="image-modal-title">
-    <article class="image-modal__frame">
-      <header class="image-modal__bar">
-        <span id="image-modal-title">Projeto</span>
-        <button type="button" class="icon-btn" id="image-modal-close" aria-label="Fechar" data-i18n-attr="aria-label:close">
-          <i class="bx bx-x"></i>
+  <!-- Primeira tela: campo escuro, o nome e a faixa iluminada com as telas dos projetos -->
+  <header class="hero" id="topo">
+    <div class="hero__top">
+      <p class="hero__block" data-rise style="--i:0">
+        <span data-i18n="hero.city">Goiânia, Goiás</span><br />
+        <span class="soft" data-i18n="hero.country">Brasil</span>
+      </p>
+      <p class="hero__block" data-rise style="--i:1">
+        Python, SQL, Airflow<br />
+        <span class="soft">BigQuery e Power BI</span>
+      </p>
+      <nav class="hero__block hero__nav" aria-label="Seções" data-i18n-attr="aria-label:nav.aria" data-rise style="--i:2">
+        <a class="link" href="#projetos" data-i18n="nav.work">Projetos</a>
+        <a class="link" href="#experiencia" data-i18n="nav.exp">Experiência</a>
+        <a class="link" href="#trajetoria" data-i18n="nav.path">Trajetória</a>
+        <a class="link" href="#contato" data-i18n="nav.contact">Contato</a>
+      </nav>
+      <div class="hero__block hero__end" data-rise style="--i:3">
+        <button type="button" class="lang" id="lang-toggle" aria-label="Switch to English">
+          <span data-l="pt">PT</span> / <span data-l="en">EN</span>
         </button>
-      </header>
-      <div class="image-modal__body">
-        <div class="image-modal__media">
-          <img src="" alt="" />
-          <div class="image-modal__thumbs" id="image-modal-thumbs" hidden></div>
-        </div>
-        <div class="image-modal__info" id="image-modal-info"></div>
+        <span>
+          <a class="link" href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer">LinkedIn</a>,
+          <a class="link" href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </span>
       </div>
-    </article>
-  </div>
-
-  <!-- Cabeçalho -->
-  <header class="header">
-    <a href="#home" class="logo" aria-label="Ir para a visão geral" data-i18n-attr="aria-label:logo">
-      <svg class="logo__mark" viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3" y="12" width="4" height="9" rx="1" />
-        <rect x="10" y="7" width="4" height="14" rx="1" />
-        <rect x="17" y="3" width="4" height="18" rx="1" />
-      </svg>
-      Gabriel Mendes
-    </a>
-    <nav class="nav" aria-label="Seções do portfólio" data-i18n-attr="aria-label:nav.aria">
-      <div class="nav__track page-tabs__list" id="page-tabs">
-        <span class="nav__pill page-tabs__indicator" aria-hidden="true"></span>
-        <a href="#home" class="page-tab" aria-current="page" data-i18n="nav.home">Visão geral</a>
-        <a href="#experience" class="page-tab" data-i18n="nav.experience">Experiência</a>
-        <a href="#projects" class="page-tab" data-i18n="nav.projects">Projetos</a>
-        <a href="#about" class="page-tab" data-i18n="nav.about">Sobre</a>
-        <a href="#contact" class="page-tab" data-i18n="nav.contact">Contato</a>
-      </div>
-    </nav>
-    <div class="header__actions">
-      <button type="button" class="lang-toggle" id="lang-toggle" data-lang="pt" aria-label="Switch to English"
-        title="Switch to English">
-        <span class="lang-toggle__opt" data-l="pt">PT</span><span class="lang-toggle__opt" data-l="en">EN</span>
-      </button>
-      <button type="button" class="icon-btn" id="motion-toggle" aria-pressed="false" title="Pausar animações"
-        aria-label="Pausar animações">
-        <i class="bx bx-pause-circle"></i>
-      </button>
-      <a class="icon-btn" href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer"
-        aria-label="GitHub">
-        <i class="bx bxl-github"></i>
-      </a>
-      <a class="icon-btn" href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank"
-        rel="noopener noreferrer" aria-label="LinkedIn">
-        <i class="bx bxl-linkedin"></i>
-      </a>
-      <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost btn--sm" data-cv>
-        <i class="bx bx-download"></i> <span data-i18n="cv.download">Baixar CV</span>
-      </a>
     </div>
-    <span class="scroll-progress" aria-hidden="true"></span>
+
+    <h1 class="hero__title lines" aria-label="Gabriel Mendes, cientista de dados" data-i18n-attr="aria-label:hero.title">
+      <span class="line"><span data-line style="--i:0" aria-hidden="true">Gabriel Mendes,</span></span>
+      <span class="line"><span data-line style="--i:1" aria-hidden="true" data-i18n="hero.role">cientista de dados</span></span>
+    </h1>
+
+    <div class="strip" id="strip" tabindex="0" aria-label="Telas dos projetos; role para os lados" data-i18n-attr="aria-label:strip.aria">
+      <figure class="strip__frame" data-title="Mercado de ações, painel no Power BI" data-i18n-attr="data-title:t.ac1"><img src="img/f/ac-painel.webp" width="1149" height="640" alt="Painel de mercado de ações no Power BI" data-i18n-attr="alt:a.ac1" /></figure>
+      <figure class="strip__frame" data-title="Pipeline no Airflow, a DAG semanal" data-i18n-attr="data-title:t.af1"><img src="img/f/af-dag.webp" width="1137" height="640" alt="DAG do Apache Airflow com as tarefas da coleta semanal" data-i18n-attr="alt:a.af1" /></figure>
+      <figure class="strip__frame" data-title="Sistema de locação, visão geral" data-i18n-attr="data-title:t.wda1"><img src="img/f/wda-visao.webp" width="1279" height="640" alt="Tela de visão geral do sistema de locação" data-i18n-attr="alt:a.wda1" /></figure>
+      <figure class="strip__frame" data-title="Perfil do GitHub, o retrato em ASCII" data-i18n-attr="data-title:t.gh1"><img src="img/f/gh-retrato.webp" width="496" height="640" alt="Retrato de Gabriel feito de caracteres ASCII" data-i18n-attr="alt:a.gh1" /></figure>
+      <figure class="strip__frame strip__frame--lit" data-title="busca_vagas, a demonstração com dados fictícios" data-i18n-attr="data-title:t.bv0">
+        <video src="video/busca-vagas.mp4" poster="video/busca-vagas.jpg" width="1088" height="612" muted loop playsinline autoplay preload="metadata" aria-label="Vídeo curto do busca_vagas em uso" data-i18n-attr="aria-label:a.bv0"></video>
+      </figure>
+      <figure class="strip__frame" data-title="busca_vagas, a tela Hoje" data-i18n-attr="data-title:t.bv1"><img src="img/f/bv-hoje.webp" width="1138" height="640" alt="Tela Hoje do busca_vagas" data-i18n-attr="alt:a.bv1" /></figure>
+      <figure class="strip__frame" data-title="Detecção de fraudes, matrizes de confusão" data-i18n-attr="data-title:t.fr1"><img src="img/f/fr-matriz.webp" width="1140" height="640" alt="Matrizes de confusão dos modelos de detecção de fraude" data-i18n-attr="alt:a.fr1" /></figure>
+      <figure class="strip__frame" data-title="busca_vagas, tipos de vaga" data-i18n-attr="data-title:t.bv4"><img src="img/f/bv-tipos.webp" width="1364" height="547" alt="Tela Tipos de vaga do busca_vagas" data-i18n-attr="alt:a.bv4" /></figure>
+      <figure class="strip__frame" data-title="Sistema de locação, os gráficos do mês" data-i18n-attr="data-title:t.wda3"><img src="img/f/wda-graficos.webp" width="1280" height="640" alt="Gráficos mensais do sistema de locação" data-i18n-attr="alt:a.wda3" /></figure>
+      <figure class="strip__frame" data-title="Perfil do GitHub, o calendário de contribuições" data-i18n-attr="data-title:t.gh3"><img src="img/f/gh-calendario.webp" width="1716" height="464" alt="Calendário de contribuições do GitHub" data-i18n-attr="alt:a.gh3" /></figure>
+      <figure class="strip__frame" data-title="busca_vagas, o que estudar" data-i18n-attr="data-title:t.bv5"><img src="img/f/bv-estudar.webp" width="1138" height="640" alt="Tela O que estudar do busca_vagas" data-i18n-attr="alt:a.bv5" /></figure>
+      <figure class="strip__frame" data-title="Mercado de ações, o volume ao longo do tempo" data-i18n-attr="data-title:t.ac2"><img src="img/f/ac-volume.webp" width="1120" height="289" alt="Gráfico de volume ao longo do tempo" data-i18n-attr="alt:a.ac2" /></figure>
+    </div>
+    <p class="strip__caption" id="strip-caption" aria-live="polite">busca_vagas, a demonstração com dados fictícios</p>
+
+    <div class="hero__foot">
+      <p class="hero__lede" data-rise style="--i:5" data-i18n="hero.lede">Levo dados da API ao painel e confiro cada número com a fonte.</p>
+      <div class="hero__actions" data-rise style="--i:6">
+        <a class="link" href="#projetos" data-i18n="hero.work">Ver projetos</a>
+        <a class="button" href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" data-cv data-i18n="cv.download">Baixar currículo</a>
+      </div>
+    </div>
   </header>
 
   <main>
-    <!-- Página 1: Visão geral -->
-    <section class="home page" id="home" data-scene aria-labelledby="home-title">
-      <div class="home__intro">
-        <p class="status intro-step" style="--d: 0"><span class="status__dot" aria-hidden="true"></span> <span
-            data-i18n="home.status">Aberto a novas oportunidades</span></p>
-        <h1 id="home-title" class="display" aria-label="Gabriel Mendes">
-          <span class="display__line" data-split>Gabriel</span>
-          <span class="display__line" data-split>Mendes</span>
-        </h1>
-        <div class="home__role intro-step" style="--d: 3">
-          <img class="avatar" src="photo/gabriel.webp" alt="Foto de Gabriel Mendes"
-            width="64" height="64" fetchpriority="high" decoding="async" />
-          <p><span class="role" data-i18n="home.role">Cientista de Dados</span><br /><span data-i18n="home.city">Goiânia, GO</span></p>
-        </div>
-        <p class="lede intro-step" style="--d: 4" data-i18n="home.lede">Pipelines, SQL e dashboards que transformam dados em decisão.</p>
-        <div class="btn-group intro-step" style="--d: 5">
-          <a href="#experience" class="btn btn--primary">
-            <i class="bx bx-git-merge"></i> <span data-i18n="home.cta">Ver experiência</span>
-          </a>
-          <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost" data-cv>
-            <i class="bx bx-download"></i> <span data-i18n="cv.download">Baixar CV</span>
-          </a>
-        </div>
-        <ul class="social-icons intro-step" style="--d: 6" aria-label="Redes" data-i18n-attr="aria-label:home.social">
-          <li><a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer"
-              aria-label="GitHub"><i class="bx bxl-github"></i></a></li>
-          <li><a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer"
-              aria-label="LinkedIn"><i class="bx bxl-linkedin"></i></a></li>
-          <li><a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer"
-              aria-label="WhatsApp"><i class="bx bxl-whatsapp"></i></a></li>
-        </ul>
-        <dl class="kpis intro-step" style="--d: 7">
-          <div class="kpi">
-            <dt data-i18n="kpi.units">unidades na base de dados</dt>
-            <dd><span data-count="3.5" data-decimals="1">3,5</span><span class="u" data-i18n="unit.thousandPlus"> mil+</span></dd>
-          </div>
-          <div class="kpi">
-            <dt data-i18n="kpi.networks">redes de clientes</dt>
-            <dd><span data-count="400">400</span></dd>
-          </div>
-          <div class="kpi">
-            <dt data-i18n="kpi.students">alunos ativos</dt>
-            <dd><span data-count="2.1" data-decimals="1">2,1</span><span class="u" data-i18n="unit.million"> mi</span></dd>
-          </div>
-        </dl>
-      </div>
-
-    </section>
-
-    <!-- Faixa de ferramentas -->
-    <div class="ticker" aria-label="Ferramentas que uso" data-i18n-attr="aria-label:ticker">
-      <ul class="ticker__track">
-        <li>Python</li>
-        <li>SQL</li>
-        <li>Apache Airflow</li>
-        <li>Google BigQuery</li>
-        <li>Power BI</li>
-        <li>DAX</li>
-        <li>MySQL HeatWave</li>
-        <li>PostgreSQL</li>
-        <li>Looker Studio</li>
-        <li>Pandas</li>
-        <li>Scikit-learn</li>
-        <li>Oracle Cloud</li>
-        <li>Git</li>
-        <li>MCP</li>
-      </ul>
-    </div>
-
-    <div class="interlude" data-scene>
-      <p class="interlude__index" data-reveal>02 / 05</p>
-      <p class="interlude__title" data-reveal data-i18n="i2.title">Dados brutos viram métricas.</p>
-      <p class="interlude__sub" data-reveal data-i18n="i2.sub">Milhares de registros agregados em indicadores.</p>
-    </div>
-
-    <!-- Página 2: Experiência -->
-    <section class="experience page" id="experience" aria-labelledby="experience-title">
-      <header class="job" data-reveal>
-        <h2 id="experience-title" class="page__title" data-i18n="exp.title">Experiência</h2>
-        <div class="job__line">
-          <p class="job__role" data-i18n-html="exp.role">Cientista de Dados, <span>Pacto Soluções</span></p>
-          <p class="job__period" data-i18n="exp.period">mai/2026 a out/2026</p>
-        </div>
-        <p class="job__summary" data-i18n="exp.summary">Ciclo de dados de ponta a ponta numa plataforma de gestão para academias: da ingestão e orquestração de pipelines à modelagem e aos dashboards de KPIs usados pelo negócio.</p>
-      </header>
-
-      <div class="cases">
-        <article class="case tile spot" data-reveal style="--c: var(--s-obs)">
-          <p class="case__stat"><span class="case__num"><span data-count="18">18</span></span><span
-              class="case__unit" data-i18n="case1.unit">clientes no mesmo pipeline</span></p>
-          <h3 class="case__title" data-i18n="case1.title">Pipelines de dados multi-cliente</h3>
-          <p class="case__text" data-i18n="case1.text">ETL em Python orquestrado no Apache Airflow, levando dados das APIs do Zendesk e do Jira ao BigQuery. Uma configuração centralizada faz o mesmo código atender 18 clientes.</p>
-          <ul class="case__tags"><li>Python</li><li>Airflow</li><li>BigQuery</li></ul>
-        </article>
-
-        <article class="case tile spot" data-reveal style="--c: var(--s-violet)">
-          <p class="case__stat"><span class="case__num"><span data-count="20">20</span>+</span><span
-              class="case__unit" data-i18n="case2.unit">painéis de KPIs migrados</span></p>
-          <h3 class="case__title" data-i18n="case2.title">Migração do Looker Studio ao Power BI</h3>
-          <p class="case__text" data-i18n="case2.text">Ativos, churn, cancelamentos, faturamento e inadimplência, com cada número conciliado contra a fonte, por unidade e no consolidado.</p>
-          <ul class="case__tags"><li>Power BI</li><li>DAX</li><li>Looker Studio</li></ul>
-        </article>
-
-        <article class="case tile spot" data-reveal style="--c: var(--s-trend)">
-          <p class="case__stat"><span class="case__num"><span data-count="404">404</span><span data-i18n="unit.thousand"> mil</span></span><span
-              class="case__unit" data-i18n="case3.unit">linhas de histórico diário modelado</span></p>
-          <h3 class="case__title" data-i18n="case3.title">Modelagem e qualidade de dados</h3>
-          <p class="case__text" data-i18n="case3.text">Histórico diário de 444 dias da situação de cada aluno. Encontrei e corrigi um bug que inflava a contagem de tickets em dezenas de milhares, reprocessando o histórico validado contra a origem.</p>
-          <ul class="case__tags"><li>SQL</li><li>DAX</li><li data-i18n="case3.tag">Causa raiz</li></ul>
-        </article>
-
-        <article class="case tile spot" data-reveal style="--c: var(--s-fcst)">
-          <p class="case__stat"><span class="case__num"><span data-count="300">300</span>+</span><span
-              class="case__unit" data-i18n="case4.unit">testes automatizados</span></p>
-          <h3 class="case__title" data-i18n="case4.title">Protótipo de módulo de NPS</h3>
-          <p class="case__text" data-i18n="case4.text">Projetei, dirigi e validei um protótipo full-stack, do levantamento de requisitos ao login com Google: back-end em Java/Spring com PostgreSQL e front-end em React.</p>
-          <ul class="case__tags"><li>Java</li><li>Spring</li><li>React</li><li>PostgreSQL</li></ul>
-        </article>
-      </div>
-
-      <figure class="tile arch spot" id="arch" data-reveal aria-labelledby="arch-title">
-        <figcaption class="tile__head">
-          <h3 class="tile__title" id="arch-title" data-i18n="arch.title">Fluxo de dados</h3>
-          <div class="tile__actions">
-            <button type="button" class="icon-btn" id="arch-pause" aria-pressed="false" title="Pausar animação"
-              aria-label="Pausar animação" data-i18n-attr="title:arch.pause; aria-label:arch.pause">
-              <i class="bx bx-pause"></i>
-            </button>
-          </div>
-        </figcaption>
-
-        <div class="arch__stage">
-          <canvas class="arch__canvas" aria-hidden="true"></canvas>
-          <div class="arch__grid">
-            <div class="arch__col">
-              <button type="button" class="arch__node" data-node="zendesk" data-i18n-attr="data-detail:arch.zendesk"
-                data-detail="ETL em Python da API do Zendesk para o BigQuery, com correção de um bug que inflava a contagem de tickets.">
-                <i class="bx bx-support" aria-hidden="true"></i><span>Zendesk</span>
-              </button>
-              <button type="button" class="arch__node" data-node="jira" data-i18n-attr="data-detail:arch.jira"
-                data-detail="ETL em Python da API do Jira para o BigQuery, no mesmo padrão de DAGs.">
-                <i class="bx bx-task" aria-hidden="true"></i><span>Jira</span>
-              </button>
-            </div>
-
-            <div class="arch__col">
-              <button type="button" class="arch__node arch__node--hub" data-node="airflow" data-i18n-attr="data-detail:arch.airflow"
-                data-detail="DAGs no Apache Airflow com configuração centralizada, escaladas para 18 clientes.">
-                <i class="bx bx-git-repo-forked" aria-hidden="true"></i><span>Airflow</span>
-              </button>
-            </div>
-
-            <div class="arch__col">
-              <button type="button" class="arch__node" data-node="bigquery" data-i18n-attr="data-detail:arch.bigquery"
-                data-detail="Modelagem e otimização de SQL no BigQuery, com cargas incrementais e views para os painéis.">
-                <i class="bx bx-data" aria-hidden="true"></i><span>BigQuery</span>
-              </button>
-              <button type="button" class="arch__node" data-node="heatwave" data-i18n-attr="data-detail:arch.heatwave"
-                data-detail="Atuação na migração de dados do BigQuery para o MySQL HeatWave, na Oracle Cloud.">
-                <i class="bx bx-transfer-alt" aria-hidden="true"></i><span>HeatWave</span>
-              </button>
-            </div>
-
-            <div class="arch__col">
-              <button type="button" class="arch__node" data-node="powerbi" data-i18n-attr="data-detail:arch.powerbi"
-                data-detail="Migração de 20+ painéis de KPIs do Looker Studio ao Power BI, com cada número conciliado com a fonte.">
-                <i class="bx bx-bar-chart-square" aria-hidden="true"></i><span>Power BI</span>
-              </button>
-              <button type="button" class="arch__node" data-node="mcp" data-i18n-attr="data-detail:arch.mcp"
-                data-detail="Servidor MCP somente leitura para consultar o BigQuery com IA, sem risco de alterar dados.">
-                <i class="bx bx-bot" aria-hidden="true"></i><span data-i18n="arch.mcpLabel">IA via MCP</span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <p class="arch__detail" id="arch-detail" aria-live="polite" data-default="Passe o mouse ou toque em uma etapa." data-i18n-attr="data-default:arch.default">Passe o mouse ou toque em uma etapa.</p>
-      </figure>
-
-    </section>
-
-    <div class="interlude" data-scene>
-      <p class="interlude__index" data-reveal>03 / 05</p>
-      <p class="interlude__title" data-reveal data-i18n="i3.title">Métricas viram modelos.</p>
-      <p class="interlude__sub" data-reveal data-i18n="i3.sub">Agrupamentos e previsões com machine learning.</p>
-    </div>
-
-    <!-- Página 3: Projetos -->
-    <section class="projects page" id="projects" aria-labelledby="projects-title">
-      <div class="page__head page__head--row" data-reveal>
-        <h2 id="projects-title" class="page__title" data-i18n="proj.title">Projetos</h2>
-        <div class="slicer__options project-filters" role="group" aria-label="Filtrar por categoria" data-i18n-attr="aria-label:proj.filterAria">
-          <button type="button" class="active" aria-pressed="true" data-filter="all" data-i18n="proj.all">Todos</button>
-          <button type="button" aria-pressed="false" data-filter="ml" data-i18n="proj.ml">Machine Learning</button>
-          <button type="button" aria-pressed="false" data-filter="analise" data-i18n="proj.analysis">Análise de Dados</button>
-          <button type="button" aria-pressed="false" data-filter="eng" data-i18n="proj.eng">Engenharia de Dados</button>
-          <button type="button" aria-pressed="false" data-filter="web" data-i18n="proj.web">Web/Desenvolvimento</button>
+    <!-- Projetos: uma faixa de telas por projeto -->
+    <section class="work" id="projetos" aria-labelledby="work-title">
+      <div class="work__rail">
+        <h2 id="work-title" class="work__title" data-i18n="work.title">Projetos</h2>
+        <div class="work__filters" role="group" aria-label="Filtrar projetos" data-i18n-attr="aria-label:work.filter">
+          <button type="button" aria-pressed="true" data-filter="todos" data-i18n="work.all">Todos</button>
+          <button type="button" aria-pressed="false" data-filter="dados" data-i18n="work.data">Dados</button>
+          <button type="button" aria-pressed="false" data-filter="web" data-i18n="work.web">Web</button>
         </div>
       </div>
-      <span class="sr-only" id="project-count" aria-live="polite"></span>
 
-      <div class="project-list" id="project-list">
-        <!-- Os projetos são gerados dinamicamente em scripts.js -->
+      <div class="work__list">
+        <article class="run" data-kind="dados web" data-project="bv" data-reveal>
+          <div class="run__frames" tabindex="0" aria-label="Telas do busca_vagas" data-i18n-attr="aria-label:r.bv">
+            <img src="img/f/bv-hoje.webp" width="1138" height="640" loading="lazy" alt="Tela Hoje, com as vagas novas e os envios do dia" data-i18n-attr="alt:a.bv1b" />
+            <img src="img/f/bv-vaga.webp" width="1051" height="547" loading="lazy" alt="Página de uma vaga com a nota de compatibilidade explicada" data-i18n-attr="alt:a.bv2" />
+            <img src="img/f/bv-lote.webp" width="1138" height="640" loading="lazy" alt="Envio em lote com o email ao recrutador aberto" data-i18n-attr="alt:a.bv3" />
+            <img src="img/f/bv-tipos.webp" width="1364" height="547" loading="lazy" alt="Tipos de vaga agrupados com K-means" data-i18n-attr="alt:a.bv4" />
+            <img src="img/f/bv-celular.webp" width="477" height="640" loading="lazy" alt="Tipos de vaga no celular" data-i18n-attr="alt:a.bv6" />
+            <img src="img/f/bv-uso.webp" width="1113" height="512" loading="lazy" alt="Uso dos serviços gratuitos em medidores" data-i18n-attr="alt:a.bv7" />
+          </div>
+          <p class="run__line">
+            <button type="button" class="run__name" data-open="bv">busca_vagas</button>
+            <span class="run__what" data-i18n="r.bv.what">ETL, embeddings e Next.js</span>
+            <a class="link" href="https://github.com/GabrielProzin/busca_vagas" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </p>
+        </article>
+
+        <!-- A coisa viva: o funil de uma coleta real do busca_vagas -->
+        <section class="funnel" id="funil" aria-labelledby="funnel-title" data-reveal>
+          <div class="funnel__head">
+            <h3 id="funnel-title" class="funnel__title" data-i18n="f.title">Uma coleta, 1.249 vagas</h3>
+            <p data-i18n="f.text">Na coleta de 23 de outubro, o busca_vagas leu 1.249 vagas únicas na Gupy, na Remotar, na Sólides e no GitHub. Cada filtro abaixo cortou as que não serviam. Desligue um deles e veja até quantas sobrariam.</p>
+          </div>
+          <div class="funnel__body">
+            <table class="funnel__table">
+              <caption class="sr-only" data-i18n="f.caption">Vagas cortadas por filtro na coleta de 23/10/2026</caption>
+              <thead>
+                <tr><th scope="col" data-i18n="f.col1">Filtro</th><th scope="col" class="num" data-i18n="f.col2">Cortou</th><th scope="col" class="num" data-i18n="f.col3">Ligado</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row" data-i18n="f.r1">Nível acima de júnior</th><td class="num">760</td><td class="num"><input type="checkbox" checked data-cut="760" aria-label="Filtro de nível" data-i18n-attr="aria-label:f.r1" /></td></tr>
+                <tr><th scope="row" data-i18n="f.r2">Cargo fora da área de dados</th><td class="num">255</td><td class="num"><input type="checkbox" checked data-cut="255" aria-label="Filtro de área" data-i18n-attr="aria-label:f.r2" /></td></tr>
+                <tr><th scope="row" data-i18n="f.r3">Publicada há mais de 14 dias</th><td class="num">104</td><td class="num"><input type="checkbox" checked data-cut="104" aria-label="Filtro de data" data-i18n-attr="aria-label:f.r3" /></td></tr>
+                <tr><th scope="row" data-i18n="f.r4">Termo bloqueado</th><td class="num">60</td><td class="num"><input type="checkbox" checked data-cut="60" aria-label="Filtro de termos" data-i18n-attr="aria-label:f.r4" /></td></tr>
+                <tr><th scope="row" data-i18n="f.r5">Presencial ou híbrida fora de Goiânia</th><td class="num">46</td><td class="num"><input type="checkbox" checked data-cut="46" aria-label="Filtro de local" data-i18n-attr="aria-label:f.r5" /></td></tr>
+                <tr><th scope="row" data-i18n="f.r6">Vaga em inglês, pleno no texto ou sem local</th><td class="num">19</td><td class="num"><input type="checkbox" checked data-cut="19" aria-label="Outros filtros" data-i18n-attr="aria-label:f.r6" /></td></tr>
+              </tbody>
+            </table>
+            <p class="funnel__result" aria-live="polite">
+              <span class="funnel__num" id="funnel-num">5</span>
+              <span id="funnel-label" data-i18n="f.left">vagas aprovadas, a lista do dia</span>
+            </p>
+          </div>
+        </section>
+
+        <article class="run" data-kind="web" data-project="gh" data-reveal>
+          <div class="run__frames" tabindex="0" aria-label="Telas do perfil do GitHub" data-i18n-attr="aria-label:r.gh">
+            <img src="img/f/gh-perfil.webp" width="701" height="640" loading="lazy" alt="Perfil do GitHub com o calendário e o retrato" data-i18n-attr="alt:a.gh0" />
+            <img src="img/f/gh-retrato.webp" width="496" height="640" loading="lazy" alt="Retrato em ASCII" data-i18n-attr="alt:a.gh1" />
+            <img src="img/f/gh-cartao.webp" width="653" height="640" loading="lazy" alt="Cartão no estilo neofetch" data-i18n-attr="alt:a.gh2" />
+            <img src="img/f/gh-calendario.webp" width="1716" height="464" loading="lazy" alt="Calendário de contribuições animado" data-i18n-attr="alt:a.gh3" />
+          </div>
+          <p class="run__line">
+            <button type="button" class="run__name" data-open="gh" data-i18n="p.gh.title">Perfil do GitHub animado</button>
+            <span class="run__what" data-i18n="r.gh.what">Python gerando SVG</span>
+            <a class="link" href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </p>
+        </article>
+
+        <article class="run" data-kind="web" data-project="wda" data-reveal>
+          <div class="run__frames" tabindex="0" aria-label="Telas do sistema de locação" data-i18n-attr="aria-label:r.wda">
+            <img src="img/f/wda-capa.webp" width="1138" height="640" loading="lazy" alt="Painel do mês no sistema de locação" data-i18n-attr="alt:a.wda0" />
+            <img src="img/f/wda-visao.webp" width="1279" height="640" loading="lazy" alt="Visão geral do dia" data-i18n-attr="alt:a.wda1" />
+            <img src="img/f/wda-detalhe.webp" width="761" height="495" loading="lazy" alt="Detalhe do gráfico de valores" data-i18n-attr="alt:a.wda2" />
+            <img src="img/f/wda-graficos.webp" width="1280" height="640" loading="lazy" alt="Gráficos dos últimos meses" data-i18n-attr="alt:a.wda3" />
+          </div>
+          <p class="run__line">
+            <button type="button" class="run__name" data-open="wda" data-i18n="p.wda.title">Sistema de locação</button>
+            <span class="run__what" data-i18n="r.wda.what">Next.js e Firebase</span>
+            <a class="link" href="https://github.com/GabrielProzin/wdalocacao" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </p>
+        </article>
+
+        <article class="run" data-kind="dados" data-project="af" data-reveal>
+          <div class="run__frames" tabindex="0" aria-label="Telas do pipeline no Airflow" data-i18n-attr="aria-label:r.af">
+            <img src="img/f/af-dag.webp" width="1137" height="640" loading="lazy" alt="DAG semanal no Airflow" data-i18n-attr="alt:a.af1" />
+            <img src="img/f/af-tarefas.webp" width="840" height="473" loading="lazy" alt="As tarefas da DAG em sequência" data-i18n-attr="alt:a.af2" />
+            <img src="img/f/af-saidas.webp" width="588" height="433" loading="lazy" alt="Os arquivos que a DAG grava por semana" data-i18n-attr="alt:a.af3" />
+          </div>
+          <p class="run__line">
+            <button type="button" class="run__name" data-open="af" data-i18n="p.af.title">Pipeline com Airflow</button>
+            <span class="run__what" data-i18n="r.af.what">Airflow, Docker e Celery</span>
+            <a class="link" href="https://github.com/GabrielProzin/MiniProjectAirflow" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </p>
+        </article>
+
+        <article class="run" data-kind="dados" data-project="fr" data-reveal>
+          <div class="run__frames" tabindex="0" aria-label="Telas da detecção de fraudes" data-i18n-attr="aria-label:r.fr">
+            <img src="img/f/fr-matriz.webp" width="1140" height="640" loading="lazy" alt="Matrizes de confusão dos dois modelos" data-i18n-attr="alt:a.fr1" />
+            <img src="img/f/fr-logistica.webp" width="668" height="620" loading="lazy" alt="Matriz da Logistic Regression" data-i18n-attr="alt:a.fr2" />
+            <img src="img/f/fr-floresta.webp" width="668" height="620" loading="lazy" alt="Matriz da Random Forest" data-i18n-attr="alt:a.fr3" />
+          </div>
+          <p class="run__line">
+            <button type="button" class="run__name" data-open="fr" data-i18n="p.fr.title">Detecção de fraudes</button>
+            <span class="run__what" data-i18n="r.fr.what">Scikit-learn e Power BI</span>
+            <a class="link" href="https://github.com/GabrielProzin/credit-card-fraud-detection-ml-bi" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </p>
+        </article>
+
+        <article class="run" data-kind="dados" data-project="ac" data-reveal>
+          <div class="run__frames" tabindex="0" aria-label="Telas do painel de ações" data-i18n-attr="aria-label:r.ac">
+            <img src="img/f/ac-painel.webp" width="1149" height="640" loading="lazy" alt="Painel de ações da NASDAQ no Power BI" data-i18n-attr="alt:a.ac1" />
+            <img src="img/f/ac-volume.webp" width="1120" height="289" loading="lazy" alt="Volume ao longo do tempo" data-i18n-attr="alt:a.ac2" />
+            <img src="img/f/ac-variacao.webp" width="644" height="421" loading="lazy" alt="Variação mês a mês do fechamento" data-i18n-attr="alt:a.ac3" />
+            <img src="img/f/ac-tabela.webp" width="490" height="421" loading="lazy" alt="Tabela de valores médios por mês" data-i18n-attr="alt:a.ac4" />
+          </div>
+          <p class="run__line">
+            <button type="button" class="run__name" data-open="ac" data-i18n="p.ac.title">Mercado de ações</button>
+            <span class="run__what" data-i18n="r.ac.what">Power BI e DAX</span>
+            <a class="link" href="https://github.com/GabrielProzin/Projeto-Dashboard-Mercado-Acoes" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </p>
+        </article>
       </div>
     </section>
 
-    <div class="interlude" data-scene>
-      <p class="interlude__index" data-reveal>04 / 05</p>
-      <p class="interlude__title" data-reveal data-i18n="i4.title">Modelos mostram tendências.</p>
-      <p class="interlude__sub" data-reveal data-i18n="i4.sub">O que os dados dizem sobre o que vem a seguir.</p>
-    </div>
+    <!-- Experiência: um retrato cortado em ladrilhos, com os números do trabalho -->
+    <section class="exp" id="experiencia" aria-labelledby="exp-title">
+      <div class="board" id="board" data-reveal>
+        <!-- um retrato em ASCII cortado em ladrilhos; os de cor carregam o título e os números -->
+        <div class="tile tile--pic" style="--c:2;--r:1;--mc:3;--mr:1" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:3;--r:1;--mc:1;--mr:2" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:4;--r:1;--mc:2;--mr:2" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:5;--r:1;--mc:1;--mr:3" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:6;--r:1;--mc:2;--mr:3" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:1;--r:2;--mc:3;--mr:3" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:2;--r:2;--mc:2;--mr:4" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:3;--r:2;--mc:3;--mr:4" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:4;--r:2;--mc:1;--mr:5" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:6;--r:2;--mc:2;--mr:5" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:1;--r:3;--mc:3;--mr:5" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:3;--r:3;--mc:2;--mr:6" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:4;--r:3" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:5;--r:3" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:6;--r:3" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:1;--r:4" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:2;--r:4" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:3;--r:4" aria-hidden="true"></div>
+        <div class="tile tile--pic" style="--c:5;--r:4" aria-hidden="true"></div>
+        <div class="tile tile--head" style="--c:1;--r:1;--mc:1;--mr:1"><h2 id="exp-title" data-i18n="exp.title">Dados em produção</h2></div>
+        <div class="tile tile--fact" style="--c:5;--r:2;--mc:3;--mr:2"><p><strong>18</strong> <span data-i18n="exp.f1">clientes no mesmo pipeline do Airflow</span></p></div>
+        <div class="tile tile--fact tile--ink" style="--c:2;--r:3;--mc:1;--mr:4"><p><strong>20+</strong> <span data-i18n="exp.f2">painéis de KPIs migrados ao Power BI</span></p></div>
+        <div class="tile tile--fact" style="--c:4;--r:4;--mc:3;--mr:6"><p><strong>404 mil</strong> <span data-i18n="exp.f3">linhas de histórico diário modelado</span></p></div>
+        <a class="tile tile--act" style="--c:6;--r:4;--mc:1;--mr:6" href="#trajetoria"><span data-i18n="exp.act">Ver a trajetória</span></a>
+      </div>
 
-    <!-- Página 4: Sobre -->
-    <section class="about page" id="about" aria-labelledby="about-title">
-      <div class="about__grid">
-        <div class="about__text" data-reveal>
-          <h2 id="about-title" class="page__title" data-i18n="about.title">Quem sou eu</h2>
-          <p data-i18n="about.text">Comecei na Pacto Soluções no relacionamento com clientes, analisando demandas técnicas e padrões de erro. Essa experiência me deu facilidade para entender a regra de negócio por trás de cada número.</p>
-          <p data-i18n="about.text2">Hoje trabalho de ponta a ponta no ciclo de dados, da ingestão ao dashboard, e curso pós em Ciência de Dados para aprofundar estatística e machine learning.</p>
+      <div class="ledger">
+        <p class="ledger__role" data-reveal data-i18n="exp.role">Cientista de dados na Pacto Soluções, de maio a outubro de 2026.</p>
+        <p class="ledger__scale" data-reveal data-i18n="exp.scale">Uma plataforma de gestão para academias com 3,5 mil unidades, 400 redes e 2,1 milhões de alunos ativos na base. O trabalho ia da ingestão dos dados até os painéis que o negócio usa.</p>
+        <div class="ledger__row" data-reveal>
+          <h3 data-i18n="c1.title">Pipelines para 18 clientes</h3>
+          <p data-i18n="c1.text">ETL em Python orquestrado no Apache Airflow, levando os dados das APIs do Zendesk e do Jira ao BigQuery. Uma configuração centralizada faz o mesmo código atender 18 clientes.</p>
         </div>
-
-        <dl class="tile facts spot" data-reveal>
-          <div class="facts__row">
-            <dt data-i18n="about.education">Formação</dt>
-            <dd data-i18n="about.educationVal">Análise e Desenvolvimento de Sistemas, IPOG</dd>
-          </div>
-          <div class="facts__row">
-            <dt data-i18n="about.current">Cursando</dt>
-            <dd data-i18n="about.currentVal">Pós em Ciência de Dados, IPOG</dd>
-          </div>
-          <div class="facts__row">
-            <dt data-i18n="about.seeking">Busco</dt>
-            <dd data-i18n="about.seekingVal">Ciência de Dados, Engenharia de Dados ou BI</dd>
-          </div>
-          <div class="facts__row">
-            <dt data-i18n="about.location">Local</dt>
-            <dd data-i18n="about.locationVal">Goiânia, GO</dd>
-          </div>
-        </dl>
-      </div>
-
-      <div class="journey" data-reveal>
-        <h3 class="block-title" data-i18n="journey.title">Trajetória</h3>
-        <ol class="timeline">
-          <li class="tl" style="--c: var(--muted); --i: 0">
-            <span class="tl__year">2022</span>
-            <span class="tl__dot" aria-hidden="true"></span>
-            <h4 class="tl__title" data-i18n="tl1.title">Consultor de Relacionamento</h4>
-            <p class="tl__org">Pacto Soluções · <span data-i18n="tl1.period">ago/2022 a nov/2024</span></p>
-            <p class="tl__text" data-i18n="tl1.text">Atendimento a clientes, análise de padrões de erro e requisitos para o time de desenvolvimento.</p>
-          </li>
-          <li class="tl" style="--c: var(--s-violet); --i: 1">
-            <span class="tl__year">2023</span>
-            <span class="tl__dot" aria-hidden="true"></span>
-            <h4 class="tl__title" data-i18n="tl2.title">Graduação em ADS</h4>
-            <p class="tl__org">IPOG · <span data-i18n="tl2.period">ago/2023 a dez/2025</span></p>
-            <p class="tl__text" data-i18n="tl2.text">Análise e Desenvolvimento de Sistemas: a base de programação que levo para os dados.</p>
-          </li>
-          <li class="tl" style="--c: var(--s-obs); --i: 2">
-            <span class="tl__year">2025</span>
-            <span class="tl__dot" aria-hidden="true"></span>
-            <h4 class="tl__title" data-i18n="tl3.title">Dados na Escolar Manager</h4>
-            <p class="tl__org">Escolar Manager · <span data-i18n="tl3.period">fev/2025 a mai/2026</span></p>
-            <p class="tl__text" data-i18n="tl3.text">Estágio e depois CLT: consultas SQL, relatórios gerenciais e qualidade de dados.</p>
-          </li>
-          <li class="tl" style="--c: var(--s-fcst); --i: 3">
-            <span class="tl__year">2026</span>
-            <span class="tl__dot" aria-hidden="true"></span>
-            <h4 class="tl__title" data-i18n="tl4.title">Pós em Ciência de Dados</h4>
-            <p class="tl__org">IPOG · <span data-i18n="tl4.period">desde jan/2026</span></p>
-            <p class="tl__text" data-i18n="tl4.text">Estatística, machine learning e projetos aplicados.</p>
-          </li>
-          <li class="tl" style="--c: var(--s-trend); --i: 4">
-            <span class="tl__year">2026</span>
-            <span class="tl__dot" aria-hidden="true"></span>
-            <h4 class="tl__title" data-i18n="tl5.title">Cientista de Dados</h4>
-            <p class="tl__org">Pacto Soluções · <span data-i18n="tl5.period">mai/2026 a out/2026</span></p>
-            <p class="tl__text" data-i18n="tl5.text">Pipelines no Airflow, BigQuery e dashboards de KPIs no Power BI.</p>
-          </li>
-        </ol>
-      </div>
-
-      <div class="principles" data-reveal>
-        <h3 class="block-title" data-i18n="how.title">Como eu trabalho</h3>
-        <div class="principles__grid">
-          <article class="principle tile spot">
-            <i class="bx bx-briefcase-alt-2" aria-hidden="true"></i>
-            <h4 data-i18n="how1.title">Começo pela regra de negócio</h4>
-            <p data-i18n="how1.text">Antes de qualquer query, entendo o que o número precisa responder e para quem.</p>
-          </article>
-          <article class="principle tile spot">
-            <i class="bx bx-check-double" aria-hidden="true"></i>
-            <h4 data-i18n="how2.title">Todo número é conciliado</h4>
-            <p data-i18n="how2.text">Comparo cada indicador com a fonte, por unidade e no consolidado, antes de ele chegar a um dashboard.</p>
-          </article>
-          <article class="principle tile spot">
-            <i class="bx bx-book-content" aria-hidden="true"></i>
-            <h4 data-i18n="how3.title">Documento o que construo</h4>
-            <p data-i18n="how3.text">Pipelines e painéis com documentação técnica, para que outras pessoas consigam manter e evoluir.</p>
-          </article>
+        <div class="ledger__row" data-reveal>
+          <h3 data-i18n="c2.title">Do Looker Studio ao Power BI</h3>
+          <p data-i18n="c2.text">Mais de 20 painéis de KPIs migrados: ativos, churn, cancelamentos, faturamento e inadimplência, com cada número conciliado com a fonte, por unidade e no consolidado.</p>
         </div>
-      </div>
-
-      <div class="certs" data-reveal>
-        <h3 class="block-title" data-i18n="certs.title">Certificações</h3>
-        <ul class="certs__list">
-          <li><i class="bx bx-award" aria-hidden="true"></i><span><strong>Supervised Machine Learning: Regression and Classification</strong>Stanford · 2026</span></li>
-          <li><i class="bx bx-award" aria-hidden="true"></i><span><strong data-i18n="cert2">Power BI Para Business Intelligence e Data Science</strong>Data Science Academy · 2026</span></li>
-        </ul>
+        <div class="ledger__row" data-reveal>
+          <h3 data-i18n="c3.title">Um bug de dezenas de milhares</h3>
+          <p data-i18n="c3.text">Modelei um histórico diário de 444 dias com a situação de cada aluno. No caminho, achei a causa de um bug que inflava a contagem de tickets em dezenas de milhares e reprocessei o histórico conferindo com a origem.</p>
+        </div>
+        <div class="ledger__row" data-reveal>
+          <h3 data-i18n="c4.title">Um protótipo com 300 testes</h3>
+          <p data-i18n="c4.text">Projetei, dirigi e validei um protótipo de módulo de NPS, do levantamento de requisitos ao login com Google: Java e Spring com PostgreSQL no back-end e React no front-end, com mais de 300 testes automatizados.</p>
+        </div>
+        <div class="ledger__row" data-reveal>
+          <h3 data-i18n="c5.title">BigQuery, HeatWave e IA</h3>
+          <p data-i18n="c5.text">Atuei na migração de dados do BigQuery para o MySQL HeatWave, na Oracle Cloud, e montei um servidor MCP somente leitura para consultar o BigQuery com IA sem risco de alterar dados.</p>
+        </div>
       </div>
     </section>
 
-    <div class="interlude" data-scene>
-      <p class="interlude__index" data-reveal>05 / 05</p>
-      <p class="interlude__title" data-reveal data-i18n="i5.title">E tendências viram decisões.</p>
-      <p class="interlude__sub" data-reveal data-i18n="i5.sub">É aí que o trabalho com dados faz diferença.</p>
-    </div>
+    <!-- Trajetória como tabela -->
+    <section class="path" id="trajetoria" aria-labelledby="path-title">
+      <h2 id="path-title" class="path__title" data-reveal>
+        <span data-i18n="path.t1">Onde trabalhei</span>
+        <span class="path__indent" data-i18n="path.t2">e estudei</span>
+      </h2>
+      <table class="path__table" data-reveal>
+        <caption class="sr-only" data-i18n="path.caption">Experiência, formação e certificados, do mais recente ao mais antigo</caption>
+        <thead class="sr-only">
+          <tr><th scope="col" data-i18n="path.c1">Ano</th><th scope="col" data-i18n="path.c2">O quê</th><th scope="col" data-i18n="path.c3">Onde</th><th scope="col" data-i18n="path.c4">Período</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="y">2026</td><td data-i18n="path.r1">Cientista de dados</td><td>Pacto Soluções</td><td class="end" data-i18n="path.p1">mai a out</td></tr>
+          <tr class="t"><td></td><td data-i18n="path.r2">Pós em Ciência de Dados</td><td>IPOG</td><td class="end" data-i18n="path.p2">desde jan</td></tr>
+          <tr><td></td><td>Supervised Machine Learning</td><td>Stanford</td><td class="end" data-i18n="path.cert">certificado</td></tr>
+          <tr class="t"><td></td><td data-i18n="path.r4">Power BI para Business Intelligence</td><td>Data Science Academy</td><td class="end" data-i18n="path.cert">certificado</td></tr>
+          <tr class="gap" aria-hidden="true"><td colspan="4"></td></tr>
+          <tr><td class="y">2025</td><td data-i18n="path.r5">Dados, de estágio a CLT</td><td>Escolar Manager</td><td class="end" data-i18n="path.p5">fev/2025 a mai/2026</td></tr>
+          <tr class="gap" aria-hidden="true"><td colspan="4"></td></tr>
+          <tr class="t"><td class="y">2023</td><td data-i18n="path.r6">Análise e Desenvolvimento de Sistemas</td><td>IPOG</td><td class="end" data-i18n="path.p6">ago/2023 a dez/2025</td></tr>
+          <tr class="gap" aria-hidden="true"><td colspan="4"></td></tr>
+          <tr><td class="y">2022</td><td data-i18n="path.r7">Consultor de relacionamento</td><td>Pacto Soluções</td><td class="end" data-i18n="path.p7">ago/2022 a nov/2024</td></tr>
+        </tbody>
+      </table>
+    </section>
 
-    <!-- Página 5: Contato -->
-    <section class="contact page" id="contact" aria-labelledby="contact-title">
-      <div class="page__head" data-reveal>
-        <h2 id="contact-title" class="page__title" data-i18n="contact.title">Vamos conversar</h2>
+    <!-- Sobre: o retrato como capitular -->
+    <section class="about" id="sobre" aria-labelledby="about-title">
+      <div class="about__facts" data-reveal>
+        <h2 id="about-title" class="about__title" data-i18n="about.title">Sobre</h2>
+        <p><span data-i18n="about.f1">Goiânia, GO</span><br /><span class="soft" data-i18n="about.f2">dados desde 2025</span></p>
+        <p><a class="link" href="mailto:gabrielalexandrino2004@gmail.com" data-i18n="about.f3">escreva um email</a></p>
       </div>
+      <div class="about__text" data-reveal>
+        <p class="about__lead"><img class="about__portrait" src="img/gabriel.webp" width="480" height="480" loading="lazy" alt="Foto de Gabriel Mendes" data-i18n-attr="alt:about.alt" /><span data-i18n-html="about.p1"><strong>Gabriel Mendes</strong>, prazer. Comecei no atendimento, lendo os tickets dos clientes. Depois, passei a construir os pipelines que contam esses tickets.</span></p>
+        <p class="about__more" data-i18n-html="about.p2">Hoje trabalho com Python e Airflow levando dados de APIs ao BigQuery, e com painéis no Power BI conferidos número a número com a fonte. Gosto do trabalho em que análise e engenharia andam juntas. Faço pós em Ciência de Dados no IPOG e uso projetos próprios, como o <a href="https://github.com/GabrielProzin/busca_vagas" target="_blank" rel="noopener noreferrer">busca_vagas</a>, para testar na prática o que aprendo.</p>
+      </div>
+    </section>
 
-      <div class="contact__grid">
-        <div class="tile contact__form-tile spot" data-reveal>
-          <form id="contact-form" class="contact-form" autocomplete="off" novalidate>
-            <input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true"
-              class="honeypot" />
-            <div class="form-row">
-              <div class="form-group">
-                <label for="name" data-i18n="contact.name">Nome</label>
-                <input type="text" id="name" name="user_name" placeholder="Seu nome" data-i18n-attr="placeholder:contact.namePh" required maxlength="50" />
-              </div>
-              <div class="form-group">
-                <label for="email" data-i18n="contact.email">E-mail</label>
-                <input type="email" id="email" name="user_email" placeholder="voce@empresa.com" data-i18n-attr="placeholder:contact.emailPh" required
-                  maxlength="50" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="message"><span data-i18n="contact.message">Mensagem</span> <span class="char-count" id="char-count">0/300</span></label>
-              <textarea id="message" name="message" placeholder="Escreva sua mensagem" data-i18n-attr="placeholder:contact.messagePh" rows="4" maxlength="300"
-                required></textarea>
-            </div>
-            <button type="submit" class="btn btn--primary submit-btn">
-              <i class="bx bx-send"></i> <span data-i18n="contact.send">Enviar mensagem</span>
-            </button>
-            <div id="form-message" class="form-message" aria-live="polite"></div>
-          </form>
-        </div>
-
-        <div class="contact__links" data-reveal>
-          <ul class="link-list">
-            <li><a href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer">
-                <i class="bx bxl-linkedin"></i><span>LinkedIn</span></a></li>
-            <li><a href="https://github.com/GabrielProzin" target="_blank" rel="noopener noreferrer">
-                <i class="bx bxl-github"></i><span>GitHub</span></a></li>
-            <li><a href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer">
-                <i class="bx bxl-whatsapp"></i><span>WhatsApp</span></a></li>
-          </ul>
-          <div class="email-display">
-            <span id="user-email">gabrielalexandrino2004@gmail.com</span>
-            <button id="copy-email" class="btn btn--ghost btn--sm copy-btn" type="button">
-              <i class="bx bx-copy"></i> <span data-i18n="contact.copy">Copiar</span>
-            </button>
-          </div>
+    <!-- Contato: campo verde, faixa de telas e o formulário em três células -->
+    <section class="contact" id="contato" aria-labelledby="contact-title">
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <img src="img/f/bv-vaga.webp" alt="" width="1051" height="547" loading="lazy" />
+          <img src="img/f/gh-retrato.webp" alt="" width="496" height="640" loading="lazy" />
+          <img src="img/f/wda-detalhe.webp" alt="" width="761" height="495" loading="lazy" />
+          <img src="img/f/af-tarefas.webp" alt="" width="840" height="473" loading="lazy" />
+          <img src="img/f/fr-logistica.webp" alt="" width="668" height="620" loading="lazy" />
+          <img src="img/f/ac-variacao.webp" alt="" width="644" height="421" loading="lazy" />
+          <img src="img/f/bv-celular.webp" alt="" width="477" height="640" loading="lazy" />
+          <img src="img/f/gh-cartao.webp" alt="" width="653" height="640" loading="lazy" />
+          <img src="img/f/bv-uso.webp" alt="" width="1113" height="512" loading="lazy" />
+          <img src="img/f/ac-tabela.webp" alt="" width="490" height="421" loading="lazy" />
+          <img src="img/f/fr-floresta.webp" alt="" width="668" height="620" loading="lazy" />
+          <img src="img/f/af-saidas.webp" alt="" width="588" height="433" loading="lazy" />
         </div>
       </div>
-
-      <footer class="footer">© <span id="year">2026</span> Gabriel Mendes</footer>
+      <div class="contact__inner">
+        <h2 id="contact-title" class="contact__title" data-reveal data-i18n="contact.title">Vamos conversar</h2>
+        <form id="contact-form" class="bar" novalidate data-reveal>
+          <input type="text" id="honeypot" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" class="honeypot" />
+          <label class="cell">
+            <span class="sr-only" data-i18n="contact.email">Seu email</span>
+            <input type="email" id="email" name="user_email" required maxlength="80" autocomplete="email" placeholder="Seu email" data-i18n-attr="placeholder:contact.email" />
+          </label>
+          <label class="cell">
+            <span class="sr-only" data-i18n="contact.msg">Sua mensagem</span>
+            <input type="text" id="message" name="message" required minlength="10" maxlength="300" placeholder="Sua mensagem" data-i18n-attr="placeholder:contact.msg" aria-describedby="msg-hint" />
+          </label>
+          <button type="submit" class="cell cell--send" data-i18n="contact.send">Enviar</button>
+          <p class="bar__print" id="msg-hint" data-i18n="contact.hint">Mensagem de 10 a 300 caracteres. Respondo no email que você deixar.</p>
+          <p class="bar__print bar__print--end"><span data-i18n="contact.or">Ou</span> <a class="link-plain" href="https://www.linkedin.com/in/gabrielmendesurl/" target="_blank" rel="noopener noreferrer">LinkedIn</a>, <a class="link-plain" href="https://wa.me/5562981253588" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+          <p class="bar__status" id="form-message" aria-live="polite"></p>
+        </form>
+        <p class="contact__mail" data-reveal><a href="mailto:gabrielalexandrino2004@gmail.com">gabrielalexandrino2004@gmail.com</a></p>
+      </div>
     </section>
   </main>
 
+  <!-- Rodapé em ladrilhos -->
+  <footer class="foot">
+    <div class="ftile ftile--say">
+      <p data-i18n="foot.say">Dados da API ao painel, conferidos na fonte.</p>
+      <p class="small soft">© <span id="year">2026</span> Gabriel Mendes</p>
+    </div>
+    <nav class="ftile ftile--nav" aria-label="Rodapé" data-i18n-attr="aria-label:foot.aria">
+      <a class="link" href="#projetos" data-i18n="nav.work">Projetos</a>
+      <a class="link" href="#experiencia" data-i18n="nav.exp">Experiência</a>
+      <a class="link" href="#trajetoria" data-i18n="nav.path">Trajetória</a>
+      <a class="link" href="#contato" data-i18n="nav.contact">Contato</a>
+    </nav>
+    <div class="ftile ftile--time">
+      <p>Goiânia</p>
+      <p class="soft"><span data-i18n="foot.now">agora,</span> <time id="clock">--:--</time></p>
+    </div>
+    <div class="ftile ftile--mail">
+      <a class="link-plain" href="mailto:gabrielalexandrino2004@gmail.com">gabrielalexandrino2004@gmail.com</a>
+      <button type="button" class="link copy" id="copy-email" data-i18n="contact.copy">Copiar endereço</button>
+    </div>
+    <div class="ftile ftile--mark" aria-hidden="true"><span>Gabriel Mendes</span></div>
+    <a class="ftile ftile--go" href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" data-cv>
+      <span data-i18n="foot.cv">Baixe o currículo</span>
+      <svg viewBox="0 0 48 48" width="56" height="56" aria-hidden="true"><path d="M24 6v32M10 26l14 14 14-14" fill="none" stroke="currentColor" stroke-width="4" /></svg>
+    </a>
+  </footer>
 
-  <!-- Scripts -->
+  <!-- Detalhes de um projeto -->
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <div class="sheet__inner">
+      <div class="sheet__top">
+        <h2 id="sheet-title">Projeto</h2>
+        <button type="button" class="link" id="sheet-close" data-i18n="close">Fechar</button>
+      </div>
+      <div class="sheet__frames" id="sheet-frames"></div>
+      <dl class="sheet__text" id="sheet-text"></dl>
+      <p class="sheet__tags" id="sheet-tags"></p>
+    </div>
+  </dialog>
+
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" defer></script>
-  <!-- Vercel Web Analytics: só carrega no site publicado (no arquivo local não faz nada) -->
   <script>
     if (/\.vercel\.app$/.test(location.hostname)) {
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -511,10 +409,8 @@
     }
   </script>
   <script src="i18n.js" defer></script>
-  <script src="motion.js" defer></script>
-  <script src="bg.js" defer></script>
-  <script src="experience.js" defer></script>
-  <script src="scripts.js" defer></script>
+  <script src="projetos.js" defer></script>
+  <script src="app.js" defer></script>
 </body>
 
 </html>
