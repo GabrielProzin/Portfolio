@@ -2853,3 +2853,6 @@ a, button, [role="button"], .project-media, .arch__node { cursor: pointer; }
 /* botão principal com contraste de 4,5:1 para o texto branco */
 .btn--primary { background: #2869c2; }
 .btn--primary:hover { background: #1f5aab; }
+
+/* email entre o formulário e as redes */
+.contact__links .email-display { margin-bottom: 18px; }

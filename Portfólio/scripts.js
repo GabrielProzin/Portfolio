@@ -83,31 +83,6 @@ const projects = [
   },
   {
     pt: {
-      title: "Perfil do GitHub animado",
-      summary: "README de perfil que se monta sozinho: retrato em ASCII, cartão no estilo neofetch e calendário de contribuições animados.",
-      problem: "O perfil do GitHub estava desatualizado, e os geradores de estatísticas hospedados por terceiros caem com frequência.",
-      approach:
-        "Scripts em Python geram SVGs animados (SMIL e CSS), já que o GitHub não roda JavaScript no README. A foto vira ASCII com remoção de fundo (rembg), contraste local (CLAHE) e contornos (Sobel); o calendário lê a página pública de contribuições com requests e BeautifulSoup, e um GitHub Actions o refaz todo dia.",
-      result: "Um perfil que se atualiza sozinho, sem token e sem serviço de terceiros.",
-    },
-    en: {
-      title: "Animated GitHub profile",
-      summary: "A profile README that builds itself: an ASCII portrait, a neofetch-style card and an animated contribution calendar.",
-      problem: "The GitHub profile was out of date, and third-party hosted stats widgets often go down.",
-      approach:
-        "Python scripts generate animated SVGs (SMIL and CSS), since GitHub runs no JavaScript in a README. The photo becomes ASCII with background removal (rembg), local contrast (CLAHE) and edges (Sobel); the calendar reads the public contributions page with requests and BeautifulSoup, and a GitHub Actions job rebuilds it every day.",
-      result: "A profile that updates itself, with no token and no third-party service.",
-    },
-    image: "ImgProjeto/gh-perfil.webp",
-    gallery: ["ImgProjeto/gh-perfil.webp", "ImgProjeto/gh-retrato.webp", "ImgProjeto/gh-cartao.webp", "ImgProjeto/gh-calendario.webp"],
-    darkCover: true,
-    tags: ["Python", "OpenCV", "SVG", "GitHub Actions"],
-    category: ["eng", "web"],
-    github: "https://github.com/GabrielProzin/GabrielProzin",
-    live: "",
-  },
-  {
-    pt: {
       title: "Sistema de Locação de Mesas e Cadeiras",
       summary: "App web mobile-first que tirou do papel a gestão de aluguéis e despesas de um negócio de locação.",
       problem:
