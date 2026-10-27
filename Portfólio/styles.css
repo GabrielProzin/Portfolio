@@ -2659,3 +2659,197 @@ a, button, [role="button"], .project-media, .arch__node { cursor: pointer; }
 .link-list li + li { border-top: 0 !important; }
 .facts__row { padding-block: 10px; }
 .email-display { border-color: transparent !important; background: rgba(23, 38, 62, 0.82); }
+
+/* ============================================================
+   PRIMEIRA TELA COM O TRABALHO: o vídeo do busca_vagas à direita
+   ============================================================ */
+.home {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 4.5vw, 64px);
+}
+.home__media { position: relative; z-index: 1; margin: 0; }
+.home__screen {
+  border-radius: var(--radius-tile);
+  overflow: hidden;
+  background: var(--tile);
+}
+.home__video, .feature__screen video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top center;
+  background: var(--tile);
+}
+.home__media figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin-top: 14px;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+.home__media figcaption strong { color: var(--ink); font-weight: 600; }
+.home__more { color: var(--accent); white-space: nowrap; text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+.home__more:hover { color: var(--ink); }
+
+/* ============================================================
+   AS PAUSAS VIRARAM O CABEÇALHO DE CADA SEÇÃO
+   (as partículas do fundo seguem trocando de cena aqui)
+   ============================================================ */
+.scene-head {
+  position: relative;
+  z-index: 1;
+  min-height: clamp(220px, 30vh, 340px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-bottom: clamp(32px, 5vh, 56px);
+}
+.scene-head .page__title { margin-bottom: 0; }
+.scene-head__line {
+  max-width: 30ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.scene-head__sub { margin-top: -6px; font-size: var(--fs-md); color: var(--ink-2); max-width: 52ch; }
+.job { margin-top: 0; }
+
+/* ============================================================
+   PROJETO EM DESTAQUE + FUNIL
+   ============================================================ */
+.feature[hidden] { display: none !important; }
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 28px clamp(28px, 4vw, 56px);
+  padding: clamp(20px, 3vw, 36px);
+  margin: 28px 0 32px;
+}
+.feature__screen { border-radius: 6px; overflow: hidden; }
+.feature__thumbs {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.feature__thumbs img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; border-radius: 4px; background: var(--tile); }
+.feature__body { display: flex; flex-direction: column; gap: 18px; align-self: center; }
+.feature__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+.feature__summary { color: var(--ink-2); max-width: 52ch; line-height: 1.6; }
+.feature__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.feature__stats div { display: flex; flex-direction: column-reverse; gap: 2px; }
+.feature__stats dd {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 750;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.feature__stats dt { font-size: var(--fs-sm); color: var(--ink-2); }
+.feature__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.feature__funnel {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 24px clamp(28px, 4vw, 56px);
+  padding-top: 28px;
+  margin-top: 4px;
+  background: none;
+}
+.funnel__title { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 700; margin-bottom: 10px; }
+.funnel__intro p { color: var(--ink-2); max-width: 52ch; }
+.funnel__result { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.funnel__num {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 750;
+  line-height: 0.9;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.funnel__result span:last-child { color: var(--ink); }
+.funnel__table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; align-self: center; }
+.funnel__table th, .funnel__table td { text-align: left; font-weight: 400; padding: 10px 0; border-bottom: 1px solid #2a3d5a; }
+.funnel__table thead th { font-size: var(--fs-sm); color: var(--ink-2); font-weight: 600; }
+.funnel__table .num { text-align: right; padding-left: 16px; white-space: nowrap; }
+.funnel__table input { width: 22px; height: 22px; accent-color: var(--accent-strong); cursor: pointer; vertical-align: middle; }
+.funnel__table tr.is-off th, .funnel__table tr.is-off td:first-of-type { color: var(--muted); text-decoration: line-through; }
+
+@media (max-width: 960px) {
+  .home { grid-template-columns: 1fr; }
+  .home__media { max-width: 720px; }
+  .feature, .feature__funnel { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .feature__thumbs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .feature__stats dd { font-size: 1.75rem; }
+  .home__media figcaption { flex-direction: column; gap: 6px; }
+  .scene-head { min-height: 0; padding-top: 24px; }
+  .scene-head__line { font-size: 1.375rem; }
+}
+
+/* ============================================================
+   CELULAR: TOPO DE UMA LINHA, AS SEÇÕES NUM MENU
+   ============================================================ */
+.menu-btn { display: none; }
+@media (max-width: 760px) {
+  :root { --header-h: 64px; }
+  .header {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 64px;
+    height: 64px;
+    padding-bottom: 0;
+  }
+  .menu-btn { display: inline-grid; }
+  .header__actions a.icon-btn,
+  #motion-toggle { display: none; }
+  .nav {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    grid-row: auto;
+    padding: 8px var(--gutter) 16px;
+    background: rgba(14, 24, 40, 0.98);
+    overflow: visible;
+    display: none;
+  }
+  .header.is-open .nav { display: block; }
+  .nav__track {
+    width: 100%;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+  }
+  .nav__pill { display: none; }
+  .page-tab {
+    display: block;
+    padding: 14px 12px !important;
+    font-size: var(--fs-md) !important;
+    border-radius: 6px;
+  }
+  .page-tab[aria-current="page"] { background: rgba(85, 152, 231, 0.2); }
+}
+
+/* botão principal com contraste de 4,5:1 para o texto branco */
+.btn--primary { background: #2869c2; }
+.btn--primary:hover { background: #1f5aab; }

@@ -67,8 +67,7 @@ const projects = [
         "Runs on its own 5 times a day: about 1,200 jobs read per run become a short list, with the score explained, the recruiter email ready to review and each application tracked until a reply. All on free tiers, open source.",
     },
     image: "ImgProjeto/BuscaVagas-Capa.webp",
-    video: "ImgProjeto/BuscaVagas-Demo.mp4",
-    poster: "ImgProjeto/BuscaVagas-Demo.jpg",
+    featured: true,
     gallery: [
       "ImgProjeto/BuscaVagas-Capa.webp",
       "ImgProjeto/BuscaVagas-Vaga.webp",
@@ -80,6 +79,31 @@ const projects = [
     tags: ["Python", "GitHub Actions", "Embeddings (NLP)", "PostgreSQL", "Next.js"],
     category: ["eng", "ml", "web"],
     github: "https://github.com/GabrielProzin/busca_vagas",
+    live: "",
+  },
+  {
+    pt: {
+      title: "Perfil do GitHub animado",
+      summary: "README de perfil que se monta sozinho: retrato em ASCII, cartão no estilo neofetch e calendário de contribuições animados.",
+      problem: "O perfil do GitHub estava desatualizado, e os geradores de estatísticas hospedados por terceiros caem com frequência.",
+      approach:
+        "Scripts em Python geram SVGs animados (SMIL e CSS), já que o GitHub não roda JavaScript no README. A foto vira ASCII com remoção de fundo (rembg), contraste local (CLAHE) e contornos (Sobel); o calendário lê a página pública de contribuições com requests e BeautifulSoup, e um GitHub Actions o refaz todo dia.",
+      result: "Um perfil que se atualiza sozinho, sem token e sem serviço de terceiros.",
+    },
+    en: {
+      title: "Animated GitHub profile",
+      summary: "A profile README that builds itself: an ASCII portrait, a neofetch-style card and an animated contribution calendar.",
+      problem: "The GitHub profile was out of date, and third-party hosted stats widgets often go down.",
+      approach:
+        "Python scripts generate animated SVGs (SMIL and CSS), since GitHub runs no JavaScript in a README. The photo becomes ASCII with background removal (rembg), local contrast (CLAHE) and edges (Sobel); the calendar reads the public contributions page with requests and BeautifulSoup, and a GitHub Actions job rebuilds it every day.",
+      result: "A profile that updates itself, with no token and no third-party service.",
+    },
+    image: "ImgProjeto/gh-perfil.webp",
+    gallery: ["ImgProjeto/gh-perfil.webp", "ImgProjeto/gh-retrato.webp", "ImgProjeto/gh-cartao.webp", "ImgProjeto/gh-calendario.webp"],
+    darkCover: true,
+    tags: ["Python", "OpenCV", "SVG", "GitHub Actions"],
+    category: ["eng", "web"],
+    github: "https://github.com/GabrielProzin/GabrielProzin",
     live: "",
   },
   {
@@ -211,8 +235,11 @@ const asArray = (v) => (Array.isArray(v) ? v : [v]);
 
 function renderProjects(filter = "all", animate = true) {
   currentFilter = filter;
+  const lista = projects.filter((p) => !p.featured);
   const filtered =
-    filter === "all" ? projects : projects.filter((p) => asArray(p.category).includes(filter));
+    filter === "all" ? lista : lista.filter((p) => asArray(p.category).includes(filter));
+  const destaque = document.getElementById("feature-bv");
+  if (destaque) destaque.hidden = filter !== "all" && !destaque.dataset.cats.split(" ").includes(filter);
 
   projectList.innerHTML = "";
   projectCount.textContent =
@@ -243,9 +270,7 @@ function renderProjects(filter = "all", animate = true) {
 
     card.innerHTML = `
       <button type="button" class="project-media" aria-label="${T("proj.detailsOf", { t: p.title })}">
-        ${project.video
-          ? `<video class="project-thumbnail" src="${project.video}" poster="${project.poster}" muted loop playsinline ${prefersReducedMotion() ? "" : "autoplay"} preload="metadata" aria-hidden="true"></video>`
-          : `<img src="${project.image}" alt="" class="project-thumbnail" loading="lazy" />`}
+        <img src="${project.image}" alt="" class="project-thumbnail" loading="lazy" />
         <span class="project-media__hint"><i class="bx bx-expand-alt" aria-hidden="true"></i> ${T("proj.details")}</span>
       </button>
       <div class="project-body">
@@ -639,3 +664,71 @@ function showCopiedPopup(text) {
 
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+
+// ============================================================
+// DESTAQUE, FUNIL, VÍDEOS E MENU DO CELULAR
+// ============================================================
+
+// "Detalhes" do projeto em destaque abre a mesma ficha dos outros
+document.querySelectorAll("[data-open-project]").forEach((btn) => {
+  btn.addEventListener("click", () => openProjectModal(projects[+btn.dataset.openProject], btn));
+});
+
+// vídeos tocam só quando aparecem na tela (e nunca com as animações pausadas)
+(function () {
+  const videos = document.querySelectorAll("video[data-autoplay]");
+  if (!videos.length || prefersReducedMotion() || !("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      const v = e.target;
+      if (e.isIntersecting) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+    });
+  }, { threshold: 0.25 });
+  videos.forEach((v) => io.observe(v));
+})();
+
+// o funil de uma coleta real: desligar um filtro devolve as vagas que ele cortou
+(function () {
+  const funil = document.getElementById("funil");
+  if (!funil) return;
+  const num = document.getElementById("funnel-num");
+  const label = document.getElementById("funnel-label");
+  const caixas = funil.querySelectorAll("input[type=checkbox]");
+  const fmt = (n) => n.toLocaleString(LANG() === "en" ? "en-US" : "pt-BR");
+  let mostrado = 5;
+  const contar = (alvo) => {
+    if (prefersReducedMotion()) { num.textContent = fmt(alvo); mostrado = alvo; return; }
+    const de = mostrado, t0 = performance.now(), dur = 520;
+    const passo = (t) => {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      num.textContent = fmt(Math.round(de + (alvo - de) * e));
+      if (p < 1) requestAnimationFrame(passo); else mostrado = alvo;
+    };
+    requestAnimationFrame(passo);
+  };
+  const rotulo = () => ([...caixas].some((c) => !c.checked) ? T("f.maybe") : T("f.left"));
+  caixas.forEach((c) => c.addEventListener("change", () => {
+    let n = 5;
+    caixas.forEach((x) => { x.closest("tr").classList.toggle("is-off", !x.checked); if (!x.checked) n += +x.dataset.cut; });
+    label.textContent = rotulo();
+    contar(n);
+  }));
+  document.addEventListener("langchange", () => { num.textContent = fmt(mostrado); label.textContent = rotulo(); });
+})();
+
+// menu do celular: as mesmas seções das abas, num painel que abre abaixo do topo
+(function () {
+  const btn = document.getElementById("menu-btn");
+  const header = document.querySelector(".header");
+  if (!btn || !header) return;
+  const fechar = () => { header.classList.remove("is-open"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-label", T("menu.open")); btn.querySelector("i").className = "bx bx-menu"; };
+  btn.addEventListener("click", () => {
+    const aberto = header.classList.toggle("is-open");
+    btn.setAttribute("aria-expanded", String(aberto));
+    btn.setAttribute("aria-label", T(aberto ? "menu.close" : "menu.open"));
+    btn.querySelector("i").className = aberto ? "bx bx-x" : "bx bx-menu";
+  });
+  header.querySelectorAll(".page-tab").forEach((a) => a.addEventListener("click", fechar));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && header.classList.contains("is-open")) { fechar(); btn.focus(); } });
+})();

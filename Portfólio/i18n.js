@@ -8,6 +8,35 @@
 
 (function () {
   const EN = {
+    "menu.open": "Open menu",
+    "menu.close": "Close menu",
+    "home.videoAria": "Video of busca_vagas in use",
+    "home.videoCap": "runs on its own 5 times a day and reads about 1,200 job postings per run.",
+    "home.videoLink": "See the project",
+    "feat.screens": "busca_vagas screens",
+    "feat.s1": "A job page with the score explained",
+    "feat.s2": "Batch sending with the recruiter email",
+    "feat.s3": "Job types grouped with K-means",
+    "feat.s4": "What to study, based on the postings",
+    "feat.title": "busca_vagas: job radar with ETL and NLP",
+    "feat.summary": "A personal project that automates the search for junior data jobs: it collects from 5 sources, scores each posting against a resume with embeddings and sends applications through Gmail, with the pipeline running on GitHub Actions.",
+    "feat.k1": "runs per day",
+    "feat.k2": "postings read per run",
+    "feat.k3": "job sources",
+    "f.title": "One run, 1,249 jobs",
+    "f.text": "On October 23, busca_vagas read 1,249 unique postings on Gupy, Remotar, Sólides and GitHub. Each filter cut the ones that did not fit. Turn one off and see how many could have stayed.",
+    "f.caption": "Postings cut by each filter in the 10/23/2026 run",
+    "f.col1": "Filter",
+    "f.col2": "Cut",
+    "f.col3": "On",
+    "f.r1": "Above junior level",
+    "f.r2": "Role outside data",
+    "f.r3": "Posted over 14 days ago",
+    "f.r4": "Blocked term",
+    "f.r5": "On-site or hybrid outside Goiânia",
+    "f.r6": "In English, mid-level in the text, or no location",
+    "f.left": "jobs approved, the day's list",
+    "f.maybe": "jobs at most would get through",
     "meta.title": "Portfolio | Gabriel Mendes",
     "meta.description":
       "Portfolio of Gabriel Mendes, Data Scientist: Python and Apache Airflow pipelines, SQL on Google BigQuery and KPI dashboards in Power BI.",
@@ -175,6 +204,10 @@
 
   // textos em português usados só pelo JavaScript (o resto vem do HTML)
   const PT_JS = {
+    "menu.open": "Abrir menu",
+    "menu.close": "Fechar menu",
+    "f.left": "vagas aprovadas, a lista do dia",
+    "f.maybe": "vagas passariam, no máximo",
     "lang.aria": "Switch to English",
     "cv.href": "curriculo/GabrielMendes_mainCV.pdf",
     "cv.file": "CurriculoGabrielMendes",

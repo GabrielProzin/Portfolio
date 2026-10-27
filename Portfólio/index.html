@@ -120,6 +120,10 @@
       <a href="curriculo/GabrielMendes_mainCV.pdf" download="CurriculoGabrielMendes" class="btn btn--ghost btn--sm" data-cv>
         <i class="bx bx-download"></i> <span data-i18n="cv.download">Baixar CV</span>
       </a>
+      <button type="button" class="icon-btn menu-btn" id="menu-btn" aria-expanded="false" aria-controls="page-tabs"
+        aria-label="Abrir menu" data-i18n-attr="aria-label:menu.open">
+        <i class="bx bx-menu" aria-hidden="true"></i>
+      </button>
     </div>
     <span class="scroll-progress" aria-hidden="true"></span>
   </header>
@@ -170,6 +174,17 @@
         </dl>
       </div>
 
+      <figure class="home__media intro-step" style="--d: 4">
+        <div class="home__screen">
+          <video class="home__video" src="ImgProjeto/BuscaVagas-Demo.mp4" poster="ImgProjeto/BuscaVagas-Demo.jpg"
+            width="1088" height="612" muted loop playsinline preload="metadata" data-autoplay
+            aria-label="Vídeo do busca_vagas em uso" data-i18n-attr="aria-label:home.videoAria"></video>
+        </div>
+        <figcaption>
+          <span><strong>busca_vagas</strong> <span data-i18n="home.videoCap">roda sozinho 5 vezes por dia e lê cerca de 1.200 vagas por coleta.</span></span>
+          <a href="#feature-bv" class="home__more" data-i18n="home.videoLink">Ver o projeto</a>
+        </figcaption>
+      </figure>
     </section>
 
     <!-- Faixa de ferramentas -->
@@ -192,15 +207,15 @@
       </ul>
     </div>
 
-    <div class="interlude" data-scene>
-      <p class="interlude__title" data-reveal data-i18n="i2.title">Dados viram métricas.</p>
-      <p class="interlude__sub" data-reveal data-i18n="i2.sub">Milhares de registros agregados em indicadores.</p>
-    </div>
 
     <!-- Página 2: Experiência -->
     <section class="experience page" id="experience" aria-labelledby="experience-title">
-      <header class="job" data-reveal>
+      <div class="scene-head" data-scene data-reveal>
         <h2 id="experience-title" class="page__title" data-i18n="exp.title">Experiência</h2>
+        <p class="scene-head__line" data-i18n="i2.title">Dados viram métricas.</p>
+        <p class="scene-head__sub" data-i18n="i2.sub">Milhares de registros agregados em indicadores.</p>
+      </div>
+      <header class="job" data-reveal>
         <div class="job__line">
           <p class="job__role" data-i18n-html="exp.role">Cientista de Dados, <span>Pacto Soluções</span></p>
           <p class="job__period" data-i18n="exp.period">mai/2026 a out/2026</p>
@@ -302,15 +317,15 @@
 
     </section>
 
-    <div class="interlude" data-scene>
-      <p class="interlude__title" data-reveal data-i18n="i3.title">Métricas viram modelos.</p>
-      <p class="interlude__sub" data-reveal data-i18n="i3.sub">Agrupamentos e previsões com machine learning.</p>
-    </div>
 
     <!-- Página 3: Projetos -->
     <section class="projects page" id="projects" aria-labelledby="projects-title">
-      <div class="page__head page__head--row" data-reveal>
+      <div class="scene-head" data-scene data-reveal>
         <h2 id="projects-title" class="page__title" data-i18n="proj.title">Projetos</h2>
+        <p class="scene-head__line" data-i18n="i3.title">Métricas viram modelos.</p>
+        <p class="scene-head__sub" data-i18n="i3.sub">Agrupamentos e previsões com machine learning.</p>
+      </div>
+      <div class="page__head page__head--row" data-reveal>
         <div class="slicer__options project-filters" role="group" aria-label="Filtrar por categoria" data-i18n-attr="aria-label:proj.filterAria">
           <button type="button" class="active" aria-pressed="true" data-filter="all" data-i18n="proj.all">Todos</button>
           <button type="button" aria-pressed="false" data-filter="ml" data-i18n="proj.ml">Machine Learning</button>
@@ -319,6 +334,55 @@
           <button type="button" aria-pressed="false" data-filter="web" data-i18n="proj.web">Web/Desenvolvimento</button>
         </div>
       </div>
+      <article class="feature tile" id="feature-bv" data-cats="eng ml web" data-reveal aria-labelledby="feature-title">
+        <div class="feature__media">
+          <div class="feature__screen">
+            <video src="ImgProjeto/BuscaVagas-Demo.mp4" poster="ImgProjeto/BuscaVagas-Demo.jpg" width="1088" height="612"
+              muted loop playsinline preload="none" data-autoplay aria-label="Vídeo do busca_vagas em uso"
+              data-i18n-attr="aria-label:home.videoAria"></video>
+          </div>
+          <ul class="feature__thumbs" aria-label="Telas do busca_vagas" data-i18n-attr="aria-label:feat.screens">
+            <li><img src="ImgProjeto/bv-vaga.webp" width="1051" height="547" loading="lazy" alt="Página de uma vaga com a nota explicada" data-i18n-attr="alt:feat.s1" /></li>
+            <li><img src="ImgProjeto/bv-lote.webp" width="1138" height="640" loading="lazy" alt="Envio em lote com o email ao recrutador" data-i18n-attr="alt:feat.s2" /></li>
+            <li><img src="ImgProjeto/bv-tipos.webp" width="1364" height="547" loading="lazy" alt="Tipos de vaga agrupados com K-means" data-i18n-attr="alt:feat.s3" /></li>
+            <li><img src="ImgProjeto/bv-estudar.webp" width="1138" height="640" loading="lazy" alt="O que estudar, a partir das vagas" data-i18n-attr="alt:feat.s4" /></li>
+          </ul>
+        </div>
+        <div class="feature__body">
+          <h3 id="feature-title" class="feature__title" data-i18n="feat.title">busca_vagas: radar de vagas com ETL e NLP</h3>
+          <p class="feature__summary" data-i18n="feat.summary">Projeto pessoal que automatiza a busca de vagas júnior de dados: coleta de 5 fontes, dá uma nota contra o currículo com embeddings e envia candidaturas pelo Gmail, com o pipeline rodando no GitHub Actions.</p>
+          <dl class="feature__stats">
+            <div><dt data-i18n="feat.k1">coletas por dia</dt><dd>5</dd></div>
+            <div><dt data-i18n="feat.k2">vagas lidas por coleta</dt><dd>~1.200</dd></div>
+            <div><dt data-i18n="feat.k3">fontes de vagas</dt><dd>5</dd></div>
+          </dl>
+          <ul class="tech-list" aria-label="Tecnologias" data-i18n-attr="aria-label:proj.tech"><li>Python</li><li>GitHub Actions</li><li>Embeddings (NLP)</li><li>PostgreSQL</li><li>Next.js</li></ul>
+          <div class="feature__actions">
+            <button type="button" class="btn btn--primary" data-open-project="0"><i class="bx bx-expand-alt" aria-hidden="true"></i> <span data-i18n="proj.details">Detalhes</span></button>
+            <a class="btn btn--ghost" href="https://github.com/GabrielProzin/busca_vagas" target="_blank" rel="noopener noreferrer"><i class="bx bxl-github" aria-hidden="true"></i> GitHub</a>
+          </div>
+        </div>
+        <div class="feature__funnel" id="funil">
+          <div class="funnel__intro">
+            <h4 class="funnel__title" data-i18n="f.title">Uma coleta, 1.249 vagas</h4>
+            <p data-i18n="f.text">Na coleta de 23 de outubro, o busca_vagas leu 1.249 vagas únicas na Gupy, na Remotar, na Sólides e no GitHub. Cada filtro cortou as que não serviam. Desligue um deles e veja até quantas sobrariam.</p>
+            <p class="funnel__result" aria-live="polite"><span class="funnel__num" id="funnel-num">5</span> <span id="funnel-label" data-i18n="f.left">vagas aprovadas, a lista do dia</span></p>
+          </div>
+          <table class="funnel__table">
+            <caption class="sr-only" data-i18n="f.caption">Vagas cortadas por filtro na coleta de 23/10/2026</caption>
+            <thead><tr><th scope="col" data-i18n="f.col1">Filtro</th><th scope="col" class="num" data-i18n="f.col2">Cortou</th><th scope="col" class="num" data-i18n="f.col3">Ligado</th></tr></thead>
+            <tbody>
+              <tr><th scope="row" data-i18n="f.r1">Nível acima de júnior</th><td class="num">760</td><td class="num"><input type="checkbox" checked data-cut="760" aria-label="Nível acima de júnior" data-i18n-attr="aria-label:f.r1" /></td></tr>
+              <tr><th scope="row" data-i18n="f.r2">Cargo fora da área de dados</th><td class="num">255</td><td class="num"><input type="checkbox" checked data-cut="255" aria-label="Cargo fora da área de dados" data-i18n-attr="aria-label:f.r2" /></td></tr>
+              <tr><th scope="row" data-i18n="f.r3">Publicada há mais de 14 dias</th><td class="num">104</td><td class="num"><input type="checkbox" checked data-cut="104" aria-label="Publicada há mais de 14 dias" data-i18n-attr="aria-label:f.r3" /></td></tr>
+              <tr><th scope="row" data-i18n="f.r4">Termo bloqueado</th><td class="num">60</td><td class="num"><input type="checkbox" checked data-cut="60" aria-label="Termo bloqueado" data-i18n-attr="aria-label:f.r4" /></td></tr>
+              <tr><th scope="row" data-i18n="f.r5">Presencial ou híbrida fora de Goiânia</th><td class="num">46</td><td class="num"><input type="checkbox" checked data-cut="46" aria-label="Presencial ou híbrida fora de Goiânia" data-i18n-attr="aria-label:f.r5" /></td></tr>
+              <tr><th scope="row" data-i18n="f.r6">Vaga em inglês, pleno no texto ou sem local</th><td class="num">19</td><td class="num"><input type="checkbox" checked data-cut="19" aria-label="Vaga em inglês, pleno no texto ou sem local" data-i18n-attr="aria-label:f.r6" /></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
       <span class="sr-only" id="project-count" aria-live="polite"></span>
 
       <div class="project-list" id="project-list">
@@ -326,16 +390,16 @@
       </div>
     </section>
 
-    <div class="interlude" data-scene>
-      <p class="interlude__title" data-reveal data-i18n="i4.title">Modelos mostram tendências.</p>
-      <p class="interlude__sub" data-reveal data-i18n="i4.sub">O que os dados dizem sobre o que vem a seguir.</p>
-    </div>
 
     <!-- Página 4: Sobre -->
     <section class="about page" id="about" aria-labelledby="about-title">
+      <div class="scene-head" data-scene data-reveal>
+        <h2 id="about-title" class="page__title" data-i18n="about.title">Quem sou eu</h2>
+        <p class="scene-head__line" data-i18n="i4.title">Modelos mostram tendências.</p>
+        <p class="scene-head__sub" data-i18n="i4.sub">O que os dados dizem sobre o que vem a seguir.</p>
+      </div>
       <div class="about__grid">
         <div class="about__text" data-reveal>
-          <h2 id="about-title" class="page__title" data-i18n="about.title">Quem sou eu</h2>
           <p data-i18n="about.text">Comecei na Pacto Soluções no relacionamento com clientes, analisando demandas técnicas e padrões de erro. Essa experiência me deu facilidade para entender a regra de negócio por trás de cada número.</p>
           <p data-i18n="about.text2">Hoje trabalho de ponta a ponta no ciclo de dados, da ingestão ao dashboard, e curso pós em Ciência de Dados para aprofundar estatística e machine learning.</p>
         </div>
@@ -428,15 +492,13 @@
       </div>
     </section>
 
-    <div class="interlude" data-scene>
-      <p class="interlude__title" data-reveal data-i18n="i5.title">Tendências viram decisões.</p>
-      <p class="interlude__sub" data-reveal data-i18n="i5.sub">É aí que o trabalho com dados faz diferença.</p>
-    </div>
 
     <!-- Página 5: Contato -->
     <section class="contact page" id="contact" aria-labelledby="contact-title">
-      <div class="page__head" data-reveal>
+      <div class="scene-head" data-scene data-reveal>
         <h2 id="contact-title" class="page__title" data-i18n="contact.title">Vamos conversar</h2>
+        <p class="scene-head__line" data-i18n="i5.title">Tendências viram decisões.</p>
+        <p class="scene-head__sub" data-i18n="i5.sub">É aí que o trabalho com dados faz diferença.</p>
       </div>
 
       <div class="contact__grid">
