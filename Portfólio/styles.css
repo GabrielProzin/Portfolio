@@ -2637,7 +2637,7 @@ a, button, [role="button"], .project-media, .arch__node { cursor: pointer; }
   :root { --fs-sm: 1rem; --fs-base: 1.0625rem; }
   .icon-btn { width: 44px; height: 44px; }
   .btn, .btn--sm { min-height: 44px; }
-  .page-tab { padding: 10px 14px; }
+  .page-tab { padding: 12px 9px; line-height: 1.4; }
   .interlude { min-height: 46vh; }
   .interlude__title { font-size: clamp(2.25rem, 10vw, 3rem); }
   .case { padding: 22px; }
