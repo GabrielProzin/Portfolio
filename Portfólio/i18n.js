@@ -146,8 +146,6 @@
     "about.educationVal": "Systems Analysis and Development, IPOG",
     "about.current": "Currently",
     "about.currentVal": "Postgraduate degree in Data Science, IPOG",
-    "about.seeking": "Looking for",
-    "about.seekingVal": "Data Science, Data Engineering or BI roles",
     "about.location": "Location",
     "about.locationVal": "Goiânia, Brazil",
 
