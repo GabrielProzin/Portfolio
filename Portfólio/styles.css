@@ -102,6 +102,12 @@ body.modal-open {
   overflow: hidden;
 }
 
+/* Reserva o espaço da barra de rolagem: ao abrir a ficha (overflow hidden), a página não muda de largura.
+   Sem isso, a página inteira e o fundo animado eram recalculados no meio da animação de abertura. */
+html {
+  scrollbar-gutter: stable;
+}
+
 main,
 .header {
   position: relative;

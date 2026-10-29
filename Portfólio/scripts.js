@@ -440,8 +440,8 @@ function fillModal(project, inicio = 0) {
   modalThumbs.hidden = shots.length < 2;
   modalThumbs.innerHTML = shots.length < 2 ? "" : shots
     .map((s, i) => s.video
-      ? `<button type="button" class="thumb-video" aria-label="${T("proj.playVideo")}"><img src="${s.poster}" alt="" loading="lazy" /><i class="bx bx-play" aria-hidden="true"></i></button>`
-      : `<button type="button" aria-label="${T("proj.shot", { n: i + 1 })}"><img src="${s.src}" alt="" loading="lazy" /></button>`)
+      ? `<button type="button" class="thumb-video" aria-label="${T("proj.playVideo")}"><img src="${s.poster}" alt="" loading="lazy" decoding="async" /><i class="bx bx-play" aria-hidden="true"></i></button>`
+      : `<button type="button" aria-label="${T("proj.shot", { n: i + 1 })}"><img src="${s.src}" alt="" loading="lazy" decoding="async" /></button>`)
     .join("");
   modalThumbs.querySelectorAll("button").forEach((b, i) => b.addEventListener("click", () => show(i)));
   const alvo = typeof inicio === "number" ? inicio
@@ -471,6 +471,8 @@ function openProjectModal(project, fromEl, inicio = 0) {
   document.querySelectorAll("video[data-autoplay]").forEach((v) => v.pause());
   originRect = fromEl?.getBoundingClientRect() || null;
   fichaAnimando = Boolean(originRect && !prefersReducedMotion() && modalFrame.animate);
+  // o fundo animado (WebGL) para enquanto a ficha está aberta: ela cobre a tela e a animação fica mais leve
+  document.dispatchEvent(new Event("ficha:aberta"));
   fillModal(project, inicio);
 
   imageModal.classList.add("show");
@@ -484,23 +486,36 @@ function openProjectModal(project, fromEl, inicio = 0) {
     const sy = originRect.height / to.height;
     const dx = originRect.left - to.left;
     const dy = originRect.top - to.top;
+    const inicioAnim = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+    // A ficha já aparece no tamanho do card e só começa a crescer depois que o navegador terminou de montá-la
+    // (2 quadros): montar o conteúdo no mesmo quadro em que a animação começa fazia os primeiros quadros pularem.
     modalFrame.style.willChange = "transform, opacity";
-    const crescer = modalFrame.animate(
-      [
-        { transformOrigin: "top left", transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0.6 },
-        { transformOrigin: "top left", transform: "none", opacity: 1 },
-      ],
-      { duration: 480, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }
-    );
-    const fim = () => {
-      modalFrame.style.willChange = "";
-      fichaAnimando = false;
-      if (videoPendente && imageModal.classList.contains("show")) tocarVideoModal(videoPendente);
-    };
-    crescer.finished.then(fim, fim);
-    modalInfo.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], {
-      duration: 400, delay: 220, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards",
-    });
+    modalFrame.style.transformOrigin = "top left";
+    modalFrame.style.transform = inicioAnim;
+    modalFrame.style.opacity = "0.6";
+    modalInfo.style.opacity = "0";
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      modalFrame.style.transform = "";
+      modalFrame.style.opacity = "";
+      modalInfo.style.opacity = "";
+      const crescer = modalFrame.animate(
+        [
+          { transformOrigin: "top left", transform: inicioAnim, opacity: 0.6 },
+          { transformOrigin: "top left", transform: "none", opacity: 1 },
+        ],
+        { duration: 480, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }
+      );
+      const fim = () => {
+        modalFrame.style.willChange = "";
+        modalFrame.style.transformOrigin = "";
+        fichaAnimando = false;
+        if (videoPendente && imageModal.classList.contains("show")) tocarVideoModal(videoPendente);
+      };
+      crescer.finished.then(fim, fim);
+      modalInfo.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], {
+        duration: 400, delay: 220, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards",
+      });
+    }));
   }
   modalClose?.focus();
 }
@@ -517,6 +532,7 @@ function closeImageModal() {
     if (!imageModal.classList.contains("show")) modalImage.src = "";
   }, 250);
   retomarVideos();
+  document.dispatchEvent(new Event("ficha:fechada"));
   lastFocusedElement?.focus?.();
 }
 

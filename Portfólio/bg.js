@@ -637,6 +637,11 @@
     still();
   } else {
     document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+    // a ficha de projeto cobre a tela: não vale desenhar o fundo por baixo dela
+    let fichaAberta = false;
+    document.addEventListener("ficha:aberta", () => { fichaAberta = true; stop(); });
+    document.addEventListener("ficha:fechada", () => { fichaAberta = false; if (!document.hidden) start(); });
+    document.addEventListener("visibilitychange", () => { if (fichaAberta) stop(); });
     start();
     // entrada: a nuvem "acende"
     canvas.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1600, easing: "ease-out" });
