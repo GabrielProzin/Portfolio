@@ -389,8 +389,21 @@ let lastFocusedElement = null;
 let originRect = null;
 let openProject = null;
 
+// Enquanto a ficha cresce (animação de abertura), o vídeo não carrega: decodificar o vídeo e animar ao mesmo
+// tempo travava a animação. Ele começa quando a animação termina.
+let fichaAnimando = false;
+let videoPendente = null;
+
+function tocarVideoModal(s) {
+  if (fichaAnimando) { videoPendente = s; return; }
+  videoPendente = null;
+  if (modalVideo.getAttribute("src") !== s.video) modalVideo.src = s.video;
+  if (!prefersReducedMotion()) modalVideo.play().catch(() => {});
+}
+
 /** Para o vídeo da ficha (ao trocar de captura ou fechar). */
 function pararVideoModal() {
+  videoPendente = null;
   if (!modalVideo) return;
   modalVideo.pause();
   modalVideo.removeAttribute("src");
@@ -411,9 +424,8 @@ function fillModal(project, inicio = 0) {
       modalImage.hidden = true;
       modalVideo.hidden = false;
       modalVideo.poster = s.poster;
-      if (modalVideo.getAttribute("src") !== s.video) modalVideo.src = s.video;
       modalVideo.setAttribute("aria-label", T("proj.videoOf", { t: p.title }));
-      if (!prefersReducedMotion()) modalVideo.play().catch(() => {});
+      tocarVideoModal(s);
     } else {
       pararVideoModal();
       if (modalVideo) modalVideo.hidden = true;
@@ -455,6 +467,10 @@ function openProjectModal(project, fromEl, inicio = 0) {
 
   lastFocusedElement = document.activeElement;
   openProject = project;
+  // Os vídeos da página param enquanto a ficha está aberta (menos trabalho para o navegador).
+  document.querySelectorAll("video[data-autoplay]").forEach((v) => v.pause());
+  originRect = fromEl?.getBoundingClientRect() || null;
+  fichaAnimando = Boolean(originRect && !prefersReducedMotion() && modalFrame.animate);
   fillModal(project, inicio);
 
   imageModal.classList.add("show");
@@ -462,20 +478,26 @@ function openProjectModal(project, fromEl, inicio = 0) {
   document.body.classList.add("modal-open");
 
   // o modal "cresce" a partir da imagem do card (técnica FLIP)
-  originRect = fromEl?.getBoundingClientRect() || null;
-  if (originRect && !prefersReducedMotion() && modalFrame.animate) {
+  if (fichaAnimando) {
     const to = modalFrame.getBoundingClientRect();
     const sx = originRect.width / to.width;
     const sy = originRect.height / to.height;
     const dx = originRect.left - to.left;
     const dy = originRect.top - to.top;
-    modalFrame.animate(
+    modalFrame.style.willChange = "transform, opacity";
+    const crescer = modalFrame.animate(
       [
         { transformOrigin: "top left", transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0.6 },
         { transformOrigin: "top left", transform: "none", opacity: 1 },
       ],
       { duration: 480, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }
     );
+    const fim = () => {
+      modalFrame.style.willChange = "";
+      fichaAnimando = false;
+      if (videoPendente && imageModal.classList.contains("show")) tocarVideoModal(videoPendente);
+    };
+    crescer.finished.then(fim, fim);
     modalInfo.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], {
       duration: 400, delay: 220, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards",
     });
@@ -490,9 +512,11 @@ function closeImageModal() {
   imageModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
   pararVideoModal();
+  fichaAnimando = false;
   setTimeout(() => {
     if (!imageModal.classList.contains("show")) modalImage.src = "";
   }, 250);
+  retomarVideos();
   lastFocusedElement?.focus?.();
 }
 
@@ -719,6 +743,15 @@ function observarVideos(raiz = document) {
   });
 }
 observarVideos();
+
+/** Ao fechar a ficha, os vídeos que estão na tela voltam a tocar. */
+function retomarVideos() {
+  if (!observarVideos.obs) return;
+  document.querySelectorAll("video[data-observado]").forEach((v) => {
+    const r = v.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight && r.width) v.play().catch(() => {});
+  });
+}
 
 // No destaque, o vídeo e as capturas também abrem a ficha, já no que foi clicado.
 document.querySelectorAll("[data-abrir-midia]").forEach((el) => {
