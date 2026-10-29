@@ -73,6 +73,7 @@
       <div class="image-modal__body">
         <div class="image-modal__media">
           <img alt="" />
+          <video controls playsinline muted loop preload="none" hidden></video>
           <div class="image-modal__thumbs" id="image-modal-thumbs" hidden></div>
         </div>
         <div class="image-modal__info" id="image-modal-info"></div>
@@ -336,16 +337,17 @@
       </div>
       <article class="feature tile" id="feature-bv" data-cats="eng ml web" data-reveal aria-labelledby="feature-title">
         <div class="feature__media">
-          <div class="feature__screen">
+          <button type="button" class="feature__screen midia-ampliar" data-abrir-midia="0" data-inicio="video"
+            aria-label="Ampliar o vídeo do busca_vagas" data-i18n-attr="aria-label:feat.openVideo">
             <video src="ImgProjeto/BuscaVagas-Demo.mp4" poster="ImgProjeto/BuscaVagas-Demo.jpg" width="1088" height="612"
-              muted loop playsinline preload="none" data-autoplay aria-label="Vídeo do busca_vagas em uso"
-              data-i18n-attr="aria-label:home.videoAria"></video>
-          </div>
+              muted loop playsinline preload="none" data-autoplay aria-hidden="true"></video>
+            <span class="midia-ampliar__dica"><i class="bx bx-expand-alt" aria-hidden="true"></i> <span data-i18n="feat.expand">Ampliar</span></span>
+          </button>
           <ul class="feature__thumbs" aria-label="Telas do busca_vagas" data-i18n-attr="aria-label:feat.screens">
-            <li><img src="ImgProjeto/bv-vaga.webp" width="1051" height="547" loading="lazy" alt="Página de uma vaga com a nota explicada" data-i18n-attr="alt:feat.s1" /></li>
-            <li><img src="ImgProjeto/bv-lote.webp" width="1138" height="640" loading="lazy" alt="Envio em lote com o email ao recrutador" data-i18n-attr="alt:feat.s2" /></li>
-            <li><img src="ImgProjeto/bv-tipos.webp" width="1364" height="547" loading="lazy" alt="Tipos de vaga agrupados com K-means" data-i18n-attr="alt:feat.s3" /></li>
-            <li><img src="ImgProjeto/bv-estudar.webp" width="1138" height="640" loading="lazy" alt="O que estudar, a partir das vagas" data-i18n-attr="alt:feat.s4" /></li>
+            <li><button type="button" class="midia-ampliar" data-abrir-midia="0" data-inicio="ImgProjeto/BuscaVagas-Vaga.webp"><img src="ImgProjeto/bv-vaga.webp" width="1051" height="547" loading="lazy" alt="Página de uma vaga com a nota explicada" data-i18n-attr="alt:feat.s1" /></button></li>
+            <li><button type="button" class="midia-ampliar" data-abrir-midia="0" data-inicio="ImgProjeto/BuscaVagas-Lote.webp"><img src="ImgProjeto/bv-lote.webp" width="1138" height="640" loading="lazy" alt="Envio em lote com o email ao recrutador" data-i18n-attr="alt:feat.s2" /></button></li>
+            <li><button type="button" class="midia-ampliar" data-abrir-midia="0" data-inicio="ImgProjeto/BuscaVagas-Tipos.webp"><img src="ImgProjeto/bv-tipos.webp" width="1364" height="547" loading="lazy" alt="Tipos de vaga agrupados com K-means" data-i18n-attr="alt:feat.s3" /></button></li>
+            <li><button type="button" class="midia-ampliar" data-abrir-midia="0" data-inicio="ImgProjeto/BuscaVagas-Estudar.webp"><img src="ImgProjeto/bv-estudar.webp" width="1138" height="640" loading="lazy" alt="O que estudar, a partir das vagas" data-i18n-attr="alt:feat.s4" /></button></li>
           </ul>
         </div>
         <div class="feature__body">

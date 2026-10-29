@@ -67,6 +67,9 @@ const projects = [
         "Runs on its own 5 times a day: about 1,200 jobs read per run become a short list, with the score explained, the recruiter email ready to review and each application tracked until a reply. All on free tiers, open source.",
     },
     image: "ImgProjeto/BuscaVagas-Capa.webp",
+    // Vídeo completo da demonstração: aparece primeiro na ficha do projeto, antes das capturas.
+    video: "ImgProjeto/BuscaVagas-Video.mp4",
+    poster: "ImgProjeto/BuscaVagas-Demo.jpg",
     featured: true,
     gallery: [
       "ImgProjeto/BuscaVagas-Capa.webp",
@@ -102,9 +105,19 @@ const projects = [
       result:
         "In use by the client: a monthly dashboard with contracted value against the previous month, average ticket, unique customers, items in use, a 6-month history and a delivery/return schedule, designed for phone use.",
     },
-    image: "ImgProjeto/WDA-Capa.webp",
-    gallery: ["ImgProjeto/WDA-VisaoGeral.webp", "ImgProjeto/WDA-Graficos.webp"],
-    darkCover: true,
+    image: "ImgProjeto/WDA-Demo.jpg",
+    // No card, um trecho curto em loop; na ficha, o vídeo completo e depois as capturas (dados fictícios).
+    cardVideo: "ImgProjeto/WDA-Demo.mp4",
+    video: "ImgProjeto/WDA-Video.mp4",
+    poster: "ImgProjeto/WDA-Demo.jpg",
+    gallery: [
+      "ImgProjeto/WDA-VisaoGeral.webp",
+      "ImgProjeto/WDA-Graficos.webp",
+      "ImgProjeto/WDA-Alugueis.webp",
+      "ImgProjeto/WDA-Novo.webp",
+      "ImgProjeto/WDA-Despesas.webp",
+      "ImgProjeto/WDA-Celular.webp",
+    ],
     tags: ["Next.js", "TypeScript", "Firebase", "Vitest"],
     category: "web",
     github: "https://github.com/GabrielProzin/wdalocacao",
@@ -245,7 +258,9 @@ function renderProjects(filter = "all", animate = true) {
 
     card.innerHTML = `
       <button type="button" class="project-media" aria-label="${T("proj.detailsOf", { t: p.title })}">
-        <img src="${project.image}" alt="" class="project-thumbnail" loading="lazy" />
+        ${project.cardVideo
+          ? `<video src="${project.cardVideo}" poster="${project.poster || project.image}" class="project-thumbnail" muted loop playsinline preload="none" data-autoplay aria-hidden="true"></video>`
+          : `<img src="${project.image}" alt="" class="project-thumbnail" loading="lazy" />`}
         <span class="project-media__hint"><i class="bx bx-expand-alt" aria-hidden="true"></i> ${T("proj.details")}</span>
       </button>
       <div class="project-body">
@@ -273,7 +288,7 @@ function renderProjects(filter = "all", animate = true) {
         { duration: 500, delay: i * 90, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" }
       );
     }
-  });
+  });  observarVideos(projectList);
 }
 
 renderProjects();
@@ -365,6 +380,7 @@ updateActiveFromScroll();
 const imageModal = document.getElementById("image-modal");
 const modalFrame = imageModal?.querySelector(".image-modal__frame");
 const modalImage = imageModal?.querySelector(".image-modal__media > img");
+const modalVideo = imageModal?.querySelector(".image-modal__media > video");
 const modalThumbs = document.getElementById("image-modal-thumbs");
 const modalTitle = document.getElementById("image-modal-title");
 const modalInfo = document.getElementById("image-modal-info");
@@ -373,22 +389,53 @@ let lastFocusedElement = null;
 let originRect = null;
 let openProject = null;
 
-function fillModal(project) {
+/** Para o vídeo da ficha (ao trocar de captura ou fechar). */
+function pararVideoModal() {
+  if (!modalVideo) return;
+  modalVideo.pause();
+  modalVideo.removeAttribute("src");
+  modalVideo.load();
+}
+
+// A ficha mostra primeiro o vídeo (se o projeto tiver) e depois as capturas.
+// "inicio" escolhe o que abre: um número, "video" ou o caminho de uma captura.
+function fillModal(project, inicio = 0) {
   const p = txt(project);
-  const shots = project.gallery || [project.image];
+  const shots = [
+    ...(project.video && modalVideo ? [{ video: project.video, poster: project.poster || project.image }] : []),
+    ...(project.gallery || [project.image]).map((src) => ({ src })),
+  ];
   const show = (i) => {
-    modalImage.src = shots[i];
-    modalImage.alt = T("proj.capture", { t: p.title }) + (shots.length > 1 ? ` (${i + 1}/${shots.length})` : "");
+    const s = shots[i];
+    if (s.video) {
+      modalImage.hidden = true;
+      modalVideo.hidden = false;
+      modalVideo.poster = s.poster;
+      if (modalVideo.getAttribute("src") !== s.video) modalVideo.src = s.video;
+      modalVideo.setAttribute("aria-label", T("proj.videoOf", { t: p.title }));
+      if (!prefersReducedMotion()) modalVideo.play().catch(() => {});
+    } else {
+      pararVideoModal();
+      if (modalVideo) modalVideo.hidden = true;
+      modalImage.hidden = false;
+      modalImage.src = s.src;
+      modalImage.alt = T("proj.capture", { t: p.title }) + (shots.length > 1 ? ` (${i + 1}/${shots.length})` : "");
+    }
     modalThumbs.querySelectorAll("button").forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
   };
   // capas geradas no tema escuro não ganham faixas brancas
   modalImage.style.background = project.darkCover ? "var(--canvas)" : "";
   modalThumbs.hidden = shots.length < 2;
   modalThumbs.innerHTML = shots.length < 2 ? "" : shots
-    .map((src, i) => `<button type="button" aria-label="${T("proj.shot", { n: i + 1 })}"><img src="${src}" alt="" loading="lazy" /></button>`)
+    .map((s, i) => s.video
+      ? `<button type="button" class="thumb-video" aria-label="${T("proj.playVideo")}"><img src="${s.poster}" alt="" loading="lazy" /><i class="bx bx-play" aria-hidden="true"></i></button>`
+      : `<button type="button" aria-label="${T("proj.shot", { n: i + 1 })}"><img src="${s.src}" alt="" loading="lazy" /></button>`)
     .join("");
   modalThumbs.querySelectorAll("button").forEach((b, i) => b.addEventListener("click", () => show(i)));
-  show(0);
+  const alvo = typeof inicio === "number" ? inicio
+    : inicio === "video" ? Math.max(0, shots.findIndex((s) => s.video))
+    : Math.max(0, shots.findIndex((s) => s.src === inicio));
+  show(Math.min(alvo, shots.length - 1));
   modalTitle.textContent = p.title;
   modalInfo.innerHTML = `
     <dl class="psr">
@@ -403,12 +450,12 @@ function fillModal(project) {
   `;
 }
 
-function openProjectModal(project, fromEl) {
+function openProjectModal(project, fromEl, inicio = 0) {
   if (!imageModal) return;
 
   lastFocusedElement = document.activeElement;
   openProject = project;
-  fillModal(project);
+  fillModal(project, inicio);
 
   imageModal.classList.add("show");
   imageModal.setAttribute("aria-hidden", "false");
@@ -442,6 +489,7 @@ function closeImageModal() {
   imageModal.classList.remove("show");
   imageModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
+  pararVideoModal();
   setTimeout(() => {
     if (!imageModal.classList.contains("show")) modalImage.src = "";
   }, 250);
@@ -650,18 +698,32 @@ document.querySelectorAll("[data-open-project]").forEach((btn) => {
   btn.addEventListener("click", () => openProjectModal(projects[+btn.dataset.openProject], btn));
 });
 
-// vídeos tocam só quando aparecem na tela (e nunca com as animações pausadas)
-(function () {
-  const videos = document.querySelectorAll("video[data-autoplay]");
-  if (!videos.length || prefersReducedMotion() || !("IntersectionObserver" in window)) return;
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      const v = e.target;
-      if (e.isIntersecting) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
-    });
-  }, { threshold: 0.25 });
-  videos.forEach((v) => io.observe(v));
-})();
+// vídeos tocam só quando aparecem na tela (e nunca com as animações pausadas).
+// Os cards de projeto são desenhados de novo a cada filtro, então os vídeos novos entram no observador.
+// (declaração de função: pode ser chamada pelos cards antes desta linha rodar)
+function observarVideos(raiz = document) {
+  if (observarVideos.obs === undefined) {
+    observarVideos.obs = !prefersReducedMotion() && "IntersectionObserver" in window
+      ? new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            const v = e.target;
+            if (e.isIntersecting) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+          });
+        }, { threshold: 0.25 })
+      : null;
+  }
+  if (!observarVideos.obs) return;
+  raiz.querySelectorAll("video[data-autoplay]:not([data-observado])").forEach((v) => {
+    v.dataset.observado = "1";
+    observarVideos.obs.observe(v);
+  });
+}
+observarVideos();
+
+// No destaque, o vídeo e as capturas também abrem a ficha, já no que foi clicado.
+document.querySelectorAll("[data-abrir-midia]").forEach((el) => {
+  el.addEventListener("click", () => openProjectModal(projects[+el.dataset.abrirMidia], el, el.dataset.inicio || 0));
+});
 
 // o funil de uma coleta real: desligar um filtro devolve as vagas que ele cortou
 (function () {
